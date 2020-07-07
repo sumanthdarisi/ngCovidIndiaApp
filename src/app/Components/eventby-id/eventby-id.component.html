@@ -1,0 +1,45 @@
+<div class="table table-striped table-responsive">
+    <thead class="thead-inverse">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Created by</th>
+            <th>Created on</th>
+            <th>Modified by</th>
+            <th>Modified on</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{eventDetail.Name}}</td>
+            <td>{{eventDetail.Description}}</td>
+            <td>{{eventDetail.Createdby}}</td>
+            <td>{{eventDetail.Createdon | date:"mm/dd/yyyy hh:mm:ss"}}</td>
+            <td>{{eventDetail.Modifiedby}}</td>
+            <td>{{eventDetail.Modifiedon | date:"mm/dd/yyyy hh:mm:ss"}}</td>
+            <td>{{eventDetail.Status}}</td>
+        </tr>
+    </tbody>
+</div>
+
+<br><br><br><br><br><br>
+
+<h4>Other events these attendees are joining</h4>
+<div class="table table-striped table-responsive">
+    <thead class="thead-inverse">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Created by</th>
+        </tr>
+    </thead>
+    <tbody *ngFor="let event of data">
+        <tr>
+            <td>{{event.Name}}</td>
+            <td>{{event.Description}}</td>
+            <td>{{event.Createdby}}</td>
+            <td>{{event.Createdon | date:"mm/dd/yyyy hh:mm:ss"}}</td>
+        </tr>
+    </tbody>
+</div>

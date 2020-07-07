@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "efi"
+    }
+  },
+  "defaultProject": "efi",
+  "cli": {
+    "analytics": false
+  }
 }

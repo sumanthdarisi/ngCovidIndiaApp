@@ -1,0 +1,55 @@
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-12" style="margin-bottom: 20px;">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <div class="cl_con">
+                        <span class="text">Total Confirmed <br> {{st_confirmed}}</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <div class="cl_rec">
+                        <span class="text">Total Recovered <br> {{st_recovered}}</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <div class="cl_dec">
+                        <span class="text">Total Deceased <br> {{st_deceased}}</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <div class="cl_tes">
+                        <span class="text">Total Tested <br> {{st_tested}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br> 
+        <div class="col-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>District Name</th>
+                        <th>Population</th>
+                        <th>Confirmed Cases</th>
+                        <th>Recovered Cases</th>
+                        <th>Deceased Cases</th>
+                        <th>Total Tests</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let d of data.districts | keyvalue" class="thead" style="font-weight: normal;">
+                    <ng-container *ngIf="d.key && d.value.meta">
+                        <td>{{d.key}}</td>
+                        <td>{{d.value.meta.population}}</td>
+                        <td>{{d.value.total.confirmed}}</td>
+                        <td>{{d.value.total.recovered}}</td>
+                        <td>{{d.value.total.deceased}}</td>
+                        <td>{{d.value.total.tested}}</td>
+                        <!-- <th>{{d | json}}</th> -->
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
