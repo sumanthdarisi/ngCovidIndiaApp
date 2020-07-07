@@ -26,7 +26,6 @@ export class StDistComponent implements OnInit {
     }
 
     this.initialize();
-    this.chart();
   }
 
 
@@ -51,48 +50,6 @@ export class StDistComponent implements OnInit {
     }
   }
 
-  chart() {
-    var StateData = new Chart("StateData", {
-      type: 'bar',
-      data: {
-        labels: ['Confirmed', 'Recovered', 'Deceased', 'Tested'],
-        datasets: [{
-          label: ['#Counts'],
-          data: [this.st_confirmed, this.st_recovered, this.st_deceased, this.st_tested],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)'
-          ],
-          borderWidth: 1,
-          hoverBackgroundColor: [
-            'rgba(255, 99, 132, 1.0)',
-            'rgba(54, 162, 235, 1.0)',
-            'rgba(255, 206, 86, 1.0)',
-            'rgba(75, 192, 192, 1.0)'
-          ]
-        }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true,
-            },
-            type: 'logarithmic'
-          }]
-        }
-      }
-    });
-
-  }
-
+  
 
 }
