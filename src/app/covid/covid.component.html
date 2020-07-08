@@ -3,7 +3,7 @@
         <h3>India Covid Stats</h3>
     </div>
     <div class="col">
-        <div class="float-right">Indian Population - {{IndianPopulation | number}}</div>
+        <div class="float-right">Indian Population <br> {{IndianPopulation | number}}</div>
     </div>
 </div>
 
@@ -79,7 +79,7 @@
 <br>
 <div class="alert alert-warning">Click on state code below to view the respective districts data</div>
 <div class="row">
-    <table class="table table-hover">
+    <table class="table table-responsive table-hover" id="homeTable">
         <thead>
             <tr>
                 <th>State</th>
@@ -93,6 +93,7 @@
         </thead>
         <tbody *ngFor="let d of data | keyvalue" class="thead">
             <ng-container *ngIf="d.key != 'TT' && d.key != 'UN'">
+                <tr>
             <td style=" color:rgb(29, 29, 211); font-weight: bold; cursor: pointer;" *ngIf="d.value.meta && d.value.total" (click)="stateCode($event)">{{d.key}}</td>
             <td  *ngIf="d.value.meta.tested && d.value.meta">
                 {{d.value.meta.tested.last_updated |json | date:'mediumDate'}}</td>
@@ -106,6 +107,7 @@
                 {{d.value.total.deceased |json | number}}</td>
             <td  *ngIf="d.value.total && d.value.total.tested">
                 {{d.value.total.tested |json | number}}</td>
+            </tr>
         </ng-container>
         </tbody>
     </table>
