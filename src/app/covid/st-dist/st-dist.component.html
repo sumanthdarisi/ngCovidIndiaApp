@@ -1,5 +1,12 @@
-<div class="btn btn-primary" style="margin-bottom:10px" routerLink="/Covid">Covid | Home</div>
 
+<div class="row" style="margin: 40px 0px 20px 0px">
+    <div class="col">
+        <div class="float-left" style="font-family: sans-serif;text-align: left; font-size: 24px;">{{stateName}}</div>
+    </div>
+    <div class="col">
+        <div class="float-right btn btn-primary" style="margin-bottom:10px" routerLink="/Covid">Covid | Home</div>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-12" style="margin-bottom: 20px;">
@@ -47,7 +54,7 @@
             <tbody *ngFor="let d of data.districts | keyvalue" style="font-weight: normal;">
                 <ng-container *ngIf="d.key && d.value.meta">
                     <tr>
-                        <td>{{d.key}}</td>
+                        <td style="font-weight: bold;">{{d.key}}</td>
                         <td>{{d.value.meta.population}}</td>
                         <td>{{d.value.total.confirmed}}</td>
                         <td>{{d.value.total.recovered}}</td>

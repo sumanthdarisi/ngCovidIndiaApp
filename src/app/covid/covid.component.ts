@@ -101,7 +101,7 @@ export class CovidComponent implements OnInit {
   stateCode(e)
   {
     let code = e.target.innerText;
-    this._serv.setCovidData(this.data[code]);
+    this._serv.setCovidData(this.data[code], code);
     this._route.navigate(["Covid/",code]);
   }
 

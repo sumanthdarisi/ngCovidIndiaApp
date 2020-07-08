@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { APIService } from './Services/api.service'
-import { EventsModel } from './events-model';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +9,7 @@ export class AppComponent {
 
   onActivate(event) {
     window.scroll(0,0);
+    
 }
   
 }

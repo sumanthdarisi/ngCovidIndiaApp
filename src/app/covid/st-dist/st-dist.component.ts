@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { APIService } from 'src/app/Services/api.service';
 import { Router } from '@angular/router';
-import { Chart } from 'node_modules/chart.js'
 
 @Component({
   selector: 'app-st-dist',
@@ -15,6 +14,7 @@ export class StDistComponent implements OnInit {
   st_deceased: number = 0;
   st_tested: number = 0;
   st_Active: number = 0;
+  stateName: any;
 
 
   data: any;
@@ -26,13 +26,15 @@ export class StDistComponent implements OnInit {
     if (!this.data) {
       this.route.navigateByUrl("/Covid");
     }
-
-    this.initialize();
+    this.stateName = this._serv.getStateName();
+      this.initialize();
   }
+  
 
 
   initialize(){
-    for (let d in this.data.districts) {
+    for (let d in this.data.districts) 
+    {
       if (this.data.districts[d]['meta'] && this.data.districts[d]['total']) {
         if (this.data.districts[d]['meta']['population'])
           this.st_population += Number(this.data.districts[d]['meta']['population']);
@@ -49,7 +51,8 @@ export class StDistComponent implements OnInit {
         if (this.data.districts[d]['total']['tested'])
           this.st_tested += Number(this.data.districts[d]['total']['tested']);
       }
-    }
+    }    
+    
     this.st_Active = this.st_confirmed -(this.st_recovered + this.st_deceased);
   }
 
