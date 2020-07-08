@@ -67,10 +67,10 @@ export class CovidComponent implements OnInit {
     var NationalData = new Chart("NationalData", {
       type: 'line',
       data: {
-        labels:['Confirmed','Recovered','Tested','Deceased'],
+        labels:['Confirmed','Active','Recovered','Tested','Deceased'],
           datasets: [{
               label: ['Covid Stats'],
-              data: [this.Nt_TotalConfirmedCases, this.Nt_TotalRecoverdCases,this.Nt_TotalTests,this.Nt_TotalDeceasedCases],
+              data: [this.Nt_TotalConfirmedCases, this.Nt_Active,this.Nt_TotalRecoverdCases,this.Nt_TotalTests,this.Nt_TotalDeceasedCases],
               
               borderColor: [
                   'rgba(55,151,158)'
@@ -89,8 +89,7 @@ export class CovidComponent implements OnInit {
               yAxes: [{
                   ticks: {
                       beginAtZero: false,
-                      min: 5000,
-                      stepsize: 1000
+                      min: 5000
                   }
               }]
           }
