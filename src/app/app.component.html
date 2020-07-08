@@ -2,7 +2,7 @@
 <div class="container">
 <br>
 
-  <router-outlet></router-outlet>  
+  <router-outlet (activate)="onActivate($event)"></router-outlet>  
 
 
   <div class="alert alert-light" style="bottom: 2px; position: relative; text-align: center;"> Covid Angular Application </div>

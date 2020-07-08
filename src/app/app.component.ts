@@ -8,5 +8,9 @@ import { EventsModel } from './events-model';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+  onActivate(event) {
+    window.scroll(0,0);
+}
   
 }
