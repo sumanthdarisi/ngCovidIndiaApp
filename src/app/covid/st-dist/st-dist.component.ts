@@ -14,6 +14,8 @@ export class StDistComponent implements OnInit {
   st_recovered: number = 0;
   st_deceased: number = 0;
   st_tested: number = 0;
+  st_Active: number = 0;
+
 
   data: any;
   constructor(private _serv: APIService, private route: Router) { }
@@ -48,6 +50,7 @@ export class StDistComponent implements OnInit {
           this.st_tested += Number(this.data.districts[d]['total']['tested']);
       }
     }
+    this.st_Active = this.st_confirmed -(this.st_recovered + this.st_deceased);
   }
 
   

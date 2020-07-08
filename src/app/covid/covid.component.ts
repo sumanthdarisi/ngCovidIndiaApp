@@ -16,7 +16,7 @@ export class CovidComponent implements OnInit {
   Nt_TotalRecoverdCases: number = 0;
   Nt_TotalDeceasedCases: number = 0;
   Nt_TotalTests: number = 0;
-
+  Nt_Active: number =0;
 
 
   data: Array<CovidStDt>;
@@ -57,6 +57,8 @@ export class CovidComponent implements OnInit {
         }
       }
     }
+
+    this.Nt_Active = this.Nt_TotalConfirmedCases - (this.Nt_TotalDeceasedCases + this.Nt_TotalRecoverdCases);
   }
 
 

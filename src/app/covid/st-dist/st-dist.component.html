@@ -1,25 +1,32 @@
-<br>
+
+<div class="btn btn-primary" style="margin-bottom:10px" routerLink="/Covid">Covid | Home</div>
+
 <div class="container">
     <div class="row">
         <div class="col-12" style="margin-bottom: 20px;">
             <div class="row">
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                    <div class="cl_con">
+                <div class="col">
+                    <div class="circles cl_con">
                         <span class="text">Total Confirmed <br> {{st_confirmed}}</span>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                    <div class="cl_rec">
+                <div class="col">
+                    <div class="circles cl_act">
+                        <span class="text">Total Active <br> {{this.st_Active}}</span>
+                    </div>
+                </div> 
+                <div class="col">
+                    <div class="circles cl_rec">
                         <span class="text">Total Recovered <br> {{st_recovered}}</span>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                    <div class="cl_dec">
+                <div class="col">
+                    <div class="circles cl_dec">
                         <span class="text">Total Deceased <br> {{st_deceased}}</span>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                    <div class="cl_tes">
+                <div class="col">
+                    <div class="circles cl_tes">
                         <span class="text">Total Tested <br> {{st_tested}}</span>
                     </div>
                 </div>

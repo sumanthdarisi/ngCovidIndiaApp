@@ -1,46 +1,57 @@
-<h3>India Covid Stats</h3>
 <div class="row">
-    <div class="col" style="margin: 10px;">
-        <div class="card" style="background-color: rgba(255, 7, 58, 0.125);min-width: 10rem">
-            <div class="card-header">
-                Indian Population
-            </div>
-            <div class="card-body" style="font-weight: bold;">
-                {{IndianPopulation | number}}
-            </div>
-        </div>
+    <div class="col">
+        <h3>India Covid Stats</h3>
     </div>
-    <div class="col" style="margin:10px;">
+    <div class="col">
+        <div class="float-right">Indian Population - {{IndianPopulation | number}}</div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col" style="margin:3px;">
         <div class="card" style="background-color: rgba(0, 123, 255, 0.125); min-width: 10rem">
             <div class="card-header">
-                Total Confirmed Cases
+                Confirmed Cases
             </div>
             <div class="card-body" style="font-weight: bold;">
                 {{Nt_TotalConfirmedCases | number}}
             </div>
         </div>
     </div>
-    <div class="col" style="margin:10px;">
+
+    <div class="col" style="margin: 3px;">
+        <div class="card" style="background-color: rgba(255, 7, 58, 0.125);min-width: 10rem">
+            <div class="card-header">
+                Active Cases
+            </div>
+            <div class="card-body" style="font-weight: bold;">
+                {{this.Nt_Active | number}}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col" style="margin:3px;">
         <div class="card" style="background-color: rgba(40, 167, 69, 0.125);min-width: 10rem">
             <div class="card-header">
-                Total Recovered Cases
+                Recovered Cases
             </div>
             <div class="card-body" style="font-weight: bold;">
                 {{Nt_TotalRecoverdCases | number}}
             </div>
         </div>
     </div>
-    <div class="col" style="margin:10px;">
+    <div class="col" style="margin:3px;">
         <div class="card" style="background-color: rgba(197, 155, 18, 0.125);min-width: 10rem">
             <div class="card-header">
-                Total Deceased Cases
+                Deceased Cases
             </div>
             <div class="card-body" style="font-weight: bold;">
                 {{Nt_TotalDeceasedCases | number}}
             </div>
         </div>
     </div>
-    <div class="col" style="margin:10px;">
+    <div class="col" style="margin:3px;">
         <div class="card" style="background-color: rgba(108, 117, 125, 0.125);min-width: 10rem">
             <div class="card-header">
                 Total Tests
@@ -51,8 +62,9 @@
         </div>
     </div>
 </div>
+<br>
 <div class="row">
-    <div class="col" style="margin: 10px;">
+    <div class="col" style="margin: 3px;">
         <div class="card" style="background-color: rgba(181, 231, 238, 0.125);min-width: 10rem">
             <div class="card-header">
                 Charts
@@ -80,7 +92,7 @@
             </tr>
         </thead>
         <tbody *ngFor="let d of data | keyvalue" class="thead">
-            <ng-container *ngIf="d.key != 'TT'">
+            <ng-container *ngIf="d.key != 'TT' && d.key != 'UN'">
             <td style=" color:rgb(29, 29, 211); font-weight: bold; cursor: pointer;" *ngIf="d.value.meta && d.value.total" (click)="stateCode($event)">{{d.key}}</td>
             <td  *ngIf="d.value.meta.tested && d.value.meta">
                 {{d.value.meta.tested.last_updated |json | date:'mediumDate'}}</td>
