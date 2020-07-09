@@ -1,5 +1,4 @@
-
-<div class="row" style="margin: 40px 0px 20px 0px">
+<div class="row" style="margin: 40px 0px 20px 0px;">
     <div class="col">
         <div class="float-left" style="font-family: sans-serif;text-align: left; font-size: 24px;">{{stateName}}</div>
     </div>
@@ -9,37 +8,102 @@
 </div>
 
 <div class="row">
-    <div class="col-12" style="margin-bottom: 20px;">
-        <div class="row">
-            <div class="col">
-                <div class="circles cl_con">
-                    <span class="text">Total Confirmed <br> {{st_confirmed}}</span>
-                </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                State Dashboard
             </div>
-            <div class="col">
-                <div class="circles cl_act">
-                    <span class="text">Total Active <br> {{this.st_Active}}</span>
-                </div>
-            </div>
-            <div class="col">
-                <div class="circles cl_rec">
-                    <span class="text">Total Recovered <br> {{st_recovered}}</span>
-                </div>
-            </div>
-            <div class="col">
-                <div class="circles cl_dec">
-                    <span class="text">Total Deceased <br> {{st_deceased}}</span>
-                </div>
-            </div>
-            <div class="col">
-                <div class="circles cl_tes">
-                    <span class="text">Total Tested <br> {{st_tested}}</span>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="circle-wrap">
+                            <div class="circle">
+                                <div class="mask full">
+                                    <div class="fill cl_con"></div>
+                                </div>
+                                <div class="mask half">
+                                    <div class="fill cl_con"></div>
+                                </div>
+                                <div class="inside-circle">
+                                    <div class="nameTag">Confirmed Cases</div>
+                                    {{st_confirmed}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="col">
+                        <div class="circle-wrap">
+                            <div class="circle">
+                                <div class="mask full">
+                                    <div class="fill cl_act"></div>
+                                </div>
+                                <div class="mask half">
+                                    <div class="fill cl_act"></div>
+                                </div>
+                                <div class="inside-circle">
+                                    <div class="nameTag">Active Cases</div>
+                                    {{st_Active}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="col">
+                        <div class="circle-wrap">
+                            <div class="circle">
+                                <div class="mask full">
+                                    <div class="fill cl_rec"></div>
+                                </div>
+                                <div class="mask half">
+                                    <div class="fill cl_rec"></div>
+                                </div>
+                                <div class="inside-circle">
+                                    <div class="nameTag">Recovered Cases</div>
+                                    {{st_recovered}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="col">
+                        <div class="circle-wrap">
+                            <div class="circle">
+                                <div class="mask full">
+                                    <div class="fill cl_dec"></div>
+                                </div>
+                                <div class="mask half">
+                                    <div class="fill cl_dec"></div>
+                                </div>
+                                <div class="inside-circle">
+                                    <div class="nameTag">Deceased Cases</div>
+                                    {{st_deceased}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="col">
+                        <div class="circle-wrap">
+                            <div class="circle">
+                                <div class="mask full">
+                                    <div class="fill cl_tes"></div>
+                                </div>
+                                <div class="mask half">
+                                    <div class="fill cl_tes"></div>
+                                </div>
+                                <div class="inside-circle">
+                                    <div class="nameTag">Total Tests</div>
+                                    {{st_tested}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <br>
-    <div class="col-12">
+    <div class="col-12" style="margin-top: 20px">
         <table class="table table-responsive table-hover" id="homeTable">
             <thead>
                 <tr>
@@ -54,7 +118,7 @@
             <tbody *ngFor="let d of data.districts | keyvalue" style="font-weight: normal;">
                 <ng-container *ngIf="d.key && d.value.meta">
                     <tr>
-                        <td style="font-weight: bold;">{{d.key}}</td>
+                        <td>{{d.key}}</td>
                         <td>{{d.value.meta.population}}</td>
                         <td>{{d.value.total.confirmed}}</td>
                         <td>{{d.value.total.recovered}}</td>

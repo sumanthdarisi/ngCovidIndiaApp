@@ -17,6 +17,7 @@ export class StDistComponent implements OnInit {
   stateName: any;
 
 
+
   data: any;
   constructor(private _serv: APIService, private route: Router) { }
 

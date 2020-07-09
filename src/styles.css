@@ -4,53 +4,6 @@
     padding:0;
 }
 
-.circles{
-    width:150px;
-    height: 150px;
-    border-radius: 100%;
-    position: relative;
-    margin-bottom: 10px;
-    align-items: center;
-    justify-content: space-around;
-    display: flex;
-    flex: 1;
-    box-shadow: 0px 0px 18px 4px rgba(173,173,173,0.65);
-}
-
-.cl_con{
-    background-color: rgb(205, 92, 92,0.7);
-}
-
-
-.cl_rec{
-    background-color: rgba(106, 75, 219, 0.7);
-}
-
-.cl_dec{
-    background-color: rgb(107, 106, 106,0.7);
-}
-
-
-.cl_tes{
-    background-color: rgb(139, 201, 104);
-}
-
-.cl_act{
-    background-color: rgb(182, 104, 201);
-}
-
-
-.text{
-    position: absolute;
-    text-align: center;
-    color: white;
-    font-weight: bold;
-}
-
-
-
-
-
 
 @media only screen and (min-width: 990px)
 {
