@@ -15,86 +15,18 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col">
+                    <div class="col" *ngFor="let d of districtData">
                         <div class="circle-wrap">
                             <div class="circle">
                                 <div class="mask full">
-                                    <div class="fill cl_con"></div>
+                                    <div class={{d.class}}></div>
                                 </div>
                                 <div class="mask half">
-                                    <div class="fill cl_con"></div>
+                                    <div class={{d.class}}></div>
                                 </div>
                                 <div class="inside-circle">
-                                    <div class="nameTag">Confirmed Cases</div>
-                                    {{st_confirmed}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-        
-                    <div class="col">
-                        <div class="circle-wrap">
-                            <div class="circle">
-                                <div class="mask full">
-                                    <div class="fill cl_act"></div>
-                                </div>
-                                <div class="mask half">
-                                    <div class="fill cl_act"></div>
-                                </div>
-                                <div class="inside-circle">
-                                    <div class="nameTag">Active Cases</div>
-                                    {{st_Active}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-        
-                    <div class="col">
-                        <div class="circle-wrap">
-                            <div class="circle">
-                                <div class="mask full">
-                                    <div class="fill cl_rec"></div>
-                                </div>
-                                <div class="mask half">
-                                    <div class="fill cl_rec"></div>
-                                </div>
-                                <div class="inside-circle">
-                                    <div class="nameTag">Recovered Cases</div>
-                                    {{st_recovered}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-        
-                    <div class="col">
-                        <div class="circle-wrap">
-                            <div class="circle">
-                                <div class="mask full">
-                                    <div class="fill cl_dec"></div>
-                                </div>
-                                <div class="mask half">
-                                    <div class="fill cl_dec"></div>
-                                </div>
-                                <div class="inside-circle">
-                                    <div class="nameTag">Deceased Cases</div>
-                                    {{st_deceased}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-        
-                    <div class="col">
-                        <div class="circle-wrap">
-                            <div class="circle">
-                                <div class="mask full">
-                                    <div class="fill cl_tes"></div>
-                                </div>
-                                <div class="mask half">
-                                    <div class="fill cl_tes"></div>
-                                </div>
-                                <div class="inside-circle">
-                                    <div class="nameTag">Total Tests</div>
-                                    {{st_tested}}
+                                    <div class="nameTag">{{d.Name}}</div>
+                                    {{d.number}}
                                 </div>
                             </div>
                         </div>
@@ -124,7 +56,6 @@
                         <td>{{d.value.total.recovered}}</td>
                         <td>{{d.value.total.deceased}}</td>
                         <td>{{d.value.total.tested}}</td>
-                        <!-- <th>{{d | json}}</th> -->
                     </tr>
                 </ng-container>
             </tbody>

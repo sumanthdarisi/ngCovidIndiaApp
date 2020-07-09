@@ -15,6 +15,8 @@ export class StDistComponent implements OnInit {
   st_tested: number = 0;
   st_Active: number = 0;
   stateName: any;
+  districtData: any;
+
 
 
 
@@ -55,6 +57,14 @@ export class StDistComponent implements OnInit {
     }    
     
     this.st_Active = this.st_confirmed -(this.st_recovered + this.st_deceased);
+
+    this.districtData= [
+      {Name: "Confirmed Cases", number: this.st_confirmed, class: "fill cl_con"},
+      {Name: "Active Cases", number: this.st_Active, class: "fill cl_act"},
+      {Name: "Recovered Cases", number: this.st_recovered, class: "fill cl_rec"},
+      {Name: "Deceased Cases", number: this.st_deceased, class: "fill cl_dec"},
+      {Name: "Total Tested", number: this.st_tested, class: "fill cl_tes"}
+    ]
   }
 
   
