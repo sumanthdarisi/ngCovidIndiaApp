@@ -10,6 +10,7 @@ import { CovidStDt } from '../Models/covid-st-dt';
 export class APIService {
   
   covidData: any;
+  timeSeries: any;
   stateCode: any;
   statename: any;
   _jsonFile = "assets/IndiaStates.json";
@@ -44,7 +45,13 @@ export class APIService {
     if(this.statename){
       return this.statename[this.stateCode];
     }
+  }
 
+
+  getTimeSeries():Observable<any>{
+    let _timeSeries = "https://api.covid19india.org/data.json";
+    this.timeSeries = this._http.get<any>(_timeSeries);
+    return this.timeSeries;
   }
 
 

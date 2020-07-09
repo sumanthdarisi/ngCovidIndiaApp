@@ -5,6 +5,7 @@ import { Chart } from 'node_modules/chart.js';
 import { Router } from '@angular/router';
 
 
+
 @Component({
   selector: 'app-covid',
   templateUrl: './covid.component.html',
@@ -18,8 +19,14 @@ export class CovidComponent implements OnInit {
   Nt_TotalTests: number = 0;
   Nt_Active: number =0;
 
+  ConfirmedSeries: Map<string, number> = new Map<string,number>();
+  RecoveredSeries: Map<string, number> = new Map<string,number>();
+  DeceasedSeries: Map<string, number> = new Map<string,number>();
+  ActiveSeries: Map<string, number> = new Map<string,number>();
+
 
   data: Array<CovidStDt>;
+  timeSeriesData: any;
   zone: any;
   constructor(private _serv: APIService, private _route: Router) { }
 
@@ -30,7 +37,8 @@ export class CovidComponent implements OnInit {
 
       //functions      
       this.Initialdata(this.data);
-      this.chart();
+      this.timeSeries();
+      this.chart();    
 
     })    
   }
@@ -64,37 +72,37 @@ export class CovidComponent implements OnInit {
 
   chart()
   {
-    var NationalData = new Chart("NationalData", {
-      type: 'line',
-      data: {
-        labels:['Confirmed','Active','Recovered','Tested','Deceased'],
-          datasets: [{
-              label: ['Covid Stats'],
-              data: [this.Nt_TotalConfirmedCases, this.Nt_Active,this.Nt_TotalRecoverdCases,this.Nt_TotalTests,this.Nt_TotalDeceasedCases],
+  //   var NationalData = new Chart("NationalData", {
+  //     type: 'line',
+  //     data: {
+  //       labels:['Confirmed','Active','Recovered','Tested','Deceased'],
+  //         datasets: [{
+  //             label: ['Covid Stats'],
+  //             data: [this.Nt_TotalConfirmedCases, this.Nt_Active,this.Nt_TotalRecoverdCases,this.Nt_TotalTests,this.Nt_TotalDeceasedCases],
               
-              borderColor: [
-                  'rgba(55,151,158)'
-              ],
-              borderWidth: 3,
-              hoverBackgroundColor: [
-                'rgba(255, 99, 132, 1.0)',
-                'rgba(54, 162, 235, 1.0)',
-                'rgba(255, 206, 86, 1.0)',
-                'rgba(75, 192, 192, 1.0)'
-            ]
-          }]
-      },
-      options: {
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero: false,
-                      min: 5000
-                  }
-              }]
-          }
-      }
-  });
+  //             borderColor: [
+  //                 'rgba(55,151,158)'
+  //             ],
+  //             borderWidth: 3,
+  //             hoverBackgroundColor: [
+  //               'rgba(255, 99, 132, 1.0)',
+  //               'rgba(54, 162, 235, 1.0)',
+  //               'rgba(255, 206, 86, 1.0)',
+  //               'rgba(75, 192, 192, 1.0)'
+  //           ]
+  //         }]
+  //     },
+  //     options: {
+  //         scales: {
+  //             yAxes: [{
+  //                 ticks: {
+  //                     beginAtZero: false,
+  //                     min: 5000
+  //                 }
+  //             }]
+  //         }
+  //     }
+  // });
 
   }
 
@@ -105,4 +113,106 @@ export class CovidComponent implements OnInit {
     this._route.navigate(["Covid/",code]);
   }
 
+
+  timeSeries()
+  {   
+      const Xlabels = [];
+
+      const confirmYlabels = [];
+      const recoverYlabels = [];
+      const deceasedYlabels = [];
+      const activeYlabels = [];
+
+
+      this._serv.getTimeSeries().subscribe(res => {
+      this.timeSeriesData = res['cases_time_series'];
+      
+      for (let d in this.timeSeriesData) {
+        Xlabels.push(this.timeSeriesData[d]['date']);
+        confirmYlabels.push(parseInt(this.timeSeriesData[d]['totalconfirmed']));
+        recoverYlabels.push(parseInt(this.timeSeriesData[d]['totalrecovered']))
+        deceasedYlabels.push(parseInt(this.timeSeriesData[d]['totaldeceased']));
+        activeYlabels.push(parseInt(this.timeSeriesData[d]['totalconfirmed'])-(parseInt(this.timeSeriesData[d]['totalrecovered'])+parseInt(this.timeSeriesData[d]['totaldeceased'])));
+      }
+
+
+      var NationalData = new Chart("NationalData", {
+        type: 'line',
+        data: {
+          labels:Xlabels,
+            datasets: [
+              {
+                label: ['Confirmed Cases'],
+                data: confirmYlabels,
+                fill: false,
+                
+                borderColor: [
+                  'rgba(0, 123, 255, 0.6)'
+                ],
+                radius: 0.7,
+                pointHoverRadius: 10
+            },
+            {
+              label: ['Recovered Cases'],
+              data: recoverYlabels,
+              fill: false,
+              borderColor: [
+                'rgba(40, 167, 69, 0.6)'
+              ],
+              radius: 0.7,
+              
+              pointHoverRadius: 10
+          },
+          {
+            label: ['Active Cases'],
+            data: activeYlabels,
+            fill: false,
+            
+            borderColor: [
+              'rgba(255, 7, 58, 0.6)'
+            ],
+            radius: 0.7,
+            pointHoverRadius: 10
+          },
+          {
+            label: ['Deceased Cases'],
+            data: deceasedYlabels,
+            fill: false,
+            
+            borderColor: [
+              'rgba(197, 155, 18, 0.6)'
+            ],
+            radius: 0.7,
+            pointHoverRadius: 10
+          }
+        ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                  position: 'right',
+                  gridLines:{
+                    drawOnChartArea: true
+                  },
+                    ticks: {
+                        autoSkip: true,
+                        maxTicksLimit: 6
+                    }
+                }],
+                xAxes:[{
+                  gridLines:{
+                    drawOnChartArea: false
+                  },
+                  ticks:{
+                      autoSkip: true,
+                      maxTicksLimit: 5
+                  }
+                }]
+            }
+        }
+    });
+  
+      
+    });
+  }
 }

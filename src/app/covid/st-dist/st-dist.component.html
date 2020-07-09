@@ -26,7 +26,7 @@
                                 </div>
                                 <div class="inside-circle">
                                     <div class="nameTag">{{d.Name}}</div>
-                                    {{d.number}}
+                                    {{d.number | number}}
                                 </div>
                             </div>
                         </div>
@@ -51,11 +51,11 @@
                 <ng-container *ngIf="d.key && d.value.meta">
                     <tr>
                         <td *ngIf="d.key; else elseBlock">{{d.key}}</td>
-                        <td *ngIf="d.value.meta.population; else elseBlock">{{d.value.meta.population}}</td>
-                        <td *ngIf="d.value.total.confirmed; else elseBlock">{{d.value.total.confirmed}}</td>
-                        <td *ngIf="d.value.total.recovered; else elseBlock">{{d.value.total.recovered}}</td>
-                        <td *ngIf="d.value.total.deceased; else elseBlock">{{d.value.total.deceased}}</td>
-                        <td *ngIf="d.value.total.tested; else elseBlock">{{d.value.total.tested}}</td>
+                        <td *ngIf="d.value.meta.population; else elseBlock">{{d.value.meta.population | number}}</td>
+                        <td *ngIf="d.value.total.confirmed; else elseBlock">{{d.value.total.confirmed | number}}</td>
+                        <td *ngIf="d.value.total.recovered; else elseBlock">{{d.value.total.recovered | number}}</td>
+                        <td *ngIf="d.value.total.deceased; else elseBlock">{{d.value.total.deceased | number}}</td>
+                        <td *ngIf="d.value.total.tested; else elseBlock">{{d.value.total.tested | number}}</td>
                     </tr>
                 </ng-container>
                 <ng-template #elseBlock>
