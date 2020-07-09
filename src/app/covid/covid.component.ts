@@ -18,11 +18,8 @@ export class CovidComponent implements OnInit {
   Nt_TotalDeceasedCases: number = 0;
   Nt_TotalTests: number = 0;
   Nt_Active: number =0;
-
-  ConfirmedSeries: Map<string, number> = new Map<string,number>();
-  RecoveredSeries: Map<string, number> = new Map<string,number>();
-  DeceasedSeries: Map<string, number> = new Map<string,number>();
-  ActiveSeries: Map<string, number> = new Map<string,number>();
+  Nt_data: any;
+  
 
 
   data: Array<CovidStDt>;
@@ -45,6 +42,7 @@ export class CovidComponent implements OnInit {
 
 
   Initialdata(d){
+    
     for (let e in d) {
       if (d[e]['total'] && e!=="TT") {
         
@@ -67,6 +65,15 @@ export class CovidComponent implements OnInit {
     }
 
     this.Nt_Active = this.Nt_TotalConfirmedCases - (this.Nt_TotalDeceasedCases + this.Nt_TotalRecoverdCases);
+
+    
+    this.Nt_data= [
+      {Name: "Confirmed Cases", number: this.Nt_TotalConfirmedCases, style: "con_cl"},
+      {Name: "Active Cases", number: this.Nt_Active, style: "act_cl"},
+      {Name: "Recovered Cases", number: this.Nt_TotalRecoverdCases, style: "rec_cl"},
+      {Name: "Deceased Cases", number: this.Nt_TotalRecoverdCases, style: "dec_cl"},
+      {Name: "Total Tests", number: this.Nt_TotalTests, style: "tot_cl"}
+    ]
   }
 
 

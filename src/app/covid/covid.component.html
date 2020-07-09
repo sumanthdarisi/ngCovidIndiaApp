@@ -1,62 +1,21 @@
 <div class="row">
     <div class="col">
-        <h3>India Covid Stats</h3>
+        <h3>Covid Stats India</h3>
     </div>
     <div class="col">
-        <div class="float-right" style="text-align: right; color: gray; font-weight: bold;">Indian Population <br> {{IndianPopulation | number}}</div>
+        <div class="float-right" style="text-align: right; color: gray; font-weight: bold;">Indian Population <br>
+            {{IndianPopulation | number}}</div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col" style="margin:3px;">
-        <div class="card" style="background-color: rgba(0, 123, 255, 0.125); min-width: 10rem">
+    <div class="col" style="margin:3px;" *ngFor="let d of Nt_data">
+        <div class="card {{d.style}}">
             <div class="card-header">
-                Confirmed Cases
+                {{d.Name}}
             </div>
             <div class="card-body" style="font-weight: bold;">
-                {{Nt_TotalConfirmedCases | number}}
-            </div>
-        </div>
-    </div>
-
-    <div class="col" style="margin: 3px;">
-        <div class="card" style="background-color: rgba(255, 7, 58, 0.125);min-width: 10rem">
-            <div class="card-header">
-                Active Cases
-            </div>
-            <div class="card-body" style="font-weight: bold;">
-                {{this.Nt_Active | number}}
-            </div>
-        </div>
-    </div>
-    
-    <div class="col" style="margin:3px;">
-        <div class="card" style="background-color: rgba(40, 167, 69, 0.125);min-width: 10rem">
-            <div class="card-header">
-                Recovered Cases
-            </div>
-            <div class="card-body" style="font-weight: bold;">
-                {{Nt_TotalRecoverdCases | number}}
-            </div>
-        </div>
-    </div>
-    <div class="col" style="margin:3px;">
-        <div class="card" style="background-color: rgba(197, 155, 18, 0.125);min-width: 10rem">
-            <div class="card-header">
-                Deceased Cases
-            </div>
-            <div class="card-body" style="font-weight: bold;">
-                {{Nt_TotalDeceasedCases | number}}
-            </div>
-        </div>
-    </div>
-    <div class="col" style="margin:3px;">
-        <div class="card" style="background-color: rgba(108, 117, 125, 0.125);min-width: 10rem">
-            <div class="card-header">
-                Total Tests
-            </div>
-            <div class="card-body" style="font-weight: bold;">
-                {{Nt_TotalTests | number}}
+                {{d.number | number}}
             </div>
         </div>
     </div>
@@ -93,32 +52,26 @@
         <tbody *ngFor="let d of data | keyvalue" class="thead">
             <ng-container *ngIf="(d.value.meta.population || d.value.total) && d.key != 'TT' && d.key != 'UN'">
                 <tr>
-            <td style=" color:rgb(29, 29, 211); font-weight: bold; cursor: pointer;" *ngIf="d.value.meta && d.value.total; else elseBlock" (click)="stateCode($event)">{{d.key}}</td>
-            <td  *ngIf="d.value.meta.tested && d.value.meta;else elseBlock">
-                {{d.value.meta.tested.last_updated |json | date:'mediumDate'}}</td>
-            <td  *ngIf="d.value.meta && d.value.meta.population;else elseBlock">
-                {{d.value.meta.population |json | number}}</td>
-            <td  *ngIf="d.value.total && d.value.total.confirmed;else elseBlock">
-                {{d.value.total.confirmed |json | number}}</td>
-            <td  *ngIf="d.value.total && d.value.total.recovered;else elseBlock">
-                {{d.value.total.recovered |json | number}}</td>
-            <td  *ngIf="d.value.total && d.value.total.deceased;else elseBlock">
-                {{d.value.total.deceased |json | number}}</td>
-            <td  *ngIf="d.value.total && d.value.total.tested;else elseBlock">
-                {{d.value.total.tested |json | number}}</td>
-            </tr>
-        </ng-container>
+                    <td style=" color:rgb(29, 29, 211,0.7); font-weight: bold; cursor: pointer;"
+                        *ngIf="d.value.meta && d.value.total; else elseBlock" (click)="stateCode($event)">{{d.key}}</td>
+                    <td *ngIf="d.value.meta.tested && d.value.meta;else elseBlock">
+                        {{d.value.meta.tested.last_updated |json | date:'mediumDate'}}</td>
+                    <td *ngIf="d.value.meta && d.value.meta.population;else elseBlock">
+                        {{d.value.meta.population |json | number}}</td>
+                    <td *ngIf="d.value.total && d.value.total.confirmed;else elseBlock">
+                        {{d.value.total.confirmed |json | number}}</td>
+                    <td *ngIf="d.value.total && d.value.total.recovered;else elseBlock">
+                        {{d.value.total.recovered |json | number}}</td>
+                    <td *ngIf="d.value.total && d.value.total.deceased;else elseBlock">
+                        {{d.value.total.deceased |json | number}}</td>
+                    <td *ngIf="d.value.total && d.value.total.tested;else elseBlock">
+                        {{d.value.total.tested |json | number}}</td>
+                </tr>
+            </ng-container>
 
-        <ng-template #elseBlock>
-            <td>NA</td>
-        </ng-template>
+            <ng-template #elseBlock>
+                <td>NA</td>
+            </ng-template>
         </tbody>
     </table>
 </div>
-
-<!-- <div class="jumbotron">
-    <span *ngFor="let d of seriesCount.get('jan') | keyvalue">
-        {{d}}
-        <br><br><br>
-    </span>
-</div> -->
