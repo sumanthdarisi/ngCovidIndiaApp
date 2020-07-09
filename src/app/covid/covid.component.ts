@@ -29,6 +29,8 @@ export class CovidComponent implements OnInit {
       this.data = d;
 
       //functions
+      console.log(this.data);
+      
       this.Initialdata(this.data);
       this.chart();
 

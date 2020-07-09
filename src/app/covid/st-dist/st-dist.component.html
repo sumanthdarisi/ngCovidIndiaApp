@@ -50,14 +50,17 @@
             <tbody *ngFor="let d of data.districts | keyvalue" style="font-weight: normal;">
                 <ng-container *ngIf="d.key && d.value.meta">
                     <tr>
-                        <td>{{d.key}}</td>
-                        <td>{{d.value.meta.population}}</td>
-                        <td>{{d.value.total.confirmed}}</td>
-                        <td>{{d.value.total.recovered}}</td>
-                        <td>{{d.value.total.deceased}}</td>
-                        <td>{{d.value.total.tested}}</td>
+                        <td *ngIf="d.key; else elseBlock">{{d.key}}</td>
+                        <td *ngIf="d.value.meta.population; else elseBlock">{{d.value.meta.population}}</td>
+                        <td *ngIf="d.value.total.confirmed; else elseBlock">{{d.value.total.confirmed}}</td>
+                        <td *ngIf="d.value.total.recovered; else elseBlock">{{d.value.total.recovered}}</td>
+                        <td *ngIf="d.value.total.deceased; else elseBlock">{{d.value.total.deceased}}</td>
+                        <td *ngIf="d.value.total.tested; else elseBlock">{{d.value.total.tested}}</td>
                     </tr>
                 </ng-container>
+                <ng-template #elseBlock>
+                    <td>NA</td>
+                </ng-template>
             </tbody>
         </table>
     </div>

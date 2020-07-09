@@ -29,6 +29,8 @@ export class StDistComponent implements OnInit {
     if (!this.data) {
       this.route.navigateByUrl("/Covid");
     }
+    console.log(this.data);
+    
     this.stateName = this._serv.getStateName();
       this.initialize();
   }

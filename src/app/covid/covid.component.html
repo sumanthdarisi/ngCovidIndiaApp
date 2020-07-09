@@ -91,23 +91,27 @@
             </tr>
         </thead>
         <tbody *ngFor="let d of data | keyvalue" class="thead">
-            <ng-container *ngIf="d.key != 'TT' && d.key != 'UN'">
+            <ng-container *ngIf="(d.value.meta.population || d.value.total) && d.key != 'TT' && d.key != 'UN'">
                 <tr>
-            <td style=" color:rgb(29, 29, 211); font-weight: bold; cursor: pointer;" *ngIf="d.value.meta && d.value.total" (click)="stateCode($event)">{{d.key}}</td>
-            <td  *ngIf="d.value.meta.tested && d.value.meta">
+            <td style=" color:rgb(29, 29, 211); font-weight: bold; cursor: pointer;" *ngIf="d.value.meta && d.value.total; else elseBlock" (click)="stateCode($event)">{{d.key}}</td>
+            <td  *ngIf="d.value.meta.tested && d.value.meta;else elseBlock">
                 {{d.value.meta.tested.last_updated |json | date:'mediumDate'}}</td>
-            <td  *ngIf="d.value.meta && d.value.meta.population">
+            <td  *ngIf="d.value.meta && d.value.meta.population;else elseBlock">
                 {{d.value.meta.population |json | number}}</td>
-            <td  *ngIf="d.value.total && d.value.total.confirmed">
+            <td  *ngIf="d.value.total && d.value.total.confirmed;else elseBlock">
                 {{d.value.total.confirmed |json | number}}</td>
-            <td  *ngIf="d.value.total && d.value.total.recovered">
+            <td  *ngIf="d.value.total && d.value.total.recovered;else elseBlock">
                 {{d.value.total.recovered |json | number}}</td>
-            <td  *ngIf="d.value.total && d.value.total.deceased">
+            <td  *ngIf="d.value.total && d.value.total.deceased;else elseBlock">
                 {{d.value.total.deceased |json | number}}</td>
-            <td  *ngIf="d.value.total && d.value.total.tested">
+            <td  *ngIf="d.value.total && d.value.total.tested;else elseBlock">
                 {{d.value.total.tested |json | number}}</td>
             </tr>
         </ng-container>
+
+        <ng-template #elseBlock>
+            <td>NA</td>
+        </ng-template>
         </tbody>
     </table>
 </div>
