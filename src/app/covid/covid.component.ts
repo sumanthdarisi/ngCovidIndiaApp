@@ -28,9 +28,7 @@ export class CovidComponent implements OnInit {
     this._serv.getCovid().subscribe(d => {
       this.data = d;
 
-      //functions
-      console.log(this.data);
-      
+      //functions      
       this.Initialdata(this.data);
       this.chart();
 
