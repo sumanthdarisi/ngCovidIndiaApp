@@ -19,6 +19,12 @@ export class CovidComponent implements OnInit {
   Nt_TotalTests: number = 0;
   Nt_Active: number =0;
   Nt_data: any;
+
+  Nt_Del_Confirmed =0;
+  Nt_Del_Recovered =0;
+  Nt_Del_Deceased =0;
+  Nt_Del_Tested =0;
+  Nt_Del_Active =0;
   
 
 
@@ -60,17 +66,36 @@ export class CovidComponent implements OnInit {
           this.Nt_TotalTests += Number(d[e]['total']['tested']);
         }
       }
+
+      if(d[e]['delta'] && e!=="TT"){
+        
+        if(d[e]['delta']['confirmed']){
+          this.Nt_Del_Confirmed += Number(d[e]['delta']['confirmed']);
+        }
+
+        if (d[e]['delta']['recovered']){
+          this.Nt_Del_Recovered += Number(d[e]['delta']['recovered']);
+        }
+
+        if (d[e]['delta']['deceased']){
+          this.Nt_Del_Deceased += Number(d[e]['delta']['deceased']);
+        }
+
+        if (d[e]['delta']['tested']){
+          this.Nt_Del_Tested += Number(d[e]['delta']['tested']);
+        }
+      }
     }
 
     this.Nt_Active = this.Nt_TotalConfirmedCases - (this.Nt_TotalDeceasedCases + this.Nt_TotalRecoverdCases);
+    this.Nt_Del_Active = this.Nt_Del_Confirmed - (this.Nt_Del_Deceased + this.Nt_Del_Recovered);
 
-    
     this.Nt_data= [
-      {Name: "Confirmed Cases", number: this.Nt_TotalConfirmedCases, style: "con_cl"},
-      {Name: "Active Cases", number: this.Nt_Active, style: "act_cl"},
-      {Name: "Recovered Cases", number: this.Nt_TotalRecoverdCases, style: "rec_cl"},
-      {Name: "Deceased Cases", number: this.Nt_TotalDeceasedCases, style: "dec_cl"},
-      {Name: "Total Tests", number: this.Nt_TotalTests, style: "tot_cl"}
+      {Name: "Confirmed Cases", number: this.Nt_TotalConfirmedCases, style: "con_cl",del: this.Nt_Del_Confirmed, del_style: "delta_tot"},
+      {Name: "Active Cases", number: this.Nt_Active, style: "act_cl", del: this.Nt_Del_Active, del_style: "delta_tot"},
+      {Name: "Recovered Cases", number: this.Nt_TotalRecoverdCases, style: "rec_cl", del: this.Nt_Del_Recovered, del_style: "delta_tot"},
+      {Name: "Deceased Cases", number: this.Nt_TotalDeceasedCases, style: "dec_cl", del: this.Nt_Del_Deceased, del_style: "delta_tot"},
+      {Name: "Total Tests", number: this.Nt_TotalTests, style: "tot_cl", del: this.Nt_Del_Tested, del_style: "delta_tot"}
     ]
   }
 

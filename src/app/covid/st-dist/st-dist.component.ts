@@ -81,7 +81,7 @@ export class StDistComponent implements OnInit {
     if(this.data['delta']['tested'])
       this.delta_tested = this.data['delta']['tested'];
 
-    if(this.data['delta']['confirmed'] && this.data['delta']['recovered'] && this.data['delta']['deceased'])
+    //if(this.data['delta']['confirmed'] && this.data['delta']['recovered'] && this.data['delta']['deceased'])
       this.delta_active = +this.delta_confirmed - (+this.delta_recovered + +this.delta_deceased);
     }
 

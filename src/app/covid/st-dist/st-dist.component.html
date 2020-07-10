@@ -28,7 +28,9 @@
                                     <div class="nameTag">{{d.Name}}</div>
                                     {{d.number | number}}
                                     <br style="margin: 0;">
-                                    <div class={{d.del_style}} *ngIf="d.del && d.del_style"><i class="fa fa-arrow-up" aria-hidden="true"></i>&nbsp;{{d.del | number}}</div>
+                                    <div class={{d.del_style}} *ngIf="d.del && d.del_style">
+                                        <i class="fa fa-arrow-up" aria-hidden="true" *ngIf="d.del >=0 "></i>
+                                        <i class="fa fa-arrow-down" aria-hidden="true" *ngIf="d.del < 0"></i>&nbsp;{{d.del | number}}</div>
                                 </div>
                             </div>
                         </div>
@@ -42,26 +44,26 @@
             <thead>
                 <tr>
                     <th scope="row">District Name</th>
-                    <th scope="row">Population</th>
-                    <th scope="row">Confirmed Cases</th>
-                    <th scope="row">Recovered Cases</th>
-                    <th scope="row">Deceased Cases</th>
-                    <th scope="row">Total Tests</th>
+                    <th scope="row" style= "text-align: center;">Population</th>
+                    <th scope="row" style= "text-align: center;">Confirmed Cases</th>
+                    <th scope="row" style= "text-align: center;">Recovered Cases</th>
+                    <th scope="row" style= "text-align: center;">Deceased Cases</th>
+                    <th scope="row" style= "text-align: center;">Total Tests</th>
                 </tr>
             </thead>
             <tbody *ngFor="let d of data.districts | keyvalue" style="font-weight: normal;">
                 <ng-container *ngIf="d.key && d.value.meta">
                     <tr>
                         <td *ngIf="d.key; else elseBlock">{{d.key}}</td>
-                        <td *ngIf="d.value.meta.population; else elseBlock">{{d.value.meta.population | number}}</td>
-                        <td *ngIf="d.value.total.confirmed; else elseBlock">{{d.value.total.confirmed | number}}</td>
-                        <td *ngIf="d.value.total.recovered; else elseBlock">{{d.value.total.recovered | number}}</td>
-                        <td *ngIf="d.value.total.deceased; else elseBlock">{{d.value.total.deceased | number}}</td>
-                        <td *ngIf="d.value.total.tested; else elseBlock">{{d.value.total.tested | number}}</td>
+                        <td *ngIf="d.value.meta.population; else elseBlock" style= "text-align: center;">{{d.value.meta.population | number}}</td>
+                        <td *ngIf="d.value.total.confirmed; else elseBlock" style= "text-align: center;">{{d.value.total.confirmed | number}}</td>
+                        <td *ngIf="d.value.total.recovered; else elseBlock" style= "text-align: center;">{{d.value.total.recovered | number}}</td>
+                        <td *ngIf="d.value.total.deceased; else elseBlock" style= "text-align: center;">{{d.value.total.deceased | number}}</td>
+                        <td *ngIf="d.value.total.tested; else elseBlock" style= "text-align: center;">{{d.value.total.tested | number}}</td>
                     </tr>
                 </ng-container>
                 <ng-template #elseBlock>
-                    <td>NA</td>
+                    <td style= "text-align: center;"> NA</td>
                 </ng-template>
             </tbody>
         </table>
