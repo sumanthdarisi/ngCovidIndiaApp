@@ -1,0 +1,14 @@
+@media only screen and (min-width: 990px)
+{
+    #homeTable{
+        display: inline-table;
+    }
+}
+
+
+@media only screen and (max-width: 989px)
+{
+    #homeTable{
+        display: block;
+    }
+}
