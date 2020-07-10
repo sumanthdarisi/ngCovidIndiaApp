@@ -140,7 +140,7 @@ export class CovidComponent implements OnInit {
       deceasedYlabels.splice(0,xlablesLen);
       activeYlabels.splice(0,xlablesLen);
 
-
+      //Main Dashboard - multiple dataset graph
       var NationalData = new Chart("NationalData", {
         type: 'line',
         data: {
@@ -224,7 +224,6 @@ export class CovidComponent implements OnInit {
             }
         }
     });
-  
       
     });
   }
