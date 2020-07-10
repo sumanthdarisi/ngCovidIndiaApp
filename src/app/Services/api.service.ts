@@ -31,9 +31,8 @@ export class APIService {
     return this.covidData;
   }
   
-  setCovidData(data: any, code: any){
+  setCovidData(data: any){
     this.covidData = data;
-    this.stateCode = code;
   }
 
   getCovidData(){
@@ -44,6 +43,32 @@ export class APIService {
   getStateName(){
     if(this.statename){
       return this.statename[this.stateCode];
+    }
+  }
+
+  getPipeStateName(code: string)
+  {
+    if(code)
+    {
+      return this.statename[code];
+    }
+    else
+    {
+      return "NA";
+    }
+  }
+
+
+  getPipeStateCode(Name: string){
+    if(Name)
+    {
+      for(let d in this.statename){
+        if(Name == this.statename[d])
+        return d;
+      }
+    }
+    else{
+      return "NA";
     }
   }
 

@@ -7,12 +7,14 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CovidComponent } from './covid/covid.component';
 import { StDistComponent } from './covid/st-dist/st-dist.component';
+import { StateNamePipe } from './Pipes/state-name.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     CovidComponent,
-    StDistComponent
+    StDistComponent,
+    StateNamePipe
   ],
   imports: [
     BrowserModule,

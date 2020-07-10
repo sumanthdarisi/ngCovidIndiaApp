@@ -4,7 +4,7 @@
     </div>
     <div class="col">
         <div class="float-right" style="text-align: right; color: gray; font-weight: bold;">Indian Population <br>
-            {{IndianPopulation | number}}</div>
+            <span class="numbers"> {{IndianPopulation | number}} </span></div>
     </div>
 </div>
 
@@ -53,7 +53,7 @@
             <ng-container *ngIf="(d.value.meta.population || d.value.total) && d.key != 'TT' && d.key != 'UN'">
                 <tr>
                     <td style=" color:rgb(29, 29, 211,0.7); font-weight: bold; cursor: pointer;"
-                        *ngIf="d.value.meta && d.value.total; else elseBlock" (click)="stateCode($event)">{{d.key}}</td>
+                        *ngIf="d.value.meta && d.value.total; else elseBlock" (click)="stateCode($event)">{{d.key | stateName}}</td>
                     <td *ngIf="d.value.meta.tested && d.value.meta;else elseBlock">
                         {{d.value.meta.tested.last_updated |json | date:'mediumDate'}}</td>
                     <td *ngIf="d.value.meta && d.value.meta.population;else elseBlock">

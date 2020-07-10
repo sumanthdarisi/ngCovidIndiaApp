@@ -35,8 +35,6 @@ export class CovidComponent implements OnInit {
       //functions      
       this.Initialdata(this.data);
       this.timeSeries();
-      this.chart();    
-
     })    
   }
 
@@ -77,46 +75,13 @@ export class CovidComponent implements OnInit {
   }
 
 
-  chart()
-  {
-  //   var NationalData = new Chart("NationalData", {
-  //     type: 'line',
-  //     data: {
-  //       labels:['Confirmed','Active','Recovered','Tested','Deceased'],
-  //         datasets: [{
-  //             label: ['Covid Stats'],
-  //             data: [this.Nt_TotalConfirmedCases, this.Nt_Active,this.Nt_TotalRecoverdCases,this.Nt_TotalTests,this.Nt_TotalDeceasedCases],
-              
-  //             borderColor: [
-  //                 'rgba(55,151,158)'
-  //             ],
-  //             borderWidth: 3,
-  //             hoverBackgroundColor: [
-  //               'rgba(255, 99, 132, 1.0)',
-  //               'rgba(54, 162, 235, 1.0)',
-  //               'rgba(255, 206, 86, 1.0)',
-  //               'rgba(75, 192, 192, 1.0)'
-  //           ]
-  //         }]
-  //     },
-  //     options: {
-  //         scales: {
-  //             yAxes: [{
-  //                 ticks: {
-  //                     beginAtZero: false,
-  //                     min: 5000
-  //                 }
-  //             }]
-  //         }
-  //     }
-  // });
-
-  }
+  
 
   stateCode(e)
   {
-    let code = e.target.innerText;
-    this._serv.setCovidData(this.data[code], code);
+    let Name = e.target.innerText;
+    let code = this._serv.getPipeStateCode(Name);
+    this._serv.setCovidData(this.data[code]);
     this._route.navigate(["Covid/",code]);
   }
 
@@ -141,9 +106,9 @@ export class CovidComponent implements OnInit {
         deceasedYlabels.push(parseInt(this.timeSeriesData[d]['totaldeceased']));
         activeYlabels.push(parseInt(this.timeSeriesData[d]['totalconfirmed'])-(parseInt(this.timeSeriesData[d]['totalrecovered'])+parseInt(this.timeSeriesData[d]['totaldeceased'])));
       }
+
+      //X & Y axis data on graph
       let xlablesLen = Xlabels.length/1.5;
-      
-      
       Xlabels.splice(0,xlablesLen);
       confirmYlabels.splice(0,xlablesLen);
       recoverYlabels.splice(0,xlablesLen);
@@ -237,10 +202,5 @@ export class CovidComponent implements OnInit {
   
       
     });
-  }
-
-  graph(e)
-  {
-    console.log(e);
   }
 }
