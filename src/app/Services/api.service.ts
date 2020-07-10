@@ -13,6 +13,7 @@ export class APIService {
   timeSeries: any;
   stateCode: any;
   statename: any;
+  stateFullName: any;
   _jsonFile = "assets/IndiaStates.json";
 
   
@@ -41,8 +42,8 @@ export class APIService {
   }
 
   getStateName(){
-    if(this.statename){
-      return this.statename[this.stateCode];
+    if(this.stateFullName){
+      return this.stateFullName;
     }
   }
 
@@ -62,6 +63,7 @@ export class APIService {
   getPipeStateCode(Name: string){
     if(Name)
     {
+      this.stateFullName = Name;
       for(let d in this.statename){
         if(Name == this.statename[d])
         return d;

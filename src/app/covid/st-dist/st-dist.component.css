@@ -80,9 +80,34 @@
 
 
 .cl_tes{
-    background-color: rgb(139, 201, 104);
+    background-color: rgb(139, 201, 104, 0.7);
 }
 
 .cl_act{
-    background-color: rgb(182, 104, 201);
+    background-color: rgb(182, 104, 201, 0.7);
+}
+
+.delta_tot{
+  font-size: 14px;
+  text-align: center;
+}
+
+.del_con{
+  color: rgb(205, 92, 92);;
+}
+
+.del_rec{
+  color: rgba(106, 75, 219);
+}
+
+.del_tes{
+  color: rgb(139, 201, 104);
+}
+
+.del_dec{
+  color:  rgb(107, 106, 106);
+}
+
+.del_act{
+  color:  rgb(182, 104, 201);
 }
