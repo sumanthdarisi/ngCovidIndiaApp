@@ -71,7 +71,7 @@ export class CovidComponent implements OnInit {
       {Name: "Confirmed Cases", number: this.Nt_TotalConfirmedCases, style: "con_cl"},
       {Name: "Active Cases", number: this.Nt_Active, style: "act_cl"},
       {Name: "Recovered Cases", number: this.Nt_TotalRecoverdCases, style: "rec_cl"},
-      {Name: "Deceased Cases", number: this.Nt_TotalRecoverdCases, style: "dec_cl"},
+      {Name: "Deceased Cases", number: this.Nt_TotalDeceasedCases, style: "dec_cl"},
       {Name: "Total Tests", number: this.Nt_TotalTests, style: "tot_cl"}
     ]
   }
@@ -141,6 +141,14 @@ export class CovidComponent implements OnInit {
         deceasedYlabels.push(parseInt(this.timeSeriesData[d]['totaldeceased']));
         activeYlabels.push(parseInt(this.timeSeriesData[d]['totalconfirmed'])-(parseInt(this.timeSeriesData[d]['totalrecovered'])+parseInt(this.timeSeriesData[d]['totaldeceased'])));
       }
+      let xlablesLen = Xlabels.length/1.5;
+      
+      
+      Xlabels.splice(0,xlablesLen);
+      confirmYlabels.splice(0,xlablesLen);
+      recoverYlabels.splice(0,xlablesLen);
+      deceasedYlabels.splice(0,xlablesLen);
+      activeYlabels.splice(0,xlablesLen);
 
 
       var NationalData = new Chart("NationalData", {
@@ -157,6 +165,7 @@ export class CovidComponent implements OnInit {
                   'rgba(0, 123, 255, 0.6)'
                 ],
                 radius: 0.7,
+                pointBorderColor: 'black',
                 pointHoverRadius: 10
             },
             {
@@ -166,7 +175,8 @@ export class CovidComponent implements OnInit {
               borderColor: [
                 'rgba(40, 167, 69, 0.6)'
               ],
-              radius: 0.7,
+              radius: 0.7,  
+              pointBorderColor: 'black',
               
               pointHoverRadius: 10
           },
@@ -179,6 +189,7 @@ export class CovidComponent implements OnInit {
               'rgba(255, 7, 58, 0.6)'
             ],
             radius: 0.7,
+            pointBorderColor: 'black',
             pointHoverRadius: 10
           },
           {
@@ -190,11 +201,16 @@ export class CovidComponent implements OnInit {
               'rgba(197, 155, 18, 0.6)'
             ],
             radius: 0.7,
+            pointBorderColor: 'black',
             pointHoverRadius: 10
           }
         ]
         },
         options: {
+          tooltips:{
+            enabled: true,
+            mode: 'single'
+          },
             scales: {
                 yAxes: [{
                   position: 'right',
@@ -212,7 +228,7 @@ export class CovidComponent implements OnInit {
                   },
                   ticks:{
                       autoSkip: true,
-                      maxTicksLimit: 5
+                      maxTicksLimit: 7
                   }
                 }]
             }
@@ -221,5 +237,10 @@ export class CovidComponent implements OnInit {
   
       
     });
+  }
+
+  graph(e)
+  {
+    console.log(e);
   }
 }
