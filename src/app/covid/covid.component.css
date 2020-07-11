@@ -3,7 +3,7 @@
     min-width: 10rem
 }
 
-.act_cl{
+.dec_cl{
     background-color: rgba(255, 7, 58, 0.125);
     min-width: 10rem
 }
@@ -13,7 +13,7 @@
     min-width: 10rem
 }
 
-.dec_cl{
+.act_cl{
     background-color: rgba(197, 155, 18, 0.125);
     min-width: 10rem
 }
@@ -32,3 +32,28 @@
   }
   
 
+
+  .custom-control-label{
+      font-weight: normal;
+      font-size: 14px;
+  }
+
+  #radios{
+      text-align: center;
+  }
+
+  
+
+@media only screen and (max-width: 500px)
+{
+    #tpStates{
+        height: 166px;
+    }
+}
+
+@media only screen and (min-width: 501px)
+{
+    #tpStates{
+        height: 258px;
+    }
+}

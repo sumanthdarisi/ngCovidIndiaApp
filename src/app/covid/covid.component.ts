@@ -26,6 +26,7 @@ export class CovidComponent implements OnInit {
   Nt_Del_Tested =0;
   Nt_Del_Active =0;
   
+  TopStates ;
 
 
   data: Array<CovidStDt>;
@@ -34,6 +35,7 @@ export class CovidComponent implements OnInit {
   //top 5 bar chart
   sortedValues: Array<number> = [];
   sortedValuesStates: Array<number> = [];
+  selectedRadio ="confirmed";
 
   constructor(private _serv: APIService, private _route: Router) { }
 
@@ -45,56 +47,15 @@ export class CovidComponent implements OnInit {
       //functions      
       this.Initialdata(this.data);
       this.timeSeries();
-      this.topStates();
     })    
   }
 
 
   Initialdata(d){
     
-    let sortData : Map<String,number> = new Map<String,number>();
-    let values: Array<number> = [];
-    for(let e in d)
-    {
-      if(d[e]['total'] && d[e]['total']['confirmed'] && e !="TT")
-      sortData.set(e,parseInt(d[e]['total']['confirmed']));
-    }
-
-    sortData.forEach((value) => {
-      values.push(value);
-    });
-    
-    this.sortedValues = values.sort(function (a,b)
-                  {
-                      if(a>b) return 1
-                      if(a<b) return -1
-                      return 0;
-                  }).reverse().slice(0,5);
-    
-    let sortArray : Map<String,number> = new Map<String,number>();
-
-    
-    this.sortedValues.forEach(e=>{
-      let temp;
-      temp = getKeybyValue(e);
-      this.sortedValuesStates.push(temp);
-      sortArray.set(temp,e);
-    });
-    console.log(this.sortedValues);  // y-axis dataset
-    console.log(this.sortedValuesStates); // x-axis
-    //console.log(sortArray);
-
-    function getKeybyValue(e)
-    {
-      let temp;
-      sortData.forEach((value: number,key: string) => {
-        if( value == e) {
-          temp = key;
-        }
-      });
-      return temp;
-    }
-    
+    if(this.selectedRadio)
+      this.topChart(d, this.selectedRadio);
+      
     
     for (let e in d) {
       if (d[e]['total'] && e!=="TT") {
@@ -246,6 +207,7 @@ export class CovidComponent implements OnInit {
         ]
         },
         options: {
+          responsive: false,
           tooltips:{
             enabled: true,
             mode: 'single'
@@ -267,7 +229,7 @@ export class CovidComponent implements OnInit {
                   },
                   ticks:{
                       autoSkip: true,
-                      maxTicksLimit: 7
+                      maxTicksLimit: 9
                   }
                 }]
             }
@@ -278,22 +240,53 @@ export class CovidComponent implements OnInit {
   }
 
 
-  topStates()
+  topStates(x, y)
   {
       //top 5 states bar graph
-      var TopStates = new Chart("tpStates", {
-        type: 'bar',
-        data: {
-          labels:this.sortedValuesStates,
+
+        //con - 'rgba(0, 123, 255, 0.6)'
+        //rec - 'rgba(40, 167, 69, 0.6)'
+        //dec - 'rgba(197, 155, 18, 0.6)'
+        //tes - 'rgba(255, 7, 58, 0.6)'
+        let color,hcolor;
+
+        if(this.selectedRadio == 'confirmed'){
+          color = 'rgba(0, 123, 255, 0.6)';
+          hcolor = 'rgba(0, 123, 255, 1)';
+        }          
+        else if (this.selectedRadio == 'recovered'){
+          color = 'rgba(40, 167, 69, 0.6)';
+          hcolor = 'rgba(40, 167, 69, 1)';
+        }
+        else if (this.selectedRadio == 'tested'){
+          color = 'rgba(108, 117, 125, 0.6)';
+          hcolor = 'rgba(108, 117, 125, 1)';
+        }
+        else{
+          color = 'rgba(255, 7, 58, 0.6)';
+          hcolor = 'rgba(255, 7, 58, 1)';
+        } 
+
+
+        var ds = {
+          labels:x,
             datasets: [
               {
-                label: ['Top 5 confirmed states'],
-                data: this.sortedValues,
-                backgroundColor: 'rgba(255, 7, 58, 0.5)',
-                hoverBackgroundColor : 'rgba(255, 7, 58, 0.8)'
+                label: ['Top 10 ' + this.selectedRadio.substring(0,1).toUpperCase()+this.selectedRadio.substring(1) +' States'],
+                data: y,
+                backgroundColor: color,
+                hoverBackgroundColor : hcolor
             }
         ]
-        },
+        };
+        
+        if(this.TopStates){
+          this.TopStates.destroy();
+        }
+
+        this.TopStates = new Chart("tpStates", {
+        type: 'bar',
+        data: ds,
         options: {
           tooltips:{
             enabled: true,
@@ -314,4 +307,66 @@ export class CovidComponent implements OnInit {
     });
 
   }
+
+
+  topGraph(e)
+  {
+    this.selectedRadio = e;
+    this.topChart(this.data,e);
+  }
+
+
+  topChart(d, radio)
+  {
+    let sortData : Map<String,number> = new Map<String,number>();
+    let values: Array<number> = [];
+
+    for(let e in d)
+    {
+      if(d[e]['total'] && d[e]['total'][radio] && e !="TT")
+      {
+        sortData.set(e,parseInt(d[e]['total'][radio]));
+      }
+    }
+    
+    sortData.forEach((value) => {
+      values.push(value);
+    });
+    
+    this.sortedValues = [];
+    this.sortedValues = values.sort(function (a,b)
+                  {
+                      if(a>b) return 1
+                      if(a<b) return -1
+                      return 0;
+                  }).reverse().slice(0,10);
+    
+    let sortArray : Map<String,number> = new Map<String,number>();    
+
+    this.sortedValuesStates = [];
+
+    this.sortedValues.forEach(e=>{
+      let temp;
+      temp = getKeybyValue(e);
+      this.sortedValuesStates.push(temp);
+      sortArray.set(temp,e);
+    });
+
+    // console.log(this.sortedValues);  // y-axis dataset
+    // console.log(this.sortedValuesStates); // x-axis
+
+    function getKeybyValue(e)
+    {
+      let temp;
+      sortData.forEach((value: number,key: string) => {
+        if( value == e) {
+          temp = key;
+        }
+      });
+      return temp;
+    }
+
+    this.topStates(this.sortedValuesStates, this.sortedValues);
+  }
+
 }
