@@ -72,6 +72,8 @@ export class APIService {
     else{
       return "NA";
     }
+
+
   }
 
 
@@ -80,8 +82,6 @@ export class APIService {
     this.timeSeries = this._http.get<any>(_timeSeries);
     return this.timeSeries;
   }
-
-
 
 
 }

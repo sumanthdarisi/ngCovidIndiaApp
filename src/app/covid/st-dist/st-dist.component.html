@@ -26,8 +26,7 @@
                                 </div>
                                 <div class="inside-circle">
                                     <div class="nameTag">{{d.Name}}</div>
-                                    {{d.number | number}}
-                                    <br style="margin: 0;">
+                                    <div *ngIf="d.number; else elseBlock">{{d.number | number}}</div>
                                     <div class={{d.del_style}} *ngIf="d.del && d.del_style">
                                         <i class="fa fa-arrow-up" aria-hidden="true" *ngIf="d.del >=0 "></i>
                                         <i class="fa fa-arrow-down" aria-hidden="true" *ngIf="d.del < 0"></i>&nbsp;{{d.del | number}}</div>
@@ -37,6 +36,9 @@
                     </div>
                 </div>
             </div>
+            <ng-template #elseBlock>
+                <div>NA</div>
+            </ng-template>
         </div>
     </div>
     <div class="col-12" style="margin-top: 20px">

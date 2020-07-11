@@ -39,6 +39,7 @@ export class StDistComponent implements OnInit {
     }
     
     this.stateName = this._serv.getStateName();
+    
       this.initialize();
   }
   

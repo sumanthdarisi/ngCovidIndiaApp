@@ -30,22 +30,71 @@ export class CovidComponent implements OnInit {
 
   data: Array<CovidStDt>;
   timeSeriesData: any;
-  zone: any;
+
+  //top 5 bar chart
+  sortedValues: Array<number> = [];
+  sortedValuesStates: Array<number> = [];
+
   constructor(private _serv: APIService, private _route: Router) { }
 
   ngOnInit(): void {
 
     this._serv.getCovid().subscribe(d => {
-      this.data = d;
+      this.data = d;     
 
       //functions      
       this.Initialdata(this.data);
       this.timeSeries();
+      this.topStates();
     })    
   }
 
 
   Initialdata(d){
+    
+    let sortData : Map<String,number> = new Map<String,number>();
+    let values: Array<number> = [];
+    for(let e in d)
+    {
+      if(d[e]['total'] && d[e]['total']['confirmed'] && e !="TT")
+      sortData.set(e,parseInt(d[e]['total']['confirmed']));
+    }
+
+    sortData.forEach((value) => {
+      values.push(value);
+    });
+    
+    this.sortedValues = values.sort(function (a,b)
+                  {
+                      if(a>b) return 1
+                      if(a<b) return -1
+                      return 0;
+                  }).reverse().slice(0,5);
+    
+    let sortArray : Map<String,number> = new Map<String,number>();
+
+    
+    this.sortedValues.forEach(e=>{
+      let temp;
+      temp = getKeybyValue(e);
+      this.sortedValuesStates.push(temp);
+      sortArray.set(temp,e);
+    });
+    console.log(this.sortedValues);  // y-axis dataset
+    console.log(this.sortedValuesStates); // x-axis
+    //console.log(sortArray);
+
+    function getKeybyValue(e)
+    {
+      let temp;
+      sortData.forEach((value: number,key: string) => {
+        if( value == e) {
+          temp = key;
+        }
+      });
+      return temp;
+    }
+    
     
     for (let e in d) {
       if (d[e]['total'] && e!=="TT") {
@@ -147,7 +196,7 @@ export class CovidComponent implements OnInit {
           labels:Xlabels,
             datasets: [
               {
-                label: ['Confirmed Cases'],
+                label: ['Confirmed'],
                 data: confirmYlabels,
                 fill: false,
                 
@@ -159,7 +208,7 @@ export class CovidComponent implements OnInit {
                 pointHoverRadius: 10
             },
             {
-              label: ['Recovered Cases'],
+              label: ['Recovered'],
               data: recoverYlabels,
               fill: false,
               borderColor: [
@@ -171,7 +220,7 @@ export class CovidComponent implements OnInit {
               pointHoverRadius: 10
           },
           {
-            label: ['Active Cases'],
+            label: ['Active'],
             data: activeYlabels,
             fill: false,
             
@@ -183,7 +232,7 @@ export class CovidComponent implements OnInit {
             pointHoverRadius: 10
           },
           {
-            label: ['Deceased Cases'],
+            label: ['Deceased'],
             data: deceasedYlabels,
             fill: false,
             
@@ -226,5 +275,43 @@ export class CovidComponent implements OnInit {
     });
       
     });
+  }
+
+
+  topStates()
+  {
+      //top 5 states bar graph
+      var TopStates = new Chart("tpStates", {
+        type: 'bar',
+        data: {
+          labels:this.sortedValuesStates,
+            datasets: [
+              {
+                label: ['Top 5 confirmed states'],
+                data: this.sortedValues,
+                backgroundColor: 'rgba(255, 7, 58, 0.5)',
+                hoverBackgroundColor : 'rgba(255, 7, 58, 0.8)'
+            }
+        ]
+        },
+        options: {
+          tooltips:{
+            enabled: true,
+          },
+            scales: {
+                yAxes: [{
+                  gridLines:{
+                    drawOnChartArea: true
+                  },
+                }],
+                xAxes:[{
+                  gridLines:{
+                    drawOnChartArea: false
+                  },
+                }]
+            }
+        }
+    });
+
   }
 }
