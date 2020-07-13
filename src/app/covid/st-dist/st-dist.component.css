@@ -113,7 +113,18 @@
 }
 
 
+table thead tr th {
+  cursor: pointer;
+}
+
 table thead tr th i{
   padding-left: 6px;
+  cursor: pointer;
   display: initial;
+}
+
+
+.fa-sort{
+  color: gray;
+  opacity: 0.7;
 }

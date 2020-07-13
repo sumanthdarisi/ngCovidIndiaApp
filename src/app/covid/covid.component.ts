@@ -271,7 +271,7 @@ export class CovidComponent implements OnInit {
                   },
                   ticks:{
                       autoSkip: true,
-                      maxTicksLimit: 4
+                      maxTicksLimit: 9
                   }
                 }]
             }
