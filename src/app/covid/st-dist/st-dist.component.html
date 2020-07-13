@@ -28,6 +28,7 @@
                                     <div class={{d.class}}></div>
                                 </div>
                                 <div class="inside-circle">
+                                    <span class={{d.icon}}></span>
                                     <div class="nameTag">{{d.Name}}</div>
                                     <div *ngIf="d.number; else elseBlock">{{d.number | number}}</div>
                                     <div class={{d.del_style}} *ngIf="d.del && d.del_style">

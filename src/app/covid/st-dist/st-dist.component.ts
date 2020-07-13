@@ -98,11 +98,11 @@ export class StDistComponent implements OnInit {
     }
 
     this.districtData = [
-      { Name: "Confirmed Cases", number: this.st_confirmed, class: "fill cl_con", del: this.delta_confirmed, del_style: "delta_tot del_con" },
-      { Name: "Active Cases", number: this.st_Active, class: "fill cl_act", del: this.delta_active, del_style: "delta_tot del_act" },
-      { Name: "Recovered Cases", number: this.st_recovered, class: "fill cl_rec", del: this.delta_recovered, del_style: "delta_tot del_rec" },
-      { Name: "Deceased Cases", number: this.st_deceased, class: "fill cl_dec", del: this.delta_deceased, del_style: "delta_tot del_dec" },
-      { Name: "Total Tested", number: this.st_tested, class: "fill cl_tes", del: this.delta_tested, del_style: "delta_tot del_tes" }
+      { Name: "Confirmed Cases", number: this.st_confirmed, class: "fill cl_con", del: this.delta_confirmed, del_style: "delta_tot del_con",icon:"fa fa-plus-square" },
+      { Name: "Active Cases", number: this.st_Active, class: "fill cl_act", del: this.delta_active, del_style: "delta_tot del_act",icon:"fa fa-heartbeat"},
+      { Name: "Recovered Cases", number: this.st_recovered, class: "fill cl_rec", del: this.delta_recovered, del_style: "delta_tot del_rec",icon: "fa fa-check-circle" },
+      { Name: "Deceased Cases", number: this.st_deceased, class: "fill cl_dec", del: this.delta_deceased, del_style: "delta_tot del_dec",icon: "fa fa-minus-circle" },
+      { Name: "Total Tested", number: this.st_tested, class: "fill cl_tes", del: this.delta_tested, del_style: "delta_tot del_tes",icon:"fa fa-flask"}
     ]
 
   }
