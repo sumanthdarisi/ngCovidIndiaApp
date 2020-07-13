@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { APIService } from 'src/app/Services/api.service';
 import { Router } from '@angular/router';
 import { Districts } from 'src/app/Models/districts';
-import { type } from 'os';
 
 @Component({
   selector: 'app-st-dist',
