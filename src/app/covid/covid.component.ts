@@ -25,6 +25,10 @@ export class CovidComponent implements OnInit {
   Nt_Del_Deceased =0;
   Nt_Del_Tested =0;
   Nt_Del_Active =0;
+
+  nt_active_percent;
+  nt_recovered_percent;
+  nt_deceased_percent;
   
   TopStates ;
 
@@ -50,7 +54,7 @@ export class CovidComponent implements OnInit {
     })    
   }
 
-
+  //all the data initialization take place here
   Initialdata(d){
     
     if(this.selectedRadio)
@@ -100,18 +104,23 @@ export class CovidComponent implements OnInit {
     this.Nt_Active = this.Nt_TotalConfirmedCases - (this.Nt_TotalDeceasedCases + this.Nt_TotalRecoverdCases);
     this.Nt_Del_Active = this.Nt_Del_Confirmed - (this.Nt_Del_Deceased + this.Nt_Del_Recovered);
 
+    this.nt_recovered_percent = this.Nt_TotalRecoverdCases/this.Nt_TotalConfirmedCases;
+    this.nt_active_percent = (this.Nt_Active/this.Nt_TotalConfirmedCases);
+    this.nt_deceased_percent = (this.Nt_TotalDeceasedCases/this.Nt_TotalConfirmedCases);
+
     this.Nt_data= [
       {Name: "Confirmed Cases", number: this.Nt_TotalConfirmedCases, style: "con_cl",del: this.Nt_Del_Confirmed, del_style: "delta_tot"},
-      {Name: "Active Cases", number: this.Nt_Active, style: "act_cl", del: this.Nt_Del_Active, del_style: "delta_tot"},
-      {Name: "Recovered Cases", number: this.Nt_TotalRecoverdCases, style: "rec_cl", del: this.Nt_Del_Recovered, del_style: "delta_tot"},
-      {Name: "Deceased Cases", number: this.Nt_TotalDeceasedCases, style: "dec_cl", del: this.Nt_Del_Deceased, del_style: "delta_tot"},
+      {Name: "Active Cases", number: this.Nt_Active, style: "act_cl", del: this.Nt_Del_Active, del_style: "delta_tot", percent: this.nt_active_percent},
+      {Name: "Recovered Cases", number: this.Nt_TotalRecoverdCases, style: "rec_cl", del: this.Nt_Del_Recovered, del_style: "delta_tot", percent: this.nt_recovered_percent},
+      {Name: "Deceased Cases", number: this.Nt_TotalDeceasedCases, style: "dec_cl", del: this.Nt_Del_Deceased, del_style: "delta_tot", percent: this.nt_deceased_percent},
       {Name: "Total Tests", number: this.Nt_TotalTests, style: "tot_cl", del: this.Nt_Del_Tested, del_style: "delta_tot"}
     ]
+
   }
 
 
   
-
+  //send state name and respective data to service before routing to a state page
   stateCode(e)
   {
     let Name = e.target.innerText;
@@ -120,7 +129,7 @@ export class CovidComponent implements OnInit {
     this._route.navigate(["Covid/",code]);
   }
 
-
+  //main graph 
   timeSeries()
   {   
       const Xlabels = [];
@@ -151,8 +160,39 @@ export class CovidComponent implements OnInit {
       activeYlabels.splice(0,xlablesLen);
 
       //Main Dashboard - multiple dataset graph
+      Chart.Legend.prototype.afterFit = function() {
+        this.height = this.height + 25;
+      };
+
+      Chart.defaults.LineWithLine = Chart.defaults.line;
+      Chart.controllers.LineWithLine = Chart.controllers.line.extend({
+        draw: function(ease) {
+          Chart.controllers.line.prototype.draw.call(this, ease);
+
+          if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
+            var activePoint = this.chart.tooltip._active[0],
+                ctx = this.chart.ctx,
+                x = activePoint.tooltipPosition().x,
+                topY = this.chart.legend.bottom,
+                bottomY = this.chart.chartArea.bottom;
+
+            // draw line
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(x, topY);
+            ctx.lineTo(x, bottomY);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(167, 168, 167,0.3)';
+            ctx.stroke();
+            ctx.restore();
+          }
+        }
+      });
+
+
+
       var NationalData = new Chart("NationalData", {
-        type: 'line',
+        type: 'LineWithLine',
         data: {
           labels:Xlabels,
             datasets: [
@@ -207,10 +247,12 @@ export class CovidComponent implements OnInit {
         ]
         },
         options: {
-          responsive: false,
+          responsive: true,
+          events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
           tooltips:{
             enabled: true,
-            mode: 'single'
+            mode: 'index',
+            intersect: false
           },
             scales: {
                 yAxes: [{
@@ -229,25 +271,22 @@ export class CovidComponent implements OnInit {
                   },
                   ticks:{
                       autoSkip: true,
-                      maxTicksLimit: 9
+                      maxTicksLimit: 4
                   }
                 }]
             }
         }
     });
+
       
     });
   }
 
 
+  //top 10 states graph 
   topStates(x, y)
   {
       //top 5 states bar graph
-
-        //con - 'rgba(0, 123, 255, 0.6)'
-        //rec - 'rgba(40, 167, 69, 0.6)'
-        //dec - 'rgba(197, 155, 18, 0.6)'
-        //tes - 'rgba(255, 7, 58, 0.6)'
         let color,hcolor;
 
         if(this.selectedRadio == 'confirmed'){
@@ -284,6 +323,9 @@ export class CovidComponent implements OnInit {
           this.TopStates.destroy();
         }
 
+        Chart.Legend.prototype.afterFit = function() {
+          this.height = this.height + 25;
+        };
         this.TopStates = new Chart("tpStates", {
         type: 'bar',
         data: ds,
@@ -308,14 +350,14 @@ export class CovidComponent implements OnInit {
 
   }
 
-
+  //get radio selected value
   topGraph(e)
   {
     this.selectedRadio = e;
     this.topChart(this.data,e);
   }
 
-
+  //get the top 10 data w.r.t radio button
   topChart(d, radio)
   {
     let sortData : Map<String,number> = new Map<String,number>();

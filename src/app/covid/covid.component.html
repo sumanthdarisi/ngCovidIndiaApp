@@ -19,6 +19,7 @@
                 <span class={{d.del_style}} *ngIf="d.del && d.del_style">
                     <i class="fa fa-arrow-up" aria-hidden="true" *ngIf="d.del >=0 "></i>
                     <i class="fa fa-arrow-down" aria-hidden="true" *ngIf="d.del < 0"></i>&nbsp;{{d.del | number}}</span>
+                <span class="cardPercentage" *ngIf="d.percent">{{d.percent | percent}}</span>
             </div>
         </div>
     </div>
@@ -26,10 +27,7 @@
 <br>
 <div class="row">
     <div class="col" style="margin: 3px;">
-        <div class="card" style="min-width: 10rem">
-            <div class="cafirerd-header">
-                COVID Dashboard
-            </div>
+        <div class="card" style="min-width: 10rem" >
             <div class="card-body" style="font-weight: bold; background-color: rgba(223, 223, 223, 0.2)">
                 <div class="row">
                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
