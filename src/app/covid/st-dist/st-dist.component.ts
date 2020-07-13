@@ -134,13 +134,11 @@ export class StDistComponent implements OnInit {
       this.dt_SortBy = sortBy;
       if (this.counter % 2 != 0) {
         this.SortDistricts.sort(function (a, b) {
-          console.log(a.dt_population,b.dt_population);
           a.dt_population = (a.dt_population.toString() == 'NA') ? -1.5 : a.dt_population;
           b.dt_population = (b.dt_population.toString() == 'NA') ? -1.5 : b.dt_population;
-          console.log(a.dt_population,b.dt_population);
-          if (a.dt_population > b.dt_population) return -1;
-          if (a.dt_population < b.dt_population) return 1;
-          else return 0
+            if (a.dt_population > b.dt_population) return -1;
+            if (a.dt_population < b.dt_population) return 1;
+            else return 0
         });
         this.counter++;
       }
