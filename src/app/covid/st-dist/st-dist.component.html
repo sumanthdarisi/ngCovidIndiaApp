@@ -1,6 +1,8 @@
 <div class="row" style="margin: -3px 0px 20px 0px;">
     <div class="col" style="padding-left:0px;font-size: 40px;font-size: 40px;top: 22px;">
-        <div class="float-left"><h3>{{stateName}}</h3></div>
+        <div class="float-left">
+            <h3>{{stateName}}</h3>
+        </div>
     </div>
     <div class="col" style="top:19px; padding-right: 0px;">
         <div class="float-right btn btn-primary" style="margin-bottom:10px" routerLink="/Covid">Covid | Home</div>
@@ -29,7 +31,8 @@
                                     <div *ngIf="d.number; else elseBlock">{{d.number | number}}</div>
                                     <div class={{d.del_style}} *ngIf="d.del && d.del_style">
                                         <i class="fa fa-arrow-up" aria-hidden="true" *ngIf="d.del >=0 "></i>
-                                        <i class="fa fa-arrow-down" aria-hidden="true" *ngIf="d.del < 0"></i>&nbsp;{{d.del | number}}</div>
+                                        <i class="fa fa-arrow-down" aria-hidden="true"
+                                            *ngIf="d.del < 0"></i>&nbsp;{{d.del | number}}</div>
                                 </div>
                             </div>
                         </div>
@@ -37,35 +40,56 @@
                 </div>
             </div>
             <ng-template #elseBlock>
-                <div>NA</div>
+                <div>-NA-</div>
             </ng-template>
         </div>
     </div>
     <div class="col-12" style="margin-top: 20px">
-        <table class="table table-responsive table-hover" id="homeTable">
+        <table class="table table-responsive table-hover table-lg" id="homeTable">
             <thead>
                 <tr>
-                    <th scope="row">District Name</th>
-                    <th scope="row" style= "text-align: center;">Population</th>
-                    <th scope="row" style= "text-align: center;">Confirmed Cases</th>
-                    <th scope="row" style= "text-align: center;">Recovered Cases</th>
-                    <th scope="row" style= "text-align: center;">Deceased Cases</th>
-                    <th scope="row" style= "text-align: center;">Total Tests</th>
+                    <th scope="row" #name (click)="dt_sort(name.innerText)">Name<i *ngIf="counter%2!=0 && dt_SortBy=='Name'" class="fa fa-sort-alpha-asc"></i>
+                        <i *ngIf="counter%2==0 && dt_SortBy=='Name'" class="fa fa-sort-alpha-desc"></i>
+                    </th>
+                    <th scope="row" style="text-align: center;" #popu (click)="dt_sort(popu.innerText)">
+                        Population<i *ngIf="counter%2!=0 && dt_SortBy=='Population'" class="fa fa-sort-numeric-asc"></i>
+                        <i *ngIf="counter%2==0 && dt_SortBy=='Population'" class="fa fa-sort-numeric-desc"></i>
+                    </th>
+                    <th scope="row" style="text-align: center;" #conf (click)="dt_sort(conf.innerText)">
+                        Confirmed<i *ngIf="counter%2!=0 && dt_SortBy=='Confirmed'" class="fa fa-sort-numeric-asc"></i>
+                        <i *ngIf="counter%2==0 && dt_SortBy=='Confirmed'" class="fa fa-sort-numeric-desc"></i>
+                    </th>
+                    <th scope="row" style="text-align: center;" #reco (click)="dt_sort(reco.innerText)">
+                        Recovered<i *ngIf="counter%2!=0 && dt_SortBy=='Recovered'" class="fa fa-sort-numeric-asc"></i>
+                        <i *ngIf="counter%2==0 && dt_SortBy=='Recovered'" class="fa fa-sort-numeric-desc"></i>
+                    </th>
+                    <th scope="row" style="text-align: center;" #dece (click)="dt_sort(dece.innerText)">
+                        Deceased<i *ngIf="counter%2!=0 && dt_SortBy=='Deceased'" class="fa fa-sort-numeric-asc"></i>
+                        <i *ngIf="counter%2==0 && dt_SortBy=='Deceased'" class="fa fa-sort-numeric-desc"></i>
+                    </th>
+                    <th scope="row" style="text-align: center;" #tese (click)="dt_sort(tese.innerText)">
+                        Tested<i *ngIf="counter%2!=0 && dt_SortBy=='Tested'" class="fa fa-sort-numeric-asc"></i>
+                        <i *ngIf="counter%2==0 && dt_SortBy=='Tested'" class="fa fa-sort-numeric-desc"></i>
+                    </th>
                 </tr>
             </thead>
-            <tbody *ngFor="let d of data.districts | keyvalue" style="font-weight: normal;">
-                <ng-container *ngIf="d.key && d.value.meta">
-                    <tr>
-                        <td *ngIf="d.key; else elseBlock">{{d.key}}</td>
-                        <td *ngIf="d.value.meta.population; else elseBlock" style= "text-align: center;">{{d.value.meta.population | number}}</td>
-                        <td *ngIf="d.value.total.confirmed; else elseBlock" style= "text-align: center;">{{d.value.total.confirmed | number}}</td>
-                        <td *ngIf="d.value.total.recovered; else elseBlock" style= "text-align: center;">{{d.value.total.recovered | number}}</td>
-                        <td *ngIf="d.value.total.deceased; else elseBlock" style= "text-align: center;">{{d.value.total.deceased | number}}</td>
-                        <td *ngIf="d.value.total.tested; else elseBlock" style= "text-align: center;">{{d.value.total.tested | number}}</td>
-                    </tr>
-                </ng-container>
+
+            <tbody *ngFor="let d of SortDistricts" style="font-weight: normal;">
+                <tr>
+                    <td>{{d.dt_name}}</td>
+                    <td *ngIf="d.dt_population != 'NA'; else elseBlock" style="text-align: center;">
+                        {{d.dt_population | number}}</td>
+                    <td *ngIf="d.dt_confirmed != 'NA'; else elseBlock" style="text-align: center;">
+                        {{d.dt_confirmed | number}}</td>
+                    <td *ngIf="d.dt_recoverd != 'NA'; else elseBlock" style="text-align: center;">
+                        {{d.dt_recoverd | number}}</td>
+                    <td *ngIf="d.dt_deceased != 'NA'; else elseBlock" style="text-align: center;">
+                        {{d.dt_deceased | number}}</td>
+                    <td *ngIf="d.dt_tested != 'NA'; else elseBlock" style="text-align: center;">{{d.dt_tested | number}}
+                    </td>
+                </tr>
                 <ng-template #elseBlock>
-                    <td style= "text-align: center;"> NA</td>
+                    <td style="text-align: center;">-NA-</td>
                 </ng-template>
             </tbody>
         </table>

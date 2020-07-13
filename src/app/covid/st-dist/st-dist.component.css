@@ -111,3 +111,9 @@
 .del_act{
   color:  rgb(182, 104, 201);
 }
+
+
+table thead tr th i{
+  padding-left: 6px;
+  display: initial;
+}
