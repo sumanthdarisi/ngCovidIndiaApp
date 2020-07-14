@@ -109,11 +109,11 @@ export class CovidComponent implements OnInit {
     this.nt_deceased_percent = (this.Nt_TotalDeceasedCases/this.Nt_TotalConfirmedCases);
 
     this.Nt_data= [
-      {Name: "Confirmed Cases", number: this.Nt_TotalConfirmedCases, style: "con_cl",del: this.Nt_Del_Confirmed, del_style: "delta_tot"},
-      {Name: "Active Cases", number: this.Nt_Active, style: "act_cl", del: this.Nt_Del_Active, del_style: "delta_tot", percent: this.nt_active_percent},
-      {Name: "Recovered Cases", number: this.Nt_TotalRecoverdCases, style: "rec_cl", del: this.Nt_Del_Recovered, del_style: "delta_tot", percent: this.nt_recovered_percent},
-      {Name: "Deceased Cases", number: this.Nt_TotalDeceasedCases, style: "dec_cl", del: this.Nt_Del_Deceased, del_style: "delta_tot", percent: this.nt_deceased_percent},
-      {Name: "Total Tests", number: this.Nt_TotalTests, style: "tot_cl", del: this.Nt_Del_Tested, del_style: "delta_tot"}
+      {Name: "Confirmed Cases", number: this.Nt_TotalConfirmedCases, style: "con_cl",del: this.Nt_Del_Confirmed, del_style: "delta_tot",icon:"fa fa-plus-square" },
+      {Name: "Active Cases", number: this.Nt_Active, style: "act_cl", del: this.Nt_Del_Active, del_style: "delta_tot", percent: this.nt_active_percent,icon:"fa fa-heartbeat"},
+      {Name: "Recovered Cases", number: this.Nt_TotalRecoverdCases, style: "rec_cl", del: this.Nt_Del_Recovered, del_style: "delta_tot", percent: this.nt_recovered_percent,icon: "fa fa-check-circle" },
+      {Name: "Deceased Cases", number: this.Nt_TotalDeceasedCases, style: "dec_cl", del: this.Nt_Del_Deceased, del_style: "delta_tot", percent: this.nt_deceased_percent,icon: "fa fa-minus-circle" },
+      {Name: "Total Tests", number: this.Nt_TotalTests, style: "tot_cl", del: this.Nt_Del_Tested, del_style: "delta_tot",icon:"fa fa-flask"}
     ]
 
   }

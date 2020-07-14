@@ -23,6 +23,31 @@
     min-width: 10rem
 }
 
+.fa-plus-square, .fa-heartbeat, .fa-check-circle, .fa-minus-circle, .fa-flask{
+    float: right;
+    margin-top: 4px;
+}
+
+.fa-plus-square{
+    color: rgba(0, 123, 255);
+}
+
+.fa-heartbeat{
+    color: rgb(212, 130, 37);
+}
+
+.fa-check-circle{
+    color: rgba(40, 167, 69);
+}
+
+.fa-minus-circle{
+    color: rgba(255, 7, 58);
+}
+
+.fa-flask{
+    color: rgb(61, 64, 66);
+}
+
 
 .delta_tot{
     font-size: 11px;
