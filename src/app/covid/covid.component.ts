@@ -5,13 +5,12 @@ import { Chart } from 'node_modules/chart.js';
 import { Router } from '@angular/router';
 import { States } from '../Models/states';
 
-
-
 @Component({
   selector: 'app-covid',
   templateUrl: './covid.component.html',
   styleUrls: ['./covid.component.css']
 })
+
 export class CovidComponent implements OnInit {
   IndianPopulation: number = 1380159707;
   Nt_TotalConfirmedCases: number = 0;
@@ -39,8 +38,12 @@ export class CovidComponent implements OnInit {
 
   //sort states
   SortStates: Array<States> = [];
+  SortStatesDup = this.SortStates;
   st_sortBy: any = 'name';
   counter: number = 0; //even - Descending; odd - ascending
+
+  //search
+  SearchWord : any = '';
 
 
   //top 5 bar chart
@@ -49,6 +52,8 @@ export class CovidComponent implements OnInit {
   selectedRadio ="confirmed";
 
   constructor(private _serv: APIService, private _route: Router) { }
+
+
 
   ngOnInit(): void {
 
@@ -77,9 +82,11 @@ export class CovidComponent implements OnInit {
 
       this.Initialdata(this.data);
       await this.timeSeries();
+      this.searchWord(this.SearchWord);
 
     })    
   }
+
 
   //all the data initialization take place here
   Initialdata(d){
@@ -146,14 +153,46 @@ export class CovidComponent implements OnInit {
 
   }
 
+
+  //filter states by input search keyword logic
   st_sortByClick(e){
-      this.st_sortBy = e;    
+      this.st_sortBy = e;
       this.st_sortFunc(this.st_sortBy);
   }
 
+
+  //Actual filter function logic
+  searchWord(e)
+  {     
+    let temp :States[] = [];
+    let samp = this.SortStatesDup;
+    
+    if(e.length == 0){
+      this.SortStates = samp;
+    }
+    else{
+      temp=[];
+      this.SortStatesDup.forEach(element => {
+        if(element.st_name.toLowerCase().includes(e.toLowerCase()))
+        {
+          temp.push(element);
+        }
+      });
+    }
+
+    if(temp.length > 0 && e!= "")
+      this.SortStates = temp;
+
+    if(e.length !=0 && temp.length <1)
+      this.SortStates = [];
+
+  }
+
+
+  //Actual sort columns logic
   st_sortFunc(sortBy)
   {
-    if (sortBy == 'Name') {
+    if (sortBy == 'name') {
       this.st_sortBy = sortBy;
 
       if (this.counter % 2 != 0) {
@@ -331,6 +370,7 @@ export class CovidComponent implements OnInit {
     this._serv.setCovidData(this.data[code]);
     this._route.navigate(["Covid/",code]);
   }
+
 
   //main graph 
   timeSeries()
@@ -553,12 +593,15 @@ export class CovidComponent implements OnInit {
 
   }
 
+
+
   //get radio selected value
   topGraph(e)
   {
     this.selectedRadio = e;
     this.topChart(this.data,e);
   }
+
 
   //get the top 10 data w.r.t radio button
   topChart(d, radio)

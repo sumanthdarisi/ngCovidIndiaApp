@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col">
-        <h3>Covid Stats India</h3>
+        <h3 id="titleName">Covid Stats India</h3>
     </div>
     <div class="col">
         <div class="float-right" style="text-align: right; color: gray; font-weight: bold;">Indian Population <br>
@@ -62,11 +62,15 @@
 
 <br>
 <div class="alert alert-warning">Click on state code below to view the respective districts data</div>
+<div class="form-group has-search">
+    <span class="fa fa-search form-control-feedback"></span>
+    <input type="text" class="form-control" placeholder="Search by State Name..." #searchValue (input)="searchWord($event.target.value)">
+  </div>
 <div class="row">
     <table class="table table-responsive" id="homeTable">
         <thead>
             <tr>
-                <th #name style="position: sticky; left:0px; background-color: white; z-index: 999;" (click)="st_sortByClick('Name')">State Name<i *ngIf="counter%2!=0 && st_sortBy=='name'" class="fa fa-sort-alpha-asc"></i>
+                <th #name style="position: sticky; left:0px; background-color: white; z-index: 999;" (click)="st_sortByClick('name')">State Name<i *ngIf="counter%2!=0 && st_sortBy=='name'" class="fa fa-sort-alpha-asc"></i>
                     <i *ngIf="counter%2==0 && st_sortBy=='name'" class="fa fa-sort-alpha-desc"></i>
                     <i *ngIf="st_sortBy!='name'" class="fa fa-sort"></i></th>
                 <th (click)="st_sortByClick('updated')" #updated style= "text-align: center;">Last Updated</th>
@@ -114,34 +118,5 @@
                 <td style="text-align: center;">-NA-</td>
             </ng-template>
         </tbody>
-
-
-
-        <!-- <tbody *ngFor="let d of SortStates" class="thead">
-            <ng-container *ngIf="(d.value.meta.population || d.value.total) && d.key != 'TT' && d.key != 'UN'">
-                <tr>
-                    <td style="position: sticky; left:0px; background-color: white;color:rgb(29, 29, 211,0.7); z-index: 999;font-weight: bold; cursor: pointer;"
-                        *ngIf="d.value.meta && d.value.total; else elseBlock" (click)="stateCode($event)">{{d.key | stateName}}</td>
-                    <td *ngIf="d.value.meta.tested && d.value.meta;else elseBlock" style= "text-align: center;">
-                        {{d.value.meta.tested.last_updated |json | date:'mediumDate'}}</td>
-                    <td *ngIf="d.value.meta && d.value.meta.population;else elseBlock" style= "text-align: center;">
-                        {{d.value.meta.population |json | number}}</td>
-                    <td *ngIf="d.value.total && d.value.total.confirmed;else elseBlock" style= "text-align: center;">
-                        {{d.value.total.confirmed |json | number}}</td>
-                    <td *ngIf="d.value.total && d.value.total.confirmed && d.value.total.recovered && d.value.total.deceased;else elseBlock" style= "text-align: center;">
-                        {{d.value.total.confirmed - (d.value.total.recovered + d.value.total.deceased) |json | number}}</td>
-                    <td *ngIf="d.value.total && d.value.total.recovered;else elseBlock" style= "text-align: center;">
-                        {{d.value.total.recovered |json | number}}</td>
-                    <td *ngIf="d.value.total && d.value.total.deceased;else elseBlock" style= "text-align: center;">
-                        {{d.value.total.deceased |json | number}}</td>
-                    <td *ngIf="d.value.total && d.value.total.tested;else elseBlock" style= "text-align: center;">
-                        {{d.value.total.tested |json | number}}</td>
-                </tr>
-            </ng-container>
-
-            <ng-template #elseBlock>
-                <td style= "text-align: center;">-NA-</td>
-            </ng-template>
-        </tbody> -->
     </table>
 </div>
