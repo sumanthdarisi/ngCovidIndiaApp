@@ -3,6 +3,7 @@ import { CovidStDt } from '../Models/covid-st-dt';
 import { APIService } from '../Services/api.service';
 import { Chart } from 'node_modules/chart.js';
 import { Router } from '@angular/router';
+import { States } from '../Models/states';
 
 
 
@@ -36,6 +37,12 @@ export class CovidComponent implements OnInit {
   data: Array<CovidStDt>;
   timeSeriesData: any;
 
+  //sort states
+  SortStates: Array<States> = [];
+  st_sortBy: any = 'name';
+  counter: number = 0; //even - Descending; odd - ascending
+
+
   //top 5 bar chart
   sortedValues: Array<number> = [];
   sortedValuesStates: Array<number> = [];
@@ -45,12 +52,32 @@ export class CovidComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this._serv.getCovid().subscribe(d => {
+    this._serv.getCovid().subscribe(async d => {
       this.data = d;     
-
+         
       //functions      
+      if(this.st_sortBy)
+        this.st_sortByClick(this.st_sortBy);
+
+      for(let e in this.data)
+      {
+        if(d[e]['meta'] && d[e]['total'] && this._serv.getPipeStateName(e))
+        {
+          let name = this._serv.getPipeStateName(e);
+          let pop = (d[e]['meta']['population']) ? d[e]['meta']['population'] : 'NA';
+          let con = (d[e]['total']['confirmed']) ? d[e]['total']['confirmed'] : 'NA';
+          let dec = (d[e]['total']['deceased']) ? d[e]['total']['deceased'] : 'NA';
+          let tes = (d[e]['total']['tested']) ? d[e]['total']['tested'] : 'NA';
+          let rec = (d[e]['total']['recovered']) ? d[e]['total']['recovered'] : 'NA';
+          let test_date = (d[e]['meta']['last_updated']) ? (d[e]['meta']['last_updated']) : 'NA';        
+          let act = (con=="NA" || dec=="NA" || rec=="NA") ? "NA" : (con - (rec + dec));
+          this.SortStates.push(new States(name,pop, con,dec,tes,rec,act,test_date));
+        }    
+      }
+
       this.Initialdata(this.data);
-      this.timeSeries();
+      await this.timeSeries();
+
     })    
   }
 
@@ -60,7 +87,7 @@ export class CovidComponent implements OnInit {
     if(this.selectedRadio)
       this.topChart(d, this.selectedRadio);
       
-    
+    //national total case counts
     for (let e in d) {
       if (d[e]['total'] && e!=="TT") {
         
@@ -81,6 +108,7 @@ export class CovidComponent implements OnInit {
         }
       }
 
+      //national delta totals
       if(d[e]['delta'] && e!=="TT"){
         
         if(d[e]['delta']['confirmed']){
@@ -118,6 +146,181 @@ export class CovidComponent implements OnInit {
 
   }
 
+  st_sortByClick(e){
+      this.st_sortBy = e;    
+      this.st_sortFunc(this.st_sortBy);
+  }
+
+  st_sortFunc(sortBy)
+  {
+    if (sortBy == 'Name') {
+      this.st_sortBy = sortBy;
+
+      if (this.counter % 2 != 0) {
+        this.SortStates.sort(function (a, b) {
+          if (a.st_name  > b.st_name) return -1;
+          if (a.st_name < b.st_name) return 1;
+          else return 0
+        });
+        this.counter++;
+      }
+      else {
+        this.SortStates.sort(function (a, b) {
+          if (a.st_name  > b.st_name) return -1;
+          if (a.st_name < b.st_name) return 1;
+          else return 0
+        }).reverse();
+        this.counter++;
+      }
+    }
+
+    if (sortBy == 'population') 
+    {
+      this.st_sortBy = sortBy;
+      if (this.counter % 2 != 0) {
+        this.SortStates.sort(function (a, b) {
+          a.st_population = (a.st_population.toString() == 'NA') ? -1.5 : a.st_population;
+          b.st_population = (b.st_population.toString() == 'NA') ? -1.5 : b.st_population;
+            if (a.st_population > b.st_population) return -1;
+            if (a.st_population < b.st_population) return 1;
+            else return 0
+        });
+        this.counter++;
+      }
+      else {
+        this.SortStates.sort(function (a, b) {
+          a.st_population = (a.st_population.toString() == 'NA') ? -1.5 : a.st_population;
+          b.st_population = (b.st_population.toString() == 'NA') ? -1.5 : b.st_population;
+          if (a.st_population > b.st_population) return -1;
+          if (a.st_population < b.st_population) return 1;
+          else return 0
+        }).reverse();
+        this.counter++;
+      }
+    }
+
+    if (sortBy == 'confirmed') {
+      this.st_sortBy = sortBy;
+      if (this.counter % 2 != 0) {
+        this.SortStates.sort(function (a, b) {
+          a.st_confirmed = (a.st_confirmed.toString() == 'NA') ? -1.5 : a.st_confirmed;
+          b.st_confirmed = (b.st_confirmed.toString() == 'NA') ? -1.5 : b.st_confirmed;
+          if (a.st_confirmed > b.st_confirmed) return -1;
+          if (a.st_confirmed < b.st_confirmed) return 1;
+          else return 0
+        });
+        this.counter++;
+      }
+      else {
+        this.SortStates.sort(function (a, b) {
+          a.st_confirmed = (a.st_confirmed.toString() == 'NA') ? -1.5 : a.st_confirmed;
+          b.st_confirmed = (b.st_confirmed.toString() == 'NA') ? -1.5 : b.st_confirmed;
+          if (a.st_confirmed > b.st_confirmed) return -1;
+          if (a.st_confirmed < b.st_confirmed) return 1;
+          else return 0
+        }).reverse();
+        this.counter++;
+      }
+    }
+
+    if (sortBy == 'active') {
+      this.st_sortBy = sortBy;
+      if (this.counter % 2 != 0) {
+        this.SortStates.sort(function (a, b) {
+          a.st_active = (a.st_active.toString() == 'NA') ? -1.5 : a.st_active;
+          b.st_active = (b.st_active.toString() == 'NA') ? -1.5 : b.st_active;
+          if (a.st_active > b.st_active) return -1;
+          if (a.st_active < b.st_active) return 1;
+          else return 0
+        });
+        this.counter++;
+      }
+      else {
+        this.SortStates.sort(function (a, b) {
+          a.st_active = (a.st_active.toString() == 'NA') ? -1.5 : a.st_active;
+          b.st_active = (b.st_active.toString() == 'NA') ? -1.5 : b.st_active;
+          if (a.st_active > b.st_active) return -1;
+          if (a.st_active < b.st_active) return 1;
+          else return 0
+        }).reverse();
+        this.counter++;
+      }
+    }
+
+
+    if (sortBy == 'recovered') {
+      this.st_sortBy = sortBy;
+      if (this.counter % 2 != 0) {
+        this.SortStates.sort(function (a, b) {
+          a.st_recoverd = (a.st_recoverd.toString() == 'NA') ? -1.5 : a.st_recoverd;
+          b.st_recoverd = (b.st_recoverd.toString() == 'NA') ? -1.5 : b.st_recoverd;
+          if (a.st_recoverd > b.st_recoverd) return -1;
+          if (a.st_recoverd < b.st_recoverd) return 1;
+          else return 0
+        });
+        this.counter++;
+      }
+      else {
+        this.SortStates.sort(function (a, b) {
+          a.st_recoverd = (a.st_recoverd.toString() == 'NA') ? -1.5 : a.st_recoverd;
+          b.st_recoverd = (b.st_recoverd.toString() == 'NA') ? -1.5 : b.st_recoverd;
+          if (a.st_recoverd > b.st_recoverd) return -1;
+          if (a.st_recoverd < b.st_recoverd) return 1;
+          else return 0
+        }).reverse();
+        this.counter++;
+      }
+    }
+
+    if (sortBy == 'deceased') {
+      this.st_sortBy = sortBy;
+      if (this.counter % 2 != 0) {
+        this.SortStates.sort(function (a, b) {
+          a.st_deceased = (a.st_deceased.toString() == 'NA') ? -1.5 : a.st_deceased;
+          b.st_deceased = (b.st_deceased.toString() == 'NA') ? -1.5 : b.st_deceased;
+          if (a.st_deceased > b.st_deceased) return -1;
+          if (a.st_deceased < b.st_deceased) return 1;
+          else return 0
+        });
+        this.counter++;
+      }
+      else {
+        this.SortStates.sort(function (a, b) {
+          a.st_deceased = (a.st_deceased.toString() == 'NA') ? -1.5 : a.st_deceased;
+          b.st_deceased = (b.st_deceased.toString() == 'NA') ? -1.5 : b.st_deceased;
+          if (a.st_deceased > b.st_deceased) return -1;
+          if (a.st_deceased < b.st_deceased) return 1;
+          else return 0
+        }).reverse();
+        this.counter++;
+      }
+    }
+
+    if (sortBy == 'tested') {
+      this.st_sortBy = sortBy;
+      if (this.counter % 2 != 0) {
+        this.SortStates.sort(function (a, b) {
+          a.st_tested = (a.st_tested.toString() == 'NA') ? -1.5 : a.st_tested;
+          b.st_tested = (b.st_tested.toString() == 'NA') ? -1.5 : b.st_tested;
+          if (a.st_tested > b.st_tested) return -1;
+          if (a.st_tested < b.st_tested) return 1;
+          else return 0
+        });
+        this.counter++;
+      }
+      else {
+        this.SortStates.sort(function (a, b) {
+          a.st_tested = (a.st_tested.toString() == 'NA') ? -1.5 : a.st_tested;
+          b.st_tested = (b.st_tested.toString() == 'NA') ? -1.5 : b.st_tested;
+          if (a.st_tested > b.st_tested) return -1;
+          if (a.st_tested < b.st_tested) return 1;
+          else return 0
+        }).reverse();
+        this.counter++;
+      }
+    }
+
+  }
 
   
   //send state name and respective data to service before routing to a state page
@@ -271,7 +474,7 @@ export class CovidComponent implements OnInit {
                   },
                   ticks:{
                       autoSkip: true,
-                      maxTicksLimit: 9
+                      maxTicksLimit: 10
                   }
                 }]
             }

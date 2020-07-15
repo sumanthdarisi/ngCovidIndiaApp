@@ -63,22 +63,64 @@
 <br>
 <div class="alert alert-warning">Click on state code below to view the respective districts data</div>
 <div class="row">
-    <table class="table table-responsive table-hover" id="homeTable">
+    <table class="table table-responsive" id="homeTable">
         <thead>
             <tr>
-                <th>State</th>
-                <th style= "text-align: center;">Last Updated</th>
-                <th style= "text-align: center;">Population</th>
-                <th style= "text-align: center;">Confirmed Cases</th>
-                <th style= "text-align: center;">Recovered Cases</th>
-                <th style= "text-align: center;">Deceased Cases</th>
-                <th style= "text-align: center;">Total Tests</th>
+                <th #name style="position: sticky; left:0px; background-color: white; z-index: 999;" (click)="st_sortByClick('Name')">State Name<i *ngIf="counter%2!=0 && st_sortBy=='name'" class="fa fa-sort-alpha-asc"></i>
+                    <i *ngIf="counter%2==0 && st_sortBy=='name'" class="fa fa-sort-alpha-desc"></i>
+                    <i *ngIf="st_sortBy!='name'" class="fa fa-sort"></i></th>
+                <th (click)="st_sortByClick('updated')" #updated style= "text-align: center;">Last Updated</th>
+                <th (click)="st_sortByClick('population')" #population style= "text-align: center;">Population<i *ngIf="counter%2!=0 && st_sortBy=='population'" class="fa fa-sort-numeric-asc"></i>
+                    <i *ngIf="counter%2==0 && st_sortBy=='population'" class="fa fa-sort-numeric-desc"></i>
+                    <i *ngIf="st_sortBy!='population'" class="fa fa-sort"></i></th>
+                <th (click)="st_sortByClick('confirmed')" #confirmed style= "text-align: center;">Confirmed<i *ngIf="counter%2!=0 && st_sortBy=='confirmed'" class="fa fa-sort-numeric-asc"></i>
+                    <i *ngIf="counter%2==0 && st_sortBy=='confirmed'" class="fa fa-sort-numeric-desc"></i>
+                    <i *ngIf="st_sortBy!='confirmed'" class="fa fa-sort"></i></th>
+                <th (click)="st_sortByClick('active')" #active style= "text-align: center;">Active<i *ngIf="counter%2!=0 && st_sortBy=='active'" class="fa fa-sort-numeric-asc"></i>
+                    <i *ngIf="counter%2==0 && st_sortBy=='active'" class="fa fa-sort-numeric-desc"></i>
+                    <i *ngIf="st_sortBy!='active'" class="fa fa-sort"></i></th>
+                <th (click)="st_sortByClick('recovered')" #recovered style= "text-align: center;">Recovered<i *ngIf="counter%2!=0 && st_sortBy=='recovered'" class="fa fa-sort-numeric-asc"></i>
+                    <i *ngIf="counter%2==0 && st_sortBy=='recovered'" class="fa fa-sort-numeric-desc"></i>
+                    <i *ngIf="st_sortBy!='recovered'" class="fa fa-sort"></i></th>
+                <th (click)="st_sortByClick('deceased')" #deceased style= "text-align: center;">Deceased<i *ngIf="counter%2!=0 && st_sortBy=='deceased'" class="fa fa-sort-numeric-asc"></i>
+                    <i *ngIf="counter%2==0 && st_sortBy=='deceased'" class="fa fa-sort-numeric-desc"></i>
+                    <i *ngIf="st_sortBy!='deceased'" class="fa fa-sort"></i></th>
+                <th (click)="st_sortByClick('tested')" #tested style= "text-align: center;">Tested<i *ngIf="counter%2!=0 && st_sortBy=='tested'" class="fa fa-sort-numeric-asc"></i>
+                    <i *ngIf="counter%2==0 && st_sortBy=='tested'" class="fa fa-sort-numeric-desc"></i>
+                    <i *ngIf="st_sortBy!='tested'" class="fa fa-sort"></i></th>
             </tr>
         </thead>
-        <tbody *ngFor="let d of data | keyvalue" class="thead">
+
+        <tbody *ngFor="let d of SortStates" class="thead">
+            <tr>
+                <td style="position: sticky; left:0px; background-color: white;color:rgb(29, 29, 211,0.7); z-index: 999;font-weight: bold; cursor: pointer;"
+                    (click)="stateCode($event)">{{d.st_name}}</td>
+                <td *ngIf="d.st_lastupdate != 'NA'; else elseBlock" style="text-align: center;">
+                    {{d.st_lastupdate| date:'mediumDate'}}</td>
+                <td *ngIf="d.st_population != 'NA' && d.st_population != -1.5; else elseBlock" style="text-align: center;">
+                    {{d.st_population | number}}</td>
+                <td *ngIf="d.st_confirmed!= 'NA' && d.st_confirmed != -1.5; else elseBlock" style="text-align: center;">
+                    {{d.st_confirmed | number}}</td>
+                <td *ngIf="d.st_active != 'NA' && d.st_active != -1.5; else elseBlock" style="text-align: center;">
+                    {{d.st_active| number}}</td>
+                <td *ngIf="d.st_recoverd != 'NA' && d.st_recoverd != -1.5; else elseBlock" style="text-align: center;">
+                    {{d.st_recoverd | number}}</td>
+                <td *ngIf="d.st_deceased != 'NA' && d.st_deceased != -1.5; else elseBlock" style="text-align: center;">
+                    {{d.st_deceased | number}}</td>
+                <td *ngIf="d.st_tested != 'NA' && d.st_tested != -1.5; else elseBlock" style="text-align: center;">
+                    {{d.st_tested | number}}</td>
+            </tr>
+            <ng-template #elseBlock>
+                <td style="text-align: center;">-NA-</td>
+            </ng-template>
+        </tbody>
+
+
+
+        <!-- <tbody *ngFor="let d of SortStates" class="thead">
             <ng-container *ngIf="(d.value.meta.population || d.value.total) && d.key != 'TT' && d.key != 'UN'">
                 <tr>
-                    <td style=" color:rgb(29, 29, 211,0.7); font-weight: bold; cursor: pointer;"
+                    <td style="position: sticky; left:0px; background-color: white;color:rgb(29, 29, 211,0.7); z-index: 999;font-weight: bold; cursor: pointer;"
                         *ngIf="d.value.meta && d.value.total; else elseBlock" (click)="stateCode($event)">{{d.key | stateName}}</td>
                     <td *ngIf="d.value.meta.tested && d.value.meta;else elseBlock" style= "text-align: center;">
                         {{d.value.meta.tested.last_updated |json | date:'mediumDate'}}</td>
@@ -86,6 +128,8 @@
                         {{d.value.meta.population |json | number}}</td>
                     <td *ngIf="d.value.total && d.value.total.confirmed;else elseBlock" style= "text-align: center;">
                         {{d.value.total.confirmed |json | number}}</td>
+                    <td *ngIf="d.value.total && d.value.total.confirmed && d.value.total.recovered && d.value.total.deceased;else elseBlock" style= "text-align: center;">
+                        {{d.value.total.confirmed - (d.value.total.recovered + d.value.total.deceased) |json | number}}</td>
                     <td *ngIf="d.value.total && d.value.total.recovered;else elseBlock" style= "text-align: center;">
                         {{d.value.total.recovered |json | number}}</td>
                     <td *ngIf="d.value.total && d.value.total.deceased;else elseBlock" style= "text-align: center;">
@@ -98,6 +142,6 @@
             <ng-template #elseBlock>
                 <td style= "text-align: center;">-NA-</td>
             </ng-template>
-        </tbody>
+        </tbody> -->
     </table>
 </div>

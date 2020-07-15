@@ -49,10 +49,10 @@
 
     <!-- ---Main Table--- -->
     <div class="col-12" style="margin-top: 20px">
-        <table class="table table-responsive table-hover table-lg" id="homeTable">
+        <table class="table table-responsive" id="homeTable">
             <thead>
                 <tr>
-                    <th scope="row" #name (click)="dt_sort(name.innerText)">Name<i *ngIf="counter%2!=0 && dt_SortBy=='Name'" class="fa fa-sort-alpha-asc"></i>
+                    <th style="position: sticky; left:0px; background-color: white; z-index: 999" scope="row" #name (click)="dt_sort(name.innerText)">Name<i *ngIf="counter%2!=0 && dt_SortBy=='Name'" class="fa fa-sort-alpha-asc"></i>
                         <i *ngIf="counter%2==0 && dt_SortBy=='Name'" class="fa fa-sort-alpha-desc"></i>
                         <i *ngIf="dt_SortBy!='Name'" class="fa fa-sort"></i>
                     </th>
@@ -65,6 +65,11 @@
                         Confirmed<i *ngIf="counter%2!=0 && dt_SortBy=='Confirmed'" class="fa fa-sort-numeric-asc"></i>
                         <i *ngIf="counter%2==0 && dt_SortBy=='Confirmed'" class="fa fa-sort-numeric-desc"></i>
                         <i *ngIf="dt_SortBy!='Confirmed'" class="fa fa-sort"></i>
+                    </th>
+                    <th scope="row" style="text-align: center;" #acti (click)="dt_sort(acti.innerText)">
+                        Active<i *ngIf="counter%2!=0 && dt_SortBy=='Active'" class="fa fa-sort-numeric-asc"></i>
+                        <i *ngIf="counter%2==0 && dt_SortBy=='Active'" class="fa fa-sort-numeric-desc"></i>
+                        <i *ngIf="dt_SortBy!='Active'" class="fa fa-sort"></i>
                     </th>
                     <th scope="row" style="text-align: center;" #reco (click)="dt_sort(reco.innerText)">
                         Recovered<i *ngIf="counter%2!=0 && dt_SortBy=='Recovered'" class="fa fa-sort-numeric-asc"></i>
@@ -86,11 +91,13 @@
 
             <tbody *ngFor="let d of SortDistricts" style="font-weight: normal;">
                 <tr>
-                    <td>{{d.dt_name}}</td>
+                    <td style="position: sticky; left:0px; background-color: white;z-index: 999">{{d.dt_name}}</td>
                     <td *ngIf="d.dt_population != 'NA' && d.dt_population != -1.5; else elseBlock" style="text-align: center;">
                         {{d.dt_population | number}}</td>
                     <td *ngIf="d.dt_confirmed != 'NA' && d.dt_confirmed != -1.5; else elseBlock" style="text-align: center;">
                         {{d.dt_confirmed | number}}</td>
+                    <td *ngIf="d.dt_active != 'NA' && d.dt_active != -1.5; else elseBlock" style="text-align: center;">
+                        {{d.dt_active | number}}</td>
                     <td *ngIf="d.dt_recoverd != 'NA' && d.dt_recoverd!= -1.5; else elseBlock" style="text-align: center;">
                         {{d.dt_recoverd | number}}</td>
                     <td *ngIf="d.dt_deceased != 'NA' && d.dt_deceased != -1.5; else elseBlock" style="text-align: center;">

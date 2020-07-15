@@ -37,7 +37,7 @@ export class StDistComponent implements OnInit {
     if (!this.data) {
       this.route.navigateByUrl("/Covid");
     }
-
+    
     if (this.dt_SortBy)
       this.dt_sort(this.dt_SortBy)
 
@@ -51,8 +51,9 @@ export class StDistComponent implements OnInit {
         let dec = (this.data.districts[e]['total'] && this.data.districts[e]['total']['deceased']) ? this.data.districts[e]['total']['deceased'] : "NA";
         let tes = (this.data.districts[e]['total'] && this.data.districts[e]['total']['tested']) ? this.data.districts[e]['total']['tested'] : "NA";
         let rec = (this.data.districts[e]['total'] && this.data.districts[e]['total']['recovered']) ? this.data.districts[e]['total']['recovered'] : "NA";
+        let act  = (con == 'NA' || rec == 'NA' || dec == 'NA') ? "NA" :  (con - (rec + dec));
 
-        this.SortDistricts.push(new Districts(name, pop, con, dec, tes, rec));
+        this.SortDistricts.push(new Districts(name, pop, con, dec, tes, rec,act));
       }
     }
 
@@ -177,6 +178,31 @@ export class StDistComponent implements OnInit {
         this.counter++;
       }
     }
+
+    if (sortBy == 'Active') {
+      this.dt_SortBy = sortBy;
+      if (this.counter % 2 != 0) {
+        this.SortDistricts.sort(function (a, b) {
+          a.dt_active = (a.dt_active.toString() == 'NA') ? -1.5 : a.dt_active;
+          b.dt_active = (b.dt_active.toString() == 'NA') ? -1.5 : b.dt_active;
+          if (a.dt_active > b.dt_active) return -1;
+          if (a.dt_active < b.dt_active) return 1;
+          else return 0
+        });
+        this.counter++;
+      }
+      else {
+        this.SortDistricts.sort(function (a, b) {
+          a.dt_active = (a.dt_active.toString() == 'NA') ? -1.5 : a.dt_active;
+          b.dt_active = (b.dt_active.toString() == 'NA') ? -1.5 : b.dt_active;
+          if (a.dt_active > b.dt_active) return -1;
+          if (a.dt_active < b.dt_active) return 1;
+          else return 0
+        }).reverse();
+        this.counter++;
+      }
+    }
+
 
     if (sortBy == 'Recovered') {
       this.dt_SortBy = sortBy;
