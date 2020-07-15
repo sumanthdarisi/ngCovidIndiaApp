@@ -62,9 +62,9 @@
 
 <br>
 <div class="alert alert-warning">Click on state code below to view the respective districts data</div>
-<div class="form-group has-search">
+<div class="form-group has-search" style="margin-top:20px">
     <span class="fa fa-search form-control-feedback"></span>
-    <input type="text" class="form-control" placeholder="Search by State Name..." #searchValue (input)="searchWord($event.target.value)">
+    <input type="text" class="form-control" placeholder= {{placeHolderStateName}} #searchValue (input)="searchWord($event.target.value)">
   </div>
 <div class="row">
     <table class="table table-responsive" id="homeTable">

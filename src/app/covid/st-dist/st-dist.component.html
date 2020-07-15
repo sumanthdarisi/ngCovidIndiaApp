@@ -48,7 +48,14 @@
     </div>
 
     <!-- ---Main Table--- -->
-    <div class="col-12" style="margin-top: 20px">
+    <div class="col-12">
+        <div class="form-group has-search" style="margin-top:20px">
+            <span class="fa fa-search form-control-feedback"></span>
+            <input type="text" class="form-control" placeholder={{PlaceholderDtName}} #searchValue (input)="searchWord($event.target.value)">
+        </div>
+    </div>
+    
+    <div class="col-12" style="margin-top: 5px">
         <table class="table table-responsive" id="homeTable">
             <thead>
                 <tr>

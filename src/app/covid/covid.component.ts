@@ -51,6 +51,9 @@ export class CovidComponent implements OnInit {
   sortedValuesStates: Array<number> = [];
   selectedRadio ="confirmed";
 
+  //placeholder
+  placeHolderStateName: any;
+
   constructor(private _serv: APIService, private _route: Router) { }
 
 
@@ -59,7 +62,10 @@ export class CovidComponent implements OnInit {
 
     this._serv.getCovid().subscribe(async d => {
       this.data = d;     
-         
+
+      this.placeHolderStateName = this._serv.getPipeStateName(Object.keys(this.data)[0]);
+      
+            
       //functions      
       if(this.st_sortBy)
         this.st_sortByClick(this.st_sortBy);
@@ -165,10 +171,8 @@ export class CovidComponent implements OnInit {
   searchWord(e)
   {     
     let temp :States[] = [];
-    let samp = this.SortStatesDup;
-    
     if(e.length == 0){
-      this.SortStates = samp;
+      this.SortStates = this.SortStatesDup;
     }
     else{
       temp=[];
@@ -185,7 +189,6 @@ export class CovidComponent implements OnInit {
 
     if(e.length !=0 && temp.length <1)
       this.SortStates = [];
-
   }
 
 

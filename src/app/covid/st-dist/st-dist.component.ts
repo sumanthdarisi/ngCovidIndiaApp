@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { APIService } from 'src/app/Services/api.service';
 import { Router } from '@angular/router';
 import { Districts } from 'src/app/Models/districts';
+import { States } from 'src/app/Models/states';
 
 @Component({
   selector: 'app-st-dist',
@@ -30,6 +31,13 @@ export class StDistComponent implements OnInit {
   counter: number = 0; //even - Descending; odd - ascending
   data: any;
 
+  //search
+  SearchWord : any = '';
+  SortStatesDup = this.SortDistricts;
+
+  //placeholder
+  PlaceholderDtName: any ='';
+
   constructor(private _serv: APIService, private route: Router) { }
 
   ngOnInit(): void {
@@ -37,7 +45,9 @@ export class StDistComponent implements OnInit {
     if (!this.data) {
       this.route.navigateByUrl("/Covid");
     }
+      
     
+    //this.PlaceholderDtName = this.
     if (this.dt_SortBy)
       this.dt_sort(this.dt_SortBy)
 
@@ -56,7 +66,13 @@ export class StDistComponent implements OnInit {
         this.SortDistricts.push(new Districts(name, pop, con, dec, tes, rec,act));
       }
     }
-
+    
+    for(let d in this.data.districts){
+      if(this.data.districts[d]['meta'] && this.data.districts[d]['total'] && this.PlaceholderDtName == ''){
+        this.PlaceholderDtName = d;
+      }
+    }
+    
     this.initialize();
   }
 
@@ -106,6 +122,28 @@ export class StDistComponent implements OnInit {
       { Name: "Total Tested", number: this.st_tested, class: "fill cl_tes", del: this.delta_tested, del_style: "delta_tot del_tes",icon:"fa fa-flask"}
     ]
 
+  }
+
+  searchWord(e){
+    let temp :Districts[] = [];
+    if(e.length == 0){
+      this.SortDistricts = this.SortStatesDup;
+    }
+    else{
+      temp=[];
+      this.SortStatesDup.forEach(element => {
+        if(element.dt_name.toLowerCase().includes(e.toLowerCase()))
+        {
+          temp.push(element);
+        }
+      });
+    }
+
+    if(temp.length > 0 && e!= "")
+      this.SortDistricts = temp;
+
+    if(e.length !=0 && temp.length <1)
+      this.SortDistricts = [];
   }
 
   dt_sort(sortBy) {
