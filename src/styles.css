@@ -31,3 +31,10 @@
 .has-search .form-control {
     padding-left: 2.375rem;
 }
+
+.form-control{
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-radius: 0px;
+}

@@ -128,4 +128,8 @@ table thead tr th {
     opacity: 0.7;
   }
   
+
+  .form-control:focus{
+      box-shadow: none;
+  }
   
