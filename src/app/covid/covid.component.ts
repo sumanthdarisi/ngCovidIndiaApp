@@ -53,18 +53,19 @@ export class CovidComponent implements OnInit {
 
   //placeholder
   placeHolderStateName: any;
+  placeholder = [];
+  dateMessage: any;
+  statesLength: number = 35;
+
 
   constructor(private _serv: APIService, private _route: Router) { }
 
-
-
   ngOnInit(): void {
 
-    this._serv.getCovid().subscribe(async d => {
+    this._serv.getCovid().subscribe(d => {
       this.data = d;     
 
       this.placeHolderStateName = this._serv.getPipeStateName(Object.keys(this.data)[0]);
-      
             
       //functions      
       if(this.st_sortBy)
@@ -87,12 +88,19 @@ export class CovidComponent implements OnInit {
       }
 
       this.Initialdata(this.data);
-      await this.timeSeries();
+      this.timeSeries();
       this.searchWord(this.SearchWord);
 
+      //placeholder statename func call
+      for(let d in this.data)
+      {    
+        if(d!="TT" && d!="UN")
+          this.placeholder.push(d);
+      }
+      
+      this.placaholderFunc(this.placeholder);
     })    
   }
-
 
   //all the data initialization take place here
   Initialdata(d){
@@ -659,5 +667,22 @@ export class CovidComponent implements OnInit {
 
     this.topStates(this.sortedValuesStates, this.sortedValues);
   }
+
+
+  //placeholder state name setinterval call func
+  placaholderFunc(d)
+  {
+    let i =0;
+    setInterval(()=>{
+      if(i<this.placeholder.length)
+      {
+        this.placeHolderStateName = this._serv.getPipeStateName(d[i]);
+        i++;
+      }
+      else
+        i=0;
+    },1000);
+  }
+
 
 }

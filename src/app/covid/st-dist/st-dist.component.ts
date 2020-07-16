@@ -37,6 +37,7 @@ export class StDistComponent implements OnInit {
 
   //placeholder
   PlaceholderDtName: any ='';
+  placeholder = [];
 
   constructor(private _serv: APIService, private route: Router) { }
 
@@ -67,11 +68,21 @@ export class StDistComponent implements OnInit {
       }
     }
     
-    for(let d in this.data.districts){
-      if(this.data.districts[d]['meta'] && this.data.districts[d]['total'] && this.PlaceholderDtName == ''){
-        this.PlaceholderDtName = d;
+    // for(let d in this.data.districts){
+    //   if(this.data.districts[d]['meta'] && this.data.districts[d]['total'] && this.PlaceholderDtName == ''){
+    //     this.PlaceholderDtName = d;
+    //   }
+    // }
+
+    for(let d in this.data.districts)
+    {
+      if(this.data.districts[d]['meta'] && this.data.districts[d]['total']){
+        this.placeholder.push(d)
       }
     }
+
+    this.placaholderFunc(this.placeholder);
+   
     
     this.initialize();
   }
@@ -313,5 +324,21 @@ export class StDistComponent implements OnInit {
         this.counter++;
       }
     }
+  }
+
+
+
+  placaholderFunc(d)
+  {
+    let i =0;
+    setInterval(()=>{
+      if(i<this.placeholder.length)
+      {
+        this.PlaceholderDtName = d[i];
+        i++;
+      }
+      else
+        i=0;
+    },1000);
   }
 }
