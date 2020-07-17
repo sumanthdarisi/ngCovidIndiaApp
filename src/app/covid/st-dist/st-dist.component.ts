@@ -53,27 +53,34 @@ export class StDistComponent implements OnInit {
       this.dt_sort(this.dt_SortBy)
 
     this.stateName = this._serv.getStateName();
+    
+    for (let e in this.data.districts) {      
+      let name,pop,con,dec,tes,rec,act;
+      let d_con,d_dec,d_tes,d_rec,d_act;
+      let _base = this.data.districts[e]['delta'];
 
-    for (let e in this.data.districts) {
+      //delta data
+      d_con = (_base && _base.confirmed)? _base.confirmed: 'NA';
+      d_rec = (_base && _base.recovered)? _base.recovered: 'NA';
+      d_dec = (_base && _base.deceased)? _base.deceased: 'NA';
+      d_tes = (_base && _base.tested)? _base.tested: 'NA';
+      d_act = (!_base || d_rec =='NA' ||d_con =='NA' || d_dec =='NA')? 'NA' : (d_con - (d_rec + d_dec));
+
+      //actual data
       if (this.data.districts[e]['meta']) {
-        let name = (e) ? e : "NA";
-        let pop = (this.data.districts[e]['meta']['population']) ? this.data.districts[e]['meta']['population'] : "NA";
-        let con = (this.data.districts[e]['total'] && this.data.districts[e]['total']['confirmed']) ? this.data.districts[e]['total']['confirmed'] : "NA";
-        let dec = (this.data.districts[e]['total'] && this.data.districts[e]['total']['deceased']) ? this.data.districts[e]['total']['deceased'] : "NA";
-        let tes = (this.data.districts[e]['total'] && this.data.districts[e]['total']['tested']) ? this.data.districts[e]['total']['tested'] : "NA";
-        let rec = (this.data.districts[e]['total'] && this.data.districts[e]['total']['recovered']) ? this.data.districts[e]['total']['recovered'] : "NA";
-        let act  = (con == 'NA' || rec == 'NA' || dec == 'NA') ? "NA" :  (con - (rec + dec));
+        name = (e) ? e : "NA";
+        pop = (this.data.districts[e]['meta']['population']) ? this.data.districts[e]['meta']['population'] : "NA";
+        con = (this.data.districts[e]['total'] && this.data.districts[e]['total']['confirmed']) ? this.data.districts[e]['total']['confirmed'] : "NA";
+        dec = (this.data.districts[e]['total'] && this.data.districts[e]['total']['deceased']) ? this.data.districts[e]['total']['deceased'] : "NA";
+        tes = (this.data.districts[e]['total'] && this.data.districts[e]['total']['tested']) ? this.data.districts[e]['total']['tested'] : "NA";
+        rec = (this.data.districts[e]['total'] && this.data.districts[e]['total']['recovered']) ? this.data.districts[e]['total']['recovered'] : "NA";
+        act  = (con == 'NA' || rec == 'NA' || dec == 'NA') ? "NA" :  (con - (rec + dec));
 
-        this.SortDistricts.push(new Districts(name, pop, con, dec, tes, rec,act));
+        this.SortDistricts.push(new Districts(name, pop, con, dec, tes, rec,act,d_con,d_act,d_rec,d_dec,d_tes));
       }
     }
     
-    // for(let d in this.data.districts){
-    //   if(this.data.districts[d]['meta'] && this.data.districts[d]['total'] && this.PlaceholderDtName == ''){
-    //     this.PlaceholderDtName = d;
-    //   }
-    // }
-
+    //placeholder
     for(let d in this.data.districts)
     {
       if(this.data.districts[d]['meta'] && this.data.districts[d]['total']){

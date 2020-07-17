@@ -92,7 +92,7 @@ export class CovidComponent implements OnInit {
           d_rec = (_base && _base.recovered)? _base.recovered: 'NA';
           d_dec = (_base && _base.deceased)? _base.deceased: 'NA';
           d_tes = (_base && _base.tested)? _base.tested: 'NA';
-          d_act = (!_base && (d_rec =='NA' ||d_con =='NA' || d_dec =='NA'))? 'NA' : (d_con - (d_rec + d_dec));
+          d_act = (!_base || d_rec =='NA' ||d_con =='NA' || d_dec =='NA')? 'NA' : (d_con - (d_rec + d_dec));
         }
 
         if(this.data[e]['meta'] && this.data[e]['total'] && this._serv.getPipeStateName(e) && e!='TT' && e!='UN')

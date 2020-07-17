@@ -51,7 +51,7 @@
     <div class="col-12">
         <div class="form-group has-search" style="margin-top:20px">
             <span class="fa fa-search form-control-feedback"></span>
-            <input type="text" class="form-control" placeholder={{PlaceholderDtName}} #searchValue (input)="searchWord($event.target.value)">
+            <input type="text" class="form-control" placeholder={{PlaceholderDtName}} #searchValue (input)="searchWord($event.target.value)" autofocus>
         </div>
     </div>
     
@@ -102,15 +102,49 @@
                     <td *ngIf="d.dt_population != 'NA' && d.dt_population != -1.5; else elseBlock" style="text-align: center;">
                         {{d.dt_population | number}}</td>
                     <td *ngIf="d.dt_confirmed != 'NA' && d.dt_confirmed != -1.5; else elseBlock" style="text-align: center;">
-                        {{d.dt_confirmed | number}}</td>
+                        {{d.dt_confirmed | number}}
+                        <span id="delta_green" *ngIf="d.delta_con!='NA' && d.delta_con < 0">
+                            <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_con | number}}
+                        </span>
+                        <span id="delta_red" *ngIf="d.delta_con!='NA' && d.delta_con > 0">
+                            <i class="fa fa-arrow-up" aria-hidden="true"></i>{{d.delta_con | number}}
+                        </span>
+                    </td>
                     <td *ngIf="d.dt_active != 'NA' && d.dt_active != -1.5; else elseBlock" style="text-align: center;">
-                        {{d.dt_active | number}}</td>
+                        {{d.dt_active | number}}
+                        <span id="delta_green" *ngIf="d.delta_act!='NA' && d.delta_act < 0">
+                            <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_act | number}}
+                        </span>
+                        <span id="delta_red" *ngIf="d.delta_act!='NA' && d.delta_act > 0">
+                            <i class="fa fa-arrow-up" aria-hidden="true"></i>{{d.delta_act | number}}
+                        </span>
+                    </td>
                     <td *ngIf="d.dt_recoverd != 'NA' && d.dt_recoverd!= -1.5; else elseBlock" style="text-align: center;">
-                        {{d.dt_recoverd | number}}</td>
+                        {{d.dt_recoverd | number}}
+                        <span id="delta_green" *ngIf="d.delta_rec!='NA' && d.delta_rec < 0">
+                            <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_rec | number}}
+                        </span>
+                        <span id="delta_red" *ngIf="d.delta_rec!='NA' && d.delta_rec > 0">
+                            <i class="fa fa-arrow-up" aria-hidden="true"></i>{{d.delta_rec | number}}
+                        </span>
+                    </td>
                     <td *ngIf="d.dt_deceased != 'NA' && d.dt_deceased != -1.5; else elseBlock" style="text-align: center;">
-                        {{d.dt_deceased | number}}</td>
+                        {{d.dt_deceased | number}}
+                        <span id="delta_green" *ngIf="d.delta_dec!='NA' && d.delta_dec < 0">
+                            <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_dec | number}}
+                        </span>
+                        <span id="delta_red" *ngIf="d.delta_dec!='NA' && d.delta_dec > 0">
+                            <i class="fa fa-arrow-up" aria-hidden="true"></i>{{d.delta_dec | number}}
+                        </span>
+                    </td>
                     <td *ngIf="d.dt_tested != 'NA' && d.dt_tested!= -1.5; else elseBlock" style="text-align: center;">
                         {{d.dt_tested | number}}
+                        <span id="delta_green" *ngIf="d.delta_tes!='NA' && d.delta_tes < 0">
+                            <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_tes | number}}
+                        </span>
+                        <span id="delta_red" *ngIf="d.delta_tes!='NA' && d.delta_tes > 0">
+                            <i class="fa fa-arrow-up" aria-hidden="true"></i>{{d.delta_tes | number}}
+                        </span>
                     </td>
                 </tr>
                 <ng-template #elseBlock>

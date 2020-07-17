@@ -1,3 +1,5 @@
+import { runInThisContext } from 'vm';
+
 export class Districts {
     dt_name: string;
     dt_population: number;
@@ -7,7 +9,13 @@ export class Districts {
     dt_recoverd: number;
     dt_active: number;
 
-    constructor(name, pop, con, dec, tes, rec,act){
+    delta_con: any;
+    delta_rec: any;
+    delta_dec: any;
+    delta_tes: any;
+    delta_act: any;
+
+    constructor(name, pop, con, dec, tes, rec,act,d_con,d_act,d_rec,d_dec,d_tes){
         this.dt_name = name;
         this.dt_population = pop;
         this.dt_confirmed = con;
@@ -15,5 +23,11 @@ export class Districts {
         this.dt_tested = tes;
         this.dt_recoverd = rec;
         this.dt_active = act;
+
+        this.delta_act = d_act;
+        this.delta_con = d_con;
+        this.delta_dec = d_dec;
+        this.delta_rec = d_rec;
+        this.delta_tes = d_tes;
     }
 }
