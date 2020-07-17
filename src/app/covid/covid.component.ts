@@ -4,6 +4,7 @@ import { APIService } from '../Services/api.service';
 import { Chart } from 'node_modules/chart.js';
 import { Router } from '@angular/router';
 import { States } from '../Models/states';
+import { StatesDelta } from '../Models/states-delta';
 
 @Component({
   selector: 'app-covid',
@@ -12,6 +13,7 @@ import { States } from '../Models/states';
 })
 
 export class CovidComponent implements OnInit {
+  dateMessage: any;
   IndianPopulation: number = 1380159707;
   Nt_TotalConfirmedCases: number = 0;
   Nt_TotalRecoverdCases: number = 0;
@@ -54,51 +56,67 @@ export class CovidComponent implements OnInit {
   //placeholder
   placeHolderStateName: any;
   placeholder = [];
-  dateMessage: any;
   statesLength: number = 35;
 
+  //States Delta Data
+  St_Delta: Array<StatesDelta> = [];
 
   constructor(private _serv: APIService, private _route: Router) { }
 
   ngOnInit(): void {
 
     this._serv.getCovid().subscribe(d => {
-      this.data = d;     
-
+      this.data = d;    
+      
+      //placeholder
       this.placeHolderStateName = this._serv.getPipeStateName(Object.keys(this.data)[0]);
-            
-      //functions      
-      if(this.st_sortBy)
-        this.st_sortByClick(this.st_sortBy);
-
-      for(let e in this.data)
-      {
-        if(d[e]['meta'] && d[e]['total'] && this._serv.getPipeStateName(e))
-        {
-          let name = this._serv.getPipeStateName(e);
-          let pop = (d[e]['meta']['population']) ? d[e]['meta']['population'] : 'NA';
-          let con = (d[e]['total']['confirmed']) ? d[e]['total']['confirmed'] : 'NA';
-          let dec = (d[e]['total']['deceased']) ? d[e]['total']['deceased'] : 'NA';
-          let tes = (d[e]['total']['tested']) ? d[e]['total']['tested'] : 'NA';
-          let rec = (d[e]['total']['recovered']) ? d[e]['total']['recovered'] : 'NA';
-          let test_date = (d[e]['meta']['last_updated']) ? (d[e]['meta']['last_updated']) : 'NA';        
-          let act = (con=="NA" || dec=="NA" || rec=="NA") ? "NA" : (con - (rec + dec));
-          this.SortStates.push(new States(name,pop, con,dec,tes,rec,act,test_date));
-        }    
-      }
-
-      this.Initialdata(this.data);
-      this.timeSeries();
-      this.searchWord(this.SearchWord);
-
-      //placeholder statename func call
       for(let d in this.data)
       {    
         if(d!="TT" && d!="UN")
           this.placeholder.push(d);
       }
-      
       this.placaholderFunc(this.placeholder);
+        
+
+      
+      //actual states data & delta info
+      for(let e in this.data)
+      {
+        let name,pop,con,dec,tes,rec,test_date,act;
+        let d_con,d_rec,d_act,d_dec,d_tes;
+        let _base = this.data[e]['delta'];
+
+        if(e!='TT' && e!='UN')
+        {
+          d_con = (_base && _base.confirmed)? _base.confirmed: 'NA';
+          d_rec = (_base && _base.recovered)? _base.recovered: 'NA';
+          d_dec = (_base && _base.deceased)? _base.deceased: 'NA';
+          d_tes = (_base && _base.tested)? _base.tested: 'NA';
+          d_act = (!_base && (d_rec =='NA' ||d_con =='NA' || d_dec =='NA'))? 'NA' : (d_con - (d_rec + d_dec));
+        }
+
+        if(this.data[e]['meta'] && this.data[e]['total'] && this._serv.getPipeStateName(e) && e!='TT' && e!='UN')
+        {
+          let _base = this.data[e];
+          name = this._serv.getPipeStateName(e);
+          pop = (_base['meta']['population']) ? _base['meta']['population'] : 'NA';
+          con = (_base['total']['confirmed']) ? _base['total']['confirmed'] : 'NA';
+          dec = (_base['total']['deceased']) ?  _base['total']['deceased'] : 'NA';
+          tes = (_base['total']['tested']) ?    _base['total']['tested'] : 'NA';
+          rec = (_base['total']['recovered']) ? _base['total']['recovered'] : 'NA';
+          test_date = (_base['meta']['last_updated']) ? (_base['meta']['last_updated']) : 'NA';        
+          act = (con=="NA" || dec=="NA" || rec=="NA") ? "NA" : (con - (rec + dec));
+          this.SortStates.push(new States(name,pop, con,dec,tes,rec,act,test_date,d_con,d_rec,d_dec,d_tes,d_act));
+        }  
+      }      
+      
+      //functions      
+      if(this.st_sortBy)
+        this.st_sortByClick(this.st_sortBy);
+
+      this.Initialdata(this.data);
+      this.timeSeries();
+      this.searchWord(this.SearchWord);
     })    
   }
 
@@ -681,7 +699,7 @@ export class CovidComponent implements OnInit {
       }
       else
         i=0;
-    },1000);
+    },1200);
   }
 
 

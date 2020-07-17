@@ -1,7 +1,6 @@
 <div class="row">
     <div class="col">
         <h3 id="titleName">Covid Stats India</h3>
-        <h6>{{dateMessage}}</h6>
     </div>
     <div class="col">
         <div class="float-right" style="text-align: right; color: gray; font-weight: bold;">Indian Population <br>
@@ -74,23 +73,23 @@
                 <th #name style="position: sticky; left:0px; background-color: white; z-index: 999;" (click)="st_sortByClick('name')">State Name<i *ngIf="counter%2!=0 && st_sortBy=='name'" class="fa fa-sort-alpha-asc"></i>
                     <i *ngIf="counter%2==0 && st_sortBy=='name'" class="fa fa-sort-alpha-desc"></i>
                     <i *ngIf="st_sortBy!='name'" class="fa fa-sort"></i></th>
-                <th (click)="st_sortByClick('updated')" #updated style= "text-align: center;">Last Updated</th>
-                <th (click)="st_sortByClick('population')" #population style= "text-align: center;">Population<i *ngIf="counter%2!=0 && st_sortBy=='population'" class="fa fa-sort-numeric-asc"></i>
+                <th (click)="st_sortByClick('updated')" #updated >Last Updated</th>
+                <th (click)="st_sortByClick('population')" #population >Population<i *ngIf="counter%2!=0 && st_sortBy=='population'" class="fa fa-sort-numeric-asc"></i>
                     <i *ngIf="counter%2==0 && st_sortBy=='population'" class="fa fa-sort-numeric-desc"></i>
                     <i *ngIf="st_sortBy!='population'" class="fa fa-sort"></i></th>
-                <th (click)="st_sortByClick('confirmed')" #confirmed style= "text-align: center;">Confirmed<i *ngIf="counter%2!=0 && st_sortBy=='confirmed'" class="fa fa-sort-numeric-asc"></i>
+                <th (click)="st_sortByClick('confirmed')" #confirmed >Confirmed<i *ngIf="counter%2!=0 && st_sortBy=='confirmed'" class="fa fa-sort-numeric-asc"></i>
                     <i *ngIf="counter%2==0 && st_sortBy=='confirmed'" class="fa fa-sort-numeric-desc"></i>
                     <i *ngIf="st_sortBy!='confirmed'" class="fa fa-sort"></i></th>
-                <th (click)="st_sortByClick('active')" #active style= "text-align: center;">Active<i *ngIf="counter%2!=0 && st_sortBy=='active'" class="fa fa-sort-numeric-asc"></i>
+                <th (click)="st_sortByClick('active')" #active >Active<i *ngIf="counter%2!=0 && st_sortBy=='active'" class="fa fa-sort-numeric-asc"></i>
                     <i *ngIf="counter%2==0 && st_sortBy=='active'" class="fa fa-sort-numeric-desc"></i>
                     <i *ngIf="st_sortBy!='active'" class="fa fa-sort"></i></th>
-                <th (click)="st_sortByClick('recovered')" #recovered style= "text-align: center;">Recovered<i *ngIf="counter%2!=0 && st_sortBy=='recovered'" class="fa fa-sort-numeric-asc"></i>
+                <th (click)="st_sortByClick('recovered')" #recovered>Recovered<i *ngIf="counter%2!=0 && st_sortBy=='recovered'" class="fa fa-sort-numeric-asc"></i>
                     <i *ngIf="counter%2==0 && st_sortBy=='recovered'" class="fa fa-sort-numeric-desc"></i>
                     <i *ngIf="st_sortBy!='recovered'" class="fa fa-sort"></i></th>
-                <th (click)="st_sortByClick('deceased')" #deceased style= "text-align: center;">Deceased<i *ngIf="counter%2!=0 && st_sortBy=='deceased'" class="fa fa-sort-numeric-asc"></i>
+                <th (click)="st_sortByClick('deceased')" #deceased >Deceased<i *ngIf="counter%2!=0 && st_sortBy=='deceased'" class="fa fa-sort-numeric-asc"></i>
                     <i *ngIf="counter%2==0 && st_sortBy=='deceased'" class="fa fa-sort-numeric-desc"></i>
                     <i *ngIf="st_sortBy!='deceased'" class="fa fa-sort"></i></th>
-                <th (click)="st_sortByClick('tested')" #tested style= "text-align: center;">Tested<i *ngIf="counter%2!=0 && st_sortBy=='tested'" class="fa fa-sort-numeric-asc"></i>
+                <th (click)="st_sortByClick('tested')" #tested >Tested<i *ngIf="counter%2!=0 && st_sortBy=='tested'" class="fa fa-sort-numeric-asc"></i>
                     <i *ngIf="counter%2==0 && st_sortBy=='tested'" class="fa fa-sort-numeric-desc"></i>
                     <i *ngIf="st_sortBy!='tested'" class="fa fa-sort"></i></th>
             </tr>
@@ -99,24 +98,50 @@
         <tbody *ngFor="let d of SortStates" class="thead">
             <tr>
                 <td style="position: sticky; left:0px; background-color: white;color:rgb(29, 29, 211,0.7); z-index: 999;font-weight: bold; cursor: pointer;"
-                    (click)="stateCode($event)">{{d.st_name}}</td>
-                <td *ngIf="d.st_lastupdate != 'NA'; else elseBlock" style="text-align: center;">
+                    (click)="stateCode($event)">{{d.st_name}}
+                </td>
+                <td *ngIf="d.st_lastupdate != 'NA'; else elseBlock">
                     {{d.st_lastupdate| date:'mediumDate'}}</td>
-                <td *ngIf="d.st_population != 'NA' && d.st_population != -1.5; else elseBlock" style="text-align: center;">
+                <td *ngIf="d.st_population != 'NA' && d.st_population != -1.5; else elseBlock">
                     {{d.st_population | number}}</td>
-                <td *ngIf="d.st_confirmed!= 'NA' && d.st_confirmed != -1.5; else elseBlock" style="text-align: center;">
-                    {{d.st_confirmed | number}}</td>
-                <td *ngIf="d.st_active != 'NA' && d.st_active != -1.5; else elseBlock" style="text-align: center;">
-                    {{d.st_active| number}}</td>
-                <td *ngIf="d.st_recoverd != 'NA' && d.st_recoverd != -1.5; else elseBlock" style="text-align: center;">
-                    {{d.st_recoverd | number}}</td>
-                <td *ngIf="d.st_deceased != 'NA' && d.st_deceased != -1.5; else elseBlock" style="text-align: center;">
-                    {{d.st_deceased | number}}</td>
-                <td *ngIf="d.st_tested != 'NA' && d.st_tested != -1.5; else elseBlock" style="text-align: center;">
-                    {{d.st_tested | number}}</td>
+                <td *ngIf="d.st_confirmed!= 'NA' && d.st_confirmed != -1.5; else elseBlock" >
+                    {{d.st_confirmed | number}}
+                    <span id="delta" *ngIf="d.delta_con!='NA'">
+                        <i class="fa fa-arrow-up" aria-hidden="true" style="color:brown; font-weight: bold;" *ngIf="d.delta_con > 0 ">{{d.delta_con | number}}</i>
+                        <i class="fa fa-arrow-down" aria-hidden="true" style="color: green;font-weight: bold" *ngIf="d.delta_con < 0">{{d.delta_con | number}}</i>
+                    </span>
+                </td>
+                <td *ngIf="d.st_active != 'NA' && d.st_active != -1.5; else elseBlock" >
+                    {{d.st_active| number}}
+                    <span id="delta" *ngIf="d.delta_act!='NA'">
+                        <i class="fa fa-arrow-up" aria-hidden="true" style="color: brown;font-weight: bold" *ngIf="d.delta_act > 0 ">{{d.delta_act | number}}</i>
+                        <i class="fa fa-arrow-down" aria-hidden="true" style="color: green;font-weight: bold" *ngIf="d.delta_act < 0">{{d.delta_act | number}}</i>
+                    </span>
+                </td>
+                <td *ngIf="d.st_recoverd != 'NA' && d.st_recoverd != -1.5; else elseBlock" >
+                    {{d.st_recoverd | number}}
+                    <span id="delta" *ngIf="d.delta_rec!='NA'">
+                        <i class="fa fa-arrow-up" aria-hidden="true" style="color: brown;font-weight: bold" *ngIf="d.delta_rec > 0 ">{{d.delta_rec | number}}</i>
+                        <i class="fa fa-arrow-down" aria-hidden="true" style="color: green;font-weight: bold" *ngIf="d.delta_rec < 0">{{d.delta_rec | number}}</i>
+                    </span>
+                </td>
+                <td *ngIf="d.st_deceased != 'NA' && d.st_deceased != -1.5; else elseBlock" >
+                    {{d.st_deceased | number}}
+                    <span id="delta" *ngIf="d.delta_dec!='NA'">
+                        <i class="fa fa-arrow-up" aria-hidden="true" style="color: brown;font-weight: bold" *ngIf="d.delta_dec > 0 ">{{d.delta_dec | number}}</i>
+                        <i class="fa fa-arrow-down" aria-hidden="true" style="color: green;font-weight: bold" *ngIf="d.delta_dec < 0">{{d.delta_dec | number}}</i>
+                    </span>
+                </td>
+                <td *ngIf="d.st_tested != 'NA' && d.st_tested != -1.5; else elseBlock">
+                    {{d.st_tested | number}}
+                    <span id="delta" *ngIf="d.delta_tes!='NA'">
+                        <i class="fa fa-arrow-up" aria-hidden="true" style="color: brown;font-weight: bold" *ngIf="d.delta_tes > 0 ">{{d.delta_tes | number}}</i>
+                        <i class="fa fa-arrow-down" aria-hidden="true" style="color: green;font-weight: bold" *ngIf="d.delta_tes < 0">{{d.delta_tes | number}}</i>
+                    </span>
+                </td>
             </tr>
             <ng-template #elseBlock>
-                <td style="text-align: center;">-NA-</td>
+                <td>-NA-</td>
             </ng-template>
         </tbody>
     </table>
