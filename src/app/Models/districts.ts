@@ -1,5 +1,3 @@
-import { runInThisContext } from 'vm';
-
 export class Districts {
     dt_name: string;
     dt_population: number;
