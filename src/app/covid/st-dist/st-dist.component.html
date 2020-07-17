@@ -56,6 +56,7 @@
     </div>
     
     <div class="col-12" style="margin-top: 5px">
+        <div class="swipe"><span style="float: right;">Swipe Right <i class="fa fa-long-arrow-right" aria-hidden="true"></i></span></div>
         <table class="table table-responsive" id="homeTable">
             <thead>
                 <tr>
@@ -107,7 +108,7 @@
                             <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_con | number}}
                         </span>
                         <span id="delta_red" *ngIf="d.delta_con!='NA' && d.delta_con > 0">
-                            <i class="fa fa-arrow-up" aria-hidden="true"></i>{{d.delta_con | number}}
+                            <i class="fa fa-arrow-up" aria-hidden="true"></i> {{d.delta_con | number}}
                         </span>
                     </td>
                     <td *ngIf="d.dt_active != 'NA' && d.dt_active != -1.5; else elseBlock" style="text-align: center;">
@@ -116,7 +117,7 @@
                             <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_act | number}}
                         </span>
                         <span id="delta_red" *ngIf="d.delta_act!='NA' && d.delta_act > 0">
-                            <i class="fa fa-arrow-up" aria-hidden="true"></i>{{d.delta_act | number}}
+                            <i class="fa fa-arrow-up" aria-hidden="true"></i> {{d.delta_act | number}}
                         </span>
                     </td>
                     <td *ngIf="d.dt_recoverd != 'NA' && d.dt_recoverd!= -1.5; else elseBlock" style="text-align: center;">
@@ -125,7 +126,7 @@
                             <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_rec | number}}
                         </span>
                         <span id="delta_red" *ngIf="d.delta_rec!='NA' && d.delta_rec > 0">
-                            <i class="fa fa-arrow-up" aria-hidden="true"></i>{{d.delta_rec | number}}
+                            <i class="fa fa-arrow-up" aria-hidden="true"></i> {{d.delta_rec | number}}
                         </span>
                     </td>
                     <td *ngIf="d.dt_deceased != 'NA' && d.dt_deceased != -1.5; else elseBlock" style="text-align: center;">
@@ -134,7 +135,7 @@
                             <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_dec | number}}
                         </span>
                         <span id="delta_red" *ngIf="d.delta_dec!='NA' && d.delta_dec > 0">
-                            <i class="fa fa-arrow-up" aria-hidden="true"></i>{{d.delta_dec | number}}
+                            <i class="fa fa-arrow-up" aria-hidden="true"></i> {{d.delta_dec | number}}
                         </span>
                     </td>
                     <td *ngIf="d.dt_tested != 'NA' && d.dt_tested!= -1.5; else elseBlock" style="text-align: center;">
@@ -143,7 +144,7 @@
                             <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_tes | number}}
                         </span>
                         <span id="delta_red" *ngIf="d.delta_tes!='NA' && d.delta_tes > 0">
-                            <i class="fa fa-arrow-up" aria-hidden="true"></i>{{d.delta_tes | number}}
+                            <i class="fa fa-arrow-up" aria-hidden="true"></i> {{d.delta_tes | number}}
                         </span>
                     </td>
                 </tr>
