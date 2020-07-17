@@ -106,37 +106,47 @@
                     {{d.st_population | number}}</td>
                 <td *ngIf="d.st_confirmed!= 'NA' && d.st_confirmed != -1.5; else elseBlock" >
                     {{d.st_confirmed | number}}
-                    <span id="delta" *ngIf="d.delta_con!='NA'">
-                        <i class="fa fa-arrow-up" aria-hidden="true" style="color:brown; font-weight: bold;" *ngIf="d.delta_con > 0 ">{{d.delta_con | number}}</i>
-                        <i class="fa fa-arrow-down" aria-hidden="true" style="color: green;font-weight: bold" *ngIf="d.delta_con < 0">{{d.delta_con | number}}</i>
+                    <span id="delta_green" *ngIf="d.delta_con!='NA' && d.delta_con < 0">
+                        <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_con | number}}
+                    </span>
+                    <span id="delta_red" *ngIf="d.delta_con!='NA' && d.delta_con > 0">
+                        <i class="fa fa-arrow-up" aria-hidden="true"></i>{{d.delta_con | number}}
                     </span>
                 </td>
                 <td *ngIf="d.st_active != 'NA' && d.st_active != -1.5; else elseBlock" >
                     {{d.st_active| number}}
-                    <span id="delta" *ngIf="d.delta_act!='NA'">
-                        <i class="fa fa-arrow-up" aria-hidden="true" style="color: brown;font-weight: bold" *ngIf="d.delta_act > 0 ">{{d.delta_act | number}}</i>
-                        <i class="fa fa-arrow-down" aria-hidden="true" style="color: green;font-weight: bold" *ngIf="d.delta_act < 0">{{d.delta_act | number}}</i>
+                    <span id="delta_green" *ngIf="d.delta_act!='NA' && d.delta_act < 0">
+                        <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_act | number}}
+                    </span>
+                    <span id="delta_red" *ngIf="d.delta_act!='NA' && d.delta_act > 0">
+                        <i class="fa fa-arrow-up" aria-hidden="true"></i>{{d.delta_act | number}}
                     </span>
                 </td>
                 <td *ngIf="d.st_recoverd != 'NA' && d.st_recoverd != -1.5; else elseBlock" >
                     {{d.st_recoverd | number}}
-                    <span id="delta" *ngIf="d.delta_rec!='NA'">
-                        <i class="fa fa-arrow-up" aria-hidden="true" style="color: brown;font-weight: bold" *ngIf="d.delta_rec > 0 ">{{d.delta_rec | number}}</i>
-                        <i class="fa fa-arrow-down" aria-hidden="true" style="color: green;font-weight: bold" *ngIf="d.delta_rec < 0">{{d.delta_rec | number}}</i>
+                    <span id="delta_green" *ngIf="d.delta_rec!='NA' && d.delta_rec < 0">
+                        <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_rec | number}}
+                    </span>
+                    <span id="delta_red" *ngIf="d.delta_rec!='NA' && d.delta_rec > 0">
+                        <i class="fa fa-arrow-up" aria-hidden="true"></i>{{d.delta_rec | number}}
                     </span>
                 </td>
                 <td *ngIf="d.st_deceased != 'NA' && d.st_deceased != -1.5; else elseBlock" >
                     {{d.st_deceased | number}}
-                    <span id="delta" *ngIf="d.delta_dec!='NA'">
-                        <i class="fa fa-arrow-up" aria-hidden="true" style="color: brown;font-weight: bold" *ngIf="d.delta_dec > 0 ">{{d.delta_dec | number}}</i>
-                        <i class="fa fa-arrow-down" aria-hidden="true" style="color: green;font-weight: bold" *ngIf="d.delta_dec < 0">{{d.delta_dec | number}}</i>
+                    <span id="delta_green" *ngIf="d.delta_dec!='NA' && d.delta_dec < 0">
+                        <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_dec | number}}
+                    </span>
+                    <span id="delta_red" *ngIf="d.delta_dec!='NA' && d.delta_dec > 0">
+                        <i class="fa fa-arrow-up" aria-hidden="true"></i>{{d.delta_dec | number}}
                     </span>
                 </td>
                 <td *ngIf="d.st_tested != 'NA' && d.st_tested != -1.5; else elseBlock">
                     {{d.st_tested | number}}
-                    <span id="delta" *ngIf="d.delta_tes!='NA'">
-                        <i class="fa fa-arrow-up" aria-hidden="true" style="color: brown;font-weight: bold" *ngIf="d.delta_tes > 0 ">{{d.delta_tes | number}}</i>
-                        <i class="fa fa-arrow-down" aria-hidden="true" style="color: green;font-weight: bold" *ngIf="d.delta_tes < 0">{{d.delta_tes | number}}</i>
+                    <span id="delta_green" *ngIf="d.delta_tes!='NA' && d.delta_tes < 0">
+                        <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_tes | number}}
+                    </span>
+                    <span id="delta_red" *ngIf="d.delta_tes!='NA' && d.delta_tes > 0">
+                        <i class="fa fa-arrow-up" aria-hidden="true"></i>{{d.delta_tes | number}}
                     </span>
                 </td>
             </tr>
