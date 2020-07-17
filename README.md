@@ -4,16 +4,15 @@
 https://indiacovid-2020.web.app/Covid
 
 
-### HomePage:
-![image](https://user-images.githubusercontent.com/9113723/86954630-f55af480-c173-11ea-90f8-e8ad7befdc0a.png)
+### Covid HomePage:
+![image](https://user-images.githubusercontent.com/9113723/87787084-b1917a80-c858-11ea-9ec0-ef5219e4493d.png)
 
 
 ### State-wide Data:
-![image](https://user-images.githubusercontent.com/9113723/86954734-23d8cf80-c174-11ea-9ada-4644ae13407d.png)
-
+![image](https://user-images.githubusercontent.com/9113723/87787238-ec93ae00-c858-11ea-9754-fc27af175047.png)
 
 
 ### District-wide Data:
-![image](https://user-images.githubusercontent.com/9113723/86954797-3c48ea00-c174-11ea-92f2-45dec3d6a12c.png)
+![image](https://user-images.githubusercontent.com/9113723/87787325-11882100-c859-11ea-931a-20fc498da3e5.png)
 
 
