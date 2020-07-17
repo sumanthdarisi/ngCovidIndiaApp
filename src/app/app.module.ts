@@ -9,6 +9,8 @@ import { CovidComponent } from './covid/covid.component';
 import { StDistComponent } from './covid/st-dist/st-dist.component';
 import { StateNamePipe } from './Pipes/state-name.pipe';
 
+import { CountUpModule } from 'ngx-countup';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +21,8 @@ import { StateNamePipe } from './Pipes/state-name.pipe';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    CountUpModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -60,6 +60,7 @@
 {
     .swipe{
         width: 100%;
+        padding-right: 15px;
         font-size: 14px;
         color: gray;
         font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;

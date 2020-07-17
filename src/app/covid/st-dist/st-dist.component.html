@@ -30,7 +30,7 @@
                                 <div class="inside-circle">
                                     <span class={{d.icon}}></span>
                                     <div class="nameTag">{{d.Name}}</div>
-                                    <div *ngIf="d.number; else elseBlock">{{d.number | number}}</div>
+                                    <div *ngIf="d.number; else elseBlock" [countUp]=d.number options="duration">{{d.number | number}}</div>
                                     <div class={{d.del_style}} *ngIf="d.del && d.del_style">
                                         <i class="fa fa-arrow-up" aria-hidden="true" *ngIf="d.del >=0 "></i>
                                         <i class="fa fa-arrow-down" aria-hidden="true"
@@ -56,7 +56,7 @@
     </div>
     
     <div class="col-12" style="margin-top: 5px">
-        <div class="swipe"><span style="float: right;">Swipe Right <i class="fa fa-long-arrow-right" aria-hidden="true"></i></span></div>
+        <div class="swipe"><span style="float: right;"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>Swipe Left</span></div>
         <table class="table table-responsive" id="homeTable">
             <thead>
                 <tr>
