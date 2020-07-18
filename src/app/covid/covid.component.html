@@ -17,7 +17,7 @@
             </div>
             <div class="card-body" style="font-weight: bold;">
                 <span [countUp]=d.number></span>
-                <span class={{d.del_style}} *ngIf="d.del && d.del_style">
+                <span class={{d.del_style}} style="margin-left: 6px;"*ngIf="d.del && d.del_style">
                     <i class="fa fa-arrow-up" aria-hidden="true" *ngIf="d.del >=0 "></i> 
                     <i class="fa fa-arrow-down" aria-hidden="true" *ngIf="d.del < 0"> </i> <span [countUp]=d.del></span></span>
                 <span class="cardPercentage" *ngIf="d.percent">{{d.percent | percent}}</span>
