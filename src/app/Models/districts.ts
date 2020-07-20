@@ -13,7 +13,7 @@ export class Districts {
     delta_tes: any;
     delta_act: any;
 
-    constructor(name, pop, con, dec, tes, rec,act,d_con,d_act,d_rec,d_dec,d_tes){
+    constructor(name, pop, con, dec, tes, rec, act, d_con, d_act, d_rec, d_dec, d_tes){
         this.dt_name = name;
         this.dt_population = pop;
         this.dt_confirmed = con;

@@ -8,77 +8,79 @@ import { CovidStDt } from '../Models/covid-st-dt';
   providedIn: 'root'
 })
 export class APIService {
-  
+
   covidData: any;
   timeSeries: any;
   stateCode: any;
   statename: any;
   stateFullName: any;
-  _jsonFile = "assets/IndiaStates.json";
+  _jsonFile = 'assets/IndiaStates.json';
 
-  
-  
-  constructor(private _http: HttpClient) {  
+
+
+  constructor(private _http: HttpClient) {
 
   }
 
 
   getCovid(): Observable<CovidStDt[]>{
-    let _covidurl = "https://api.covid19india.org/v3/data.json";
+    const _covidurl = 'https://api.covid19india.org/v3/data.json';
     this.covidData = this._http.get<CovidStDt[]>(_covidurl);
-    this._http.get(this._jsonFile).subscribe(res=>{
+    this._http.get(this._jsonFile).subscribe(res => {
       this.statename = res;
     });
     return this.covidData;
   }
-  
+
   setCovidData(data: any){
     this.covidData = data;
   }
 
   getCovidData(){
-    if(this.covidData)
+    if (this.covidData) {
       return this.covidData;
+    }
   }
 
   getStateName(){
-    if(this.stateFullName){
+    if (this.stateFullName){
       return this.stateFullName;
     }
   }
 
   getPipeStateName(code: string)
   {
-    if(code)
+    if (code)
     {
       return this.statename[code];
     }
     else
     {
-      return "NA";
+      return 'NA';
     }
   }
 
 
   getPipeStateCode(Name: string){
-    if(Name)
+    if (Name)
     {
       this.stateFullName = Name;
-      for(let d in this.statename){
-        if(Name == this.statename[d])
+      for (const d in this.statename){
+        if (Name == this.statename[d]) {
         return d;
+        }
       }
     }
     else{
-      return "NA";
+      return 'NA';
     }
 
 
   }
 
 
-  getTimeSeries():Observable<any>{
-    let _timeSeries = "https://api.covid19india.org/data.json";
+  getTimeSeries(): Observable<any>{
+    const _timeSeries = 'https://api.covid19india.org/data.json';
     this.timeSeries = this._http.get<any>(_timeSeries);
     return this.timeSeries;
   }

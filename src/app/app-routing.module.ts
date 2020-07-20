@@ -6,9 +6,9 @@ import { StDistComponent } from './covid/st-dist/st-dist.component';
 
 
 const routes: Routes = [
-  {path:"", redirectTo:"Covid",pathMatch: 'full'},
-  {path:"Covid", component:CovidComponent},
-  {path:"Covid/:key",component:StDistComponent}
+  {path: '', redirectTo: 'Covid', pathMatch: 'full'},
+  {path: 'Covid', component: CovidComponent},
+  {path: 'Covid/:key', component: StDistComponent}
 ];
 
 @NgModule({

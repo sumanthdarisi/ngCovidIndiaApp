@@ -14,7 +14,7 @@ export class States {
     delta_dec: any;
     delta_act: any;
 
-    constructor(name, pop, con, dec, tes, rec,act, date,d_con,d_rec,d_dec,d_tes,d_act){
+    constructor(name, pop, con, dec, tes, rec, act, date, d_con, d_rec, d_dec, d_tes, d_act){
         this.st_name = name;
         this.st_population = pop;
         this.st_confirmed = con;
