@@ -107,6 +107,14 @@
     bottom: 1.1px;
 }
 
+.percText{
+    font-size: 10px;
+    color: black;
+    position: absolute;
+    bottom: 2px;
+    right: 5px;
+    opacity: 0.5;
+}
 
 .card-header{
     padding: .75rem 0.8rem;

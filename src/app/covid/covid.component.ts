@@ -14,7 +14,7 @@ import { StatesDelta } from '../Models/states-delta';
 
 export class CovidComponent implements OnInit {
   dateMessage: any;
-  IndianPopulation = 1380159707;
+  IndianPopulation;
   Nt_TotalConfirmedCases = 0;
   Nt_TotalRecoverdCases = 0;
   Nt_TotalDeceasedCases = 0;
@@ -31,6 +31,7 @@ export class CovidComponent implements OnInit {
   nt_active_percent;
   nt_recovered_percent;
   nt_deceased_percent;
+  nt_tests_percent; // percent of tests wrt population
 
   TopStates ;
 
@@ -77,6 +78,11 @@ export class CovidComponent implements OnInit {
         }
       }
       this.placaholderFunc(this.placeholder);
+
+      //total population
+      //this.IndianPopulation = this.data['TT']['districts']
+      this.IndianPopulation = this.data['TT']['meta']['population'];
+      
 
 
 
@@ -177,13 +183,14 @@ export class CovidComponent implements OnInit {
     this.nt_recovered_percent = this.Nt_TotalRecoverdCases / this.Nt_TotalConfirmedCases;
     this.nt_active_percent = (this.Nt_Active / this.Nt_TotalConfirmedCases);
     this.nt_deceased_percent = (this.Nt_TotalDeceasedCases / this.Nt_TotalConfirmedCases);
+    this.nt_tests_percent = (this.Nt_TotalTests / this.IndianPopulation);
 
     this.Nt_data = [
       {Name: 'Confirmed Cases', number: this.Nt_TotalConfirmedCases, style: 'con_cl', del: this.Nt_Del_Confirmed, del_style: 'delta_tot', icon: 'fa fa-plus-square' },
-      {Name: 'Active Cases', number: this.Nt_Active, style: 'act_cl', del: this.Nt_Del_Active, del_style: 'delta_tot', percent: this.nt_active_percent, icon: 'fa fa-heartbeat'},
-      {Name: 'Recovered Cases', number: this.Nt_TotalRecoverdCases, style: 'rec_cl', del: this.Nt_Del_Recovered, del_style: 'delta_tot', percent: this.nt_recovered_percent, icon: 'fa fa-check-circle' },
-      {Name: 'Deceased Cases', number: this.Nt_TotalDeceasedCases, style: 'dec_cl', del: this.Nt_Del_Deceased, del_style: 'delta_tot', percent: this.nt_deceased_percent, icon: 'fa fa-minus-circle' },
-      {Name: 'Total Tests', number: this.Nt_TotalTests, style: 'tot_cl', del: this.Nt_Del_Tested, del_style: 'delta_tot', icon: 'fa fa-flask'}
+      {Name: 'Active Cases', number: this.Nt_Active, style: 'act_cl', del: this.Nt_Del_Active, del_style: 'delta_tot', percent: this.nt_active_percent, icon: 'fa fa-heartbeat',  percText: 'of Confirmed'},
+      {Name: 'Recovered Cases', number: this.Nt_TotalRecoverdCases, style: 'rec_cl', del: this.Nt_Del_Recovered, del_style: 'delta_tot', percent: this.nt_recovered_percent, icon: 'fa fa-check-circle', percText: 'of Confirmed' },
+      {Name: 'Deceased Cases', number: this.Nt_TotalDeceasedCases, style: 'dec_cl', del: this.Nt_Del_Deceased, del_style: 'delta_tot', percent: this.nt_deceased_percent, icon: 'fa fa-minus-circle', percText: 'of Confirmed' },
+      {Name: 'Total Tests', number: this.Nt_TotalTests, style: 'tot_cl', del: this.Nt_Del_Tested, del_style: 'delta_tot', icon: 'fa fa-flask', percent: this.nt_tests_percent, percText: 'of Population'}
     ];
 
   }

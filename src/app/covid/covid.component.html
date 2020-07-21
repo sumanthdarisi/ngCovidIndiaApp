@@ -4,7 +4,10 @@
     </div>
     <div class="col">
         <div class="float-right" style="text-align: right; color: gray; font-weight: bold;">Indian Population <br>
-            <span class="numbers" [countUp]=IndianPopulation> </span>
+            <span class="numbers" [countUp]=IndianPopulation *ngIf="IndianPopulation; else elsePop" > </span>
+            <ng-template #elsePop>
+                <span class="numbers" [countUp]="1380159707">1,380,159,707</span>
+            </ng-template>
         </div>
     </div>
 </div>
@@ -20,7 +23,10 @@
                 <span class={{d.del_style}} style="margin-left: 6px;"*ngIf="d.del && d.del_style">
                     <i class="fa fa-arrow-up" aria-hidden="true" *ngIf="d.del >=0 "></i> 
                     <i class="fa fa-arrow-down" aria-hidden="true" *ngIf="d.del < 0"> </i> <span [countUp]=d.del></span></span>
-                <span class="cardPercentage" *ngIf="d.percent">{{d.percent | percent}}</span>
+                <span class="cardPercentage" *ngIf="d.percent">
+                    {{d.percent | percent}} <br>
+                    <span class="percText" *ngIf="d.percText">{{d.percText}}</span>
+                </span>
             </div>
         </div>
     </div>
