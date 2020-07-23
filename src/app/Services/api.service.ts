@@ -48,6 +48,12 @@ export class APIService {
     }
   }
 
+  getStateCode(){
+    if (this.stateCode){
+      return this.stateCode;
+    }
+  }
+
   getPipeStateName(code: string)
   {
     if (code)
@@ -67,6 +73,7 @@ export class APIService {
       this.stateFullName = Name;
       for (const d in this.statename){
         if (Name == this.statename[d]) {
+          this.stateCode  = d;
         return d;
         }
       }
@@ -83,6 +90,12 @@ export class APIService {
     const _timeSeries = 'https://api.covid19india.org/data.json';
     this.timeSeries = this._http.get<any>(_timeSeries);
     return this.timeSeries;
+  }
+
+
+  getStateTimeSeries(){
+    const _basetimeSeries = 'https://api.covid19india.org/v4/timeseries.json';
+    return this._http.get(_basetimeSeries);
   }
 
 

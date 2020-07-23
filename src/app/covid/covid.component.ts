@@ -80,7 +80,6 @@ export class CovidComponent implements OnInit {
       this.placaholderFunc(this.placeholder);
 
       //total population
-      //this.IndianPopulation = this.data['TT']['districts']
       this.IndianPopulation = this.data['TT']['meta']['population'];
       
 
@@ -122,8 +121,8 @@ export class CovidComponent implements OnInit {
         this.st_sortByClick(this.st_sortBy);
       }
 
-      this.Initialdata(this.data);
       this.timeSeries();
+      this.Initialdata(this.data);
       this.searchWord(this.SearchWord);
     });
   }
@@ -484,7 +483,6 @@ export class CovidComponent implements OnInit {
                 label: ['Confirmed'],
                 data: confirmYlabels,
                 fill: false,
-
                 borderColor: [
                   'rgba(0, 123, 255, 0.6)'
                 ],

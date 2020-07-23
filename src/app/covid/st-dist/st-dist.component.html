@@ -10,7 +10,6 @@
 </div>
 
 <div class="row">
-    <!-- Graphs Dashboard -->
     <div class="col-12">
         <div class="card">
             <div class="card-header">
@@ -153,5 +152,29 @@
                 </ng-template>
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        Time Series - {{stateName}}
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div  [hidden]="!ConfirmedSeriesFlag" class="col-12 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <canvas  id="stConfirmData" style="width:100%; margin: 0px 0px 22px 0px;"></canvas>  
+            </div>
+            <div  [hidden]="!RecoveredSeriesFlag" class="col-12 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <canvas  id="stRecoveredmData" style="width:100%; margin: 0px 0px 22px 0px;"></canvas>  
+            </div>
+        </div>
+        <div class="row">
+            <div [hidden]="!DeceasedSeriesFlag" class="col-12 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <canvas id="stDeceasedData" style="width:100%; margin: 0px 0px 22px 0px;"></canvas>  
+            </div>
+            <div  [hidden]="!TestsSeriesFlag" class="col-12 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <canvas id="stTestsData" style="width:100%; margin: 0px 0px 22px 0px;"></canvas>  
+            </div>
+        </div>        
     </div>
 </div>
