@@ -29,19 +29,18 @@
                                 <div class="inside-circle">
                                     <span class={{d.icon}}></span>
                                     <div class="nameTag">{{d.Name}}</div>
-                                    <div *ngIf="d.number; else elseBlock" [countUp]=d.number options="duration">{{d.number | number}}</div>
+                                    <div *ngIf="d.number; else elseBlock" [countUp]=d.number options="duration" id="nameTagNumber">{{d.number | number}}</div>
                                     <div class={{d.del_style}} *ngIf="d.del && d.del_style">
                                         <i class="fa fa-arrow-up" aria-hidden="true" *ngIf="d.del >=0 "></i>
                                         <i class="fa fa-arrow-down" aria-hidden="true"
                                             *ngIf="d.del < 0"></i>&nbsp;{{d.del | number}}</div>
                                 </div>
                             </div>
-                            <div class="rank" *ngIf="d.rank">Rank <span id="actualRank">{{d.rank}}</span> in the Nation</div>
+                            <div class="rank" *ngIf="d.rank"><span class="badge badge-info" style="font-size: 120%;">#{{d.rank}}</span> in the Nation</div>
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-info" (click)="scroll(target)" id="ScrollDown"><i class="fa fa-bar-chart" aria-hidden="true"></i></button>
-                <span id="scrollText">view stats</span>
+                <button type="button" class="btn btn-default" (click)="scroll(target)" id="ScrollDown"><i class="fa fa-arrow-down" style="font-size: 11px;" aria-hidden="true"></i><span id="scrollText"> view stats</span></button>
             </div>
             <ng-template #elseBlock>
                 <div>-NA-</div>

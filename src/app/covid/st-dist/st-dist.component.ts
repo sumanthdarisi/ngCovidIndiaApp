@@ -378,7 +378,6 @@ export class StDistComponent implements OnInit {
         if (d[this.stateCode]['dates'][val]['delta']) {
           let date_len = new Date(val).toLocaleDateString().length;
           let date = new Date(val).toLocaleDateString().substring(0,date_len-5);
-          console.log(date.substring(0,date.length-5));
           let con = d[this.stateCode]['dates'][val]['delta']['confirmed'] ? d[this.stateCode]['dates'][val]['delta']['confirmed'] : 'NA';
           let rec = d[this.stateCode]['dates'][val]['delta']['recovered'] ? d[this.stateCode]['dates'][val]['delta']['recovered'] : 'NA';
           let dec = d[this.stateCode]['dates'][val]['delta']['deceased'] ? d[this.stateCode]['dates'][val]['delta']['deceased'] : 'NA';
@@ -440,6 +439,26 @@ export class StDistComponent implements OnInit {
             }]
         },
         options: {
+          animation:{
+            onComplete: function () {
+              var chartInstance = this.chart;
+              var ctx = chartInstance.ctx;              
+              ctx.textAlign = "center";
+              ctx.font = "bold 9px 'Helvetica Neue', Helvetica, Arial, sans-serif";
+              
+              Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) 
+                {
+                    var meta = chartInstance.controller.getDatasetMeta(i);
+                    Chart.helpers.each(meta.data.forEach(function (bar, index) 
+                    {
+                      if(index >=0){
+                        let cal = ((dataset.data[index] - dataset.data[0])/dataset.data[0])*100;
+                        ctx.fillText((Math.round(cal)).toString()+"%", bar._model.x, bar._model.y - 10);
+                      }
+                    }), this)
+               }), this);
+            }
+          },
           responsive: true,
           tooltips: {
             enabled: true,
@@ -491,6 +510,27 @@ export class StDistComponent implements OnInit {
             }]
         },
         options: {
+          animation:{
+            onComplete: function () {
+              var chartInstance = this.chart;
+              var ctx = chartInstance.ctx;              
+              ctx.textAlign = "center";
+              ctx.font = "bold 9px 'Helvetica Neue', Helvetica, Arial, sans-serif";
+              
+              Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) 
+                {
+                    var meta = chartInstance.controller.getDatasetMeta(i);
+                    Chart.helpers.each(meta.data.forEach(function (bar, index) 
+                    {
+                      if(index >=0){
+                        let cal = ((dataset.data[index] - dataset.data[0])/dataset.data[0])*100;
+                        ctx.fillText((Math.round(cal)).toString()+"%", bar._model.x, bar._model.y - 10);
+                      }
+                      
+                    }), this)
+               }), this);
+            }
+          },
           responsive: true,
           tooltips: {
             enabled: true,
@@ -541,6 +581,26 @@ export class StDistComponent implements OnInit {
             }]
         },
         options: {
+          animation:{
+            onComplete: function () {
+              var chartInstance = this.chart;
+              var ctx = chartInstance.ctx;              
+              ctx.textAlign = "center";
+              ctx.font = "bold 9px 'Helvetica Neue', Helvetica, Arial, sans-serif";
+              
+              Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) 
+                {
+                    var meta = chartInstance.controller.getDatasetMeta(i);
+                    Chart.helpers.each(meta.data.forEach(function (bar, index) 
+                    {
+                      if(index >=0){
+                        let cal = ((dataset.data[index] - dataset.data[0])/dataset.data[0])*100;
+                        ctx.fillText((Math.round(cal)).toString()+"%", bar._model.x, bar._model.y - 10);
+                      }
+                    }), this)
+               }), this);
+            }
+          },
           responsive: true,
           tooltips: {
             enabled: true,
@@ -589,6 +649,26 @@ export class StDistComponent implements OnInit {
             }]
         },
         options: {
+          animation:{
+            onComplete: function () {
+              var chartInstance = this.chart;
+              var ctx = chartInstance.ctx;              
+              ctx.textAlign = "center";
+              ctx.font = "bold 9px 'Helvetica Neue', Helvetica, Arial, sans-serif";
+              
+              Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) 
+                {
+                    var meta = chartInstance.controller.getDatasetMeta(i);
+                    Chart.helpers.each(meta.data.forEach(function (bar, index) 
+                    {
+                      if(index >=0){
+                        let cal = ((dataset.data[index] - dataset.data[0])/dataset.data[0])*100;
+                        ctx.fillText((Math.round(cal)).toString()+"%", bar._model.x, bar._model.y - 10);
+                      }
+                    }), this)
+               }), this);
+            }
+          },
           responsive: true,
           tooltips: {
             enabled: true,
