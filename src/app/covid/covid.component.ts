@@ -5,6 +5,7 @@ import { Chart } from 'node_modules/chart.js';
 import { Router } from '@angular/router';
 import { States } from '../Models/states';
 import { StatesDelta } from '../Models/states-delta';
+import { Rank } from '../Models/rank';
 
 @Component({
   selector: 'app-covid',
@@ -13,6 +14,7 @@ import { StatesDelta } from '../Models/states-delta';
 })
 
 export class CovidComponent implements OnInit {
+  //page variables
   dateMessage: any;
   IndianPopulation;
   Nt_TotalConfirmedCases = 0;
@@ -38,6 +40,9 @@ export class CovidComponent implements OnInit {
 
   data: Array<CovidStDt>;
   timeSeriesData: any;
+
+  //API error message handler 
+  errorMessage = "NA";
 
   // sort states
   SortStates: Array<States> = [];
@@ -66,8 +71,9 @@ export class CovidComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this._serv.getCovid().subscribe(d => {
-      this.data = d;
+    this._serv.getCovid().subscribe(
+      (response) => {
+      this.data = response;
 
       // placeholder
       this.placeHolderStateName = this._serv.getPipeStateName(Object.keys(this.data)[0]);
@@ -81,9 +87,6 @@ export class CovidComponent implements OnInit {
 
       //total population
       this.IndianPopulation = this.data['TT']['meta']['population'];
-      
-
-
 
       // actual states data & delta info
       for (const e in this.data)
@@ -124,6 +127,13 @@ export class CovidComponent implements OnInit {
       this.timeSeries();
       this.Initialdata(this.data);
       this.searchWord(this.SearchWord);
+    },
+    (error)=>{
+      if(error.status="404")
+        this.errorMessage = 'Looks like something is not good. Its 404 error';
+      else
+        this.errorMessage = "Hmmm... it shouldn't happen like this, try refreshing to see the magic";      
+      throw error;
     });
   }
 
@@ -299,7 +309,7 @@ export class CovidComponent implements OnInit {
           else { return 0; }
         }).reverse();
         this.counter++;
-      }
+      } 
     }
 
     if (sortBy == 'active') {
@@ -401,13 +411,88 @@ export class CovidComponent implements OnInit {
 
   }
 
+  //ranks sort funct
+  sortDataRank(Name,e, key){
+    let term;    
+    switch (key) {
+      case 'confirmed':
+        term= 'st_confirmed';
+        e.sort(function(a, b) {
+          a.st_confirmed = (a.st_confirmed == 'NA') ? -1.5 : a.st_confirmed;
+          b.st_confirmed = (b.st_confirmed== 'NA') ? -1.5 : b.st_confirmed;
+          if (a.st_confirmed > b.st_confirmed) { return -1; }
+          if (a.st_confirmed < b.st_confirmed) { return 1; }
+          else { return 0; }
+        });
+        break;
+      case 'recovered':
+        term= 'st_recoverd';
+        e.sort(function(a, b) {
+            a.st_recoverd = (a.st_recoverd.toString() == 'NA') ? -1.5 : a.st_recoverd;
+            b.st_recoverd = (b.st_recoverd.toString() == 'NA') ? -1.5 : b.st_recoverd;
+            if (a.st_recoverd > b.st_recoverd) { return -1; }
+            if (a.st_recoverd < b.st_recoverd) { return 1; }
+            else { return 0; }
+          });
+        break;
+      case 'deceased':
+        term= 'st_deceased';
+        e.sort(function(a, b) {
+          a.st_deceased = (a.st_deceased.toString() == 'NA') ? -1.5 : a.st_deceased;
+          b.st_deceased = (b.st_deceased.toString() == 'NA') ? -1.5 : b.st_deceased;
+          if (a.st_deceased > b.st_deceased) { return -1; }
+          if (a.st_deceased < b.st_deceased) { return 1; }
+          else { return 0; }
+        });
+        break;
+      case 'active':
+         term= 'st_active';
+         e.sort(function(a, b) {
+            a.st_active = (a.st_active.toString() == 'NA') ? -1.5 : a.st_active;
+            b.st_active = (b.st_active.toString() == 'NA') ? -1.5 : b.st_active;
+            if (a.st_active > b.st_active) { return -1; }
+            if (a.st_active < b.st_active) { return 1; }
+            else { return 0; }
+        });
+        break;
+      case 'tested':
+        term= 'st_tested';
+        e.sort(function(a, b) {
+          a.st_tested = (a.st_tested.toString() == 'NA') ? -1.5 : a.st_tested;
+          b.st_tested = (b.st_tested.toString() == 'NA') ? -1.5 : b.st_tested;
+          if (a.st_tested > b.st_tested) { return -1; }
+          if (a.st_tested < b.st_tested) { return 1; }
+          else { return 0; }
+        });
+        break;
+      default:
+        term= 'st_confirmed';
+        break;
+    }
+    return e.findIndex(f=>f.st_name==Name) + 1;
+  }
+
 
   // send state name and respective data to service before routing to a state page
   stateCode(e)
   {
     const Name = e.target.innerText;
     const code = this._serv.getPipeStateCode(Name);
+    
+    //send the selcted state data to service before routing
     this._serv.setCovidData(this.data[code]);
+
+    //call the functions to get the state ranks for each category
+    let temp_data= this.SortStates;   
+    const con = this.sortDataRank(Name,temp_data,'confirmed');    
+    const rec = this.sortDataRank(Name,temp_data,'recovered');
+    const dec = this.sortDataRank(Name,temp_data,'deceased');
+    const act = this.sortDataRank(Name,temp_data,'active');
+    const tes = this.sortDataRank(Name,temp_data,'tested');
+    const ranks: Rank = new Rank(con,act,rec,dec,tes);
+    this._serv.setStateRank(ranks);
+    
+    //navigate to the state page
     this._route.navigate(['Covid/', code]);
   }
 
@@ -471,7 +556,6 @@ export class CovidComponent implements OnInit {
           }
         }
       });
-
 
 
       const NationalData = new Chart('NationalData', {
@@ -617,11 +701,18 @@ export class CovidComponent implements OnInit {
           },
             scales: {
                 yAxes: [{
+                  ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 5
+                },
                   gridLines: {
                     drawOnChartArea: true
                   },
                 }],
                 xAxes: [{
+                  ticks:{
+                    fontSize: 10
+                  },
                   gridLines: {
                     drawOnChartArea: false
                   },

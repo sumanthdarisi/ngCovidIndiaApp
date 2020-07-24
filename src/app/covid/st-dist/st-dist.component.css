@@ -1,3 +1,32 @@
+#StateName{
+  font-weight: bold;
+}
+
+@media only screen and (max-width: 600px)
+{
+    #StateName{
+        font-size: 1.21rem;
+        margin-left:4px;
+        padding-top: 20px;
+    }
+}
+
+.rank{
+    color:#06060670;
+    text-align: center;
+    padding-top: 159px;
+    padding-left: 5px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+#actualRank{
+  font-size: 20px;
+  opacity: 1.0;
+  color: darkred;
+}
+
+
 .circle-wrap {
     margin: 50px auto;
     width: 150px;
@@ -23,6 +52,7 @@
 .circle-wrap .circle .mask {
     clip: rect(0px, 150px, 150px, 75px);
   }
+
 
 
 
@@ -137,6 +167,11 @@ table thead tr th i{
 }
 
 
+.form-group{
+  margin-bottom: 0px;
+}
+
+
 @media only screen and (min-width: 501px)
 {
   #stConfirmData,#stRecoveredmData, #stDeceasedData, #stTestsData{
@@ -152,4 +187,25 @@ table thead tr th i{
         height: 166px;
     }
 }
-  
+
+
+#ScrollDown{
+  width: 61px;
+  height: 40px;
+  border-radius: 10px;
+  opacity: 0.5;
+  float: right;
+  transition: 0.6s;
+}
+
+#ScrollDown:hover{
+  opacity: 1.0;
+  transform: translate(0, -5px);
+}
+
+#scrollText{
+  font-size: 13px;
+  position: absolute;
+  bottom: 1px;
+  right: 21px;
+}

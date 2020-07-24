@@ -1,10 +1,10 @@
-<div class="row" style="margin: -3px 0px 20px 0px;">
-    <div class="col" style="padding-left:0px;font-size: 40px;font-size: 40px;top: 22px;">
+<div class="row" style="margin: -3px 0px 10px 0px;">
+    <div class="col" style="padding-left:0px;font-size: 27px; top:19px">
         <div class="float-left">
-            <h3>{{stateName}}</h3>
+            <span  id="StateName">{{stateName}}</span>
         </div>
     </div>
-    <div class="col" style="top:19px; padding-right: 0px;">
+    <div class="col" style="top:15px; padding-right: 0px;">
         <div class="float-right btn btn-primary" style="margin-bottom:10px" routerLink="/Covid">Covid | Home</div>
     </div>
 </div>
@@ -36,9 +36,12 @@
                                             *ngIf="d.del < 0"></i>&nbsp;{{d.del | number}}</div>
                                 </div>
                             </div>
+                            <div class="rank" *ngIf="d.rank">Rank <span id="actualRank">{{d.rank}}</span> in the Nation</div>
                         </div>
                     </div>
                 </div>
+                <button type="button" class="btn btn-info" (click)="scroll(target)" id="ScrollDown"><i class="fa fa-bar-chart" aria-hidden="true"></i></button>
+                <span id="scrollText">view stats</span>
             </div>
             <ng-template #elseBlock>
                 <div>-NA-</div>
@@ -155,7 +158,7 @@
     </div>
 </div>
 
-<div class="card">
+<div class="card" #target>
     <div class="card-header">
         Time Series - {{stateName}}
     </div>

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { CovidStDt } from '../Models/covid-st-dt';
+import { retry, catchError } from 'rxjs/operators';
+import { Rank } from '../Models/rank';
 
 
 @Injectable({
@@ -15,17 +17,20 @@ export class APIService {
   statename: any;
   stateFullName: any;
   _jsonFile = 'assets/IndiaStates.json';
+  stateRank: Rank;
 
-
-
-  constructor(private _http: HttpClient) {
-
-  }
+  constructor(private _http: HttpClient) { }
 
 
   getCovid(): Observable<CovidStDt[]>{
     const _covidurl = 'https://api.covid19india.org/v3/data.json';
-    this.covidData = this._http.get<CovidStDt[]>(_covidurl);
+    this.covidData = this._http.get<CovidStDt[]>(_covidurl).pipe(
+      retry(3),
+      catchError(err=>{
+        console.log('error',err);
+        return throwError(err);
+      })
+    );
     this._http.get(this._jsonFile).subscribe(res => {
       this.statename = res;
     });
@@ -98,5 +103,16 @@ export class APIService {
     return this._http.get(_basetimeSeries);
   }
 
+  setStateRank(e: Rank)
+  {
+    if(e){
+      this.stateRank = e;
+    }
+  }
+
+  getStateRank()
+  {
+    return this.stateRank;
+  }
 
 }

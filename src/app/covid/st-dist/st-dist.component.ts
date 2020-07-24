@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Districts } from 'src/app/Models/districts';
 import { StateDailyCounts } from 'src/app/Models/state-daily-counts';
 import { Chart } from 'node_modules/chart.js';
+import { Rank } from 'src/app/Models/rank';
 
 @Component({
   selector: 'app-st-dist',
@@ -50,6 +51,9 @@ export class StDistComponent implements OnInit {
   StateRecoveredTimeSeriesData: Array<StateDailyCounts> = [];
   StateDeceasedTimeSeriesData: Array<StateDailyCounts> = [];
   StateTestsTimeSeriesData: Array<StateDailyCounts> = [];
+
+  //stateRank
+  stateRank: Rank;
 
   constructor(private _serv: APIService, private route: Router) { }
 
@@ -151,15 +155,15 @@ export class StDistComponent implements OnInit {
 
       this.delta_active = +this.delta_confirmed - (+this.delta_recovered + +this.delta_deceased);
     }
+    this.stateRank = this._serv.getStateRank();  
 
     this.districtData = [
-      { Name: 'Confirmed Cases', number: this.st_confirmed, class: 'fill cl_con', del: this.delta_confirmed, del_style: 'delta_tot del_con', icon: 'fa fa-plus-square' },
-      { Name: 'Active Cases', number: this.st_Active, class: 'fill cl_act', del: this.delta_active, del_style: 'delta_tot del_act', icon: 'fa fa-heartbeat' },
-      { Name: 'Recovered Cases', number: this.st_recovered, class: 'fill cl_rec', del: this.delta_recovered, del_style: 'delta_tot del_rec', icon: 'fa fa-check-circle' },
-      { Name: 'Deceased Cases', number: this.st_deceased, class: 'fill cl_dec', del: this.delta_deceased, del_style: 'delta_tot del_dec', icon: 'fa fa-minus-circle' },
-      { Name: 'Total Tested', number: this.st_tested, class: 'fill cl_tes', del: this.delta_tested, del_style: 'delta_tot del_tes', icon: 'fa fa-flask' }
-    ];
-
+      { Name: 'Confirmed Cases', number: this.st_confirmed, class: 'fill cl_con', del: this.delta_confirmed, del_style: 'delta_tot del_con', icon: 'fa fa-plus-square', rank: this.stateRank.ConfirmedRank},
+      { Name: 'Active Cases', number: this.st_Active, class: 'fill cl_act', del: this.delta_active, del_style: 'delta_tot del_act', icon: 'fa fa-heartbeat', rank: this.stateRank.ActiveRank },
+      { Name: 'Recovered Cases', number: this.st_recovered, class: 'fill cl_rec', del: this.delta_recovered, del_style: 'delta_tot del_rec', icon: 'fa fa-check-circle', rank: this.stateRank.RecoveredRank },
+      { Name: 'Deceased Cases', number: this.st_deceased, class: 'fill cl_dec', del: this.delta_deceased, del_style: 'delta_tot del_dec', icon: 'fa fa-minus-circle', rank: this.stateRank.DeceasedRank },
+      { Name: 'Total Tested', number: this.st_tested, class: 'fill cl_tes', del: this.delta_tested, del_style: 'delta_tot del_tes', icon: 'fa fa-flask', rank: this.stateRank.TestsRank }
+    ];    
   }
 
   searchWord(e) {
@@ -372,7 +376,9 @@ export class StDistComponent implements OnInit {
     this._serv.getStateTimeSeries().subscribe(d => {      
       for (let val in d[this.stateCode]['dates']) {
         if (d[this.stateCode]['dates'][val]['delta']) {
-          let date = new Date(val).toLocaleDateString();
+          let date_len = new Date(val).toLocaleDateString().length;
+          let date = new Date(val).toLocaleDateString().substring(0,date_len-5);
+          console.log(date.substring(0,date.length-5));
           let con = d[this.stateCode]['dates'][val]['delta']['confirmed'] ? d[this.stateCode]['dates'][val]['delta']['confirmed'] : 'NA';
           let rec = d[this.stateCode]['dates'][val]['delta']['recovered'] ? d[this.stateCode]['dates'][val]['delta']['recovered'] : 'NA';
           let dec = d[this.stateCode]['dates'][val]['delta']['deceased'] ? d[this.stateCode]['dates'][val]['delta']['deceased'] : 'NA';
@@ -415,7 +421,7 @@ export class StDistComponent implements OnInit {
       const conXlabels = [];
       const conYlabels = [];
 
-      this.StateConfirmedTimeSeriesData.reverse().splice(0, 10).forEach(element => {
+      this.StateConfirmedTimeSeriesData.reverse().splice(0, 10).forEach(element => {       
         conXlabels.push(element.date);
         conYlabels.push(element.number);
       });
@@ -442,6 +448,7 @@ export class StDistComponent implements OnInit {
             maintainAspectRatio:false,
             xAxes:[{
               ticks:{
+                fontSize: 10,
                 autoSkip: false
               }
             }],
@@ -489,6 +496,12 @@ export class StDistComponent implements OnInit {
             enabled: true,
           },
           scales: {
+            xAxes:[{
+              ticks:{
+                fontSize: 10,
+                autoSkip: false
+              }
+            }],
             yAxes: [{
               gridLines: {
                 drawOnChartArea: true
@@ -533,6 +546,12 @@ export class StDistComponent implements OnInit {
             enabled: true,
           },
           scales: {
+            xAxes:[{
+              ticks:{
+                fontSize: 10,
+                autoSkip: false
+              }
+            }],
             yAxes: [{
               gridLines: {
                 drawOnChartArea: true
@@ -551,7 +570,6 @@ export class StDistComponent implements OnInit {
       //Tests X-Y axis data
       const tesXlabels = [];
       const tesYlabels = [];
-
       this.StateTestsTimeSeriesData.reverse().splice(0, 10).forEach(element => {
         tesXlabels.push(element.date);
         tesYlabels.push(element.number);
@@ -567,7 +585,7 @@ export class StDistComponent implements OnInit {
               label: ['Tests'],
               data: tesYlabels.reverse(),
               backgroundColor : 'rgba(242, 142, 14, 0.6)',
-              hoverBackgroundColor : 'rgba(242, 142, 14, 0.6)'
+              hoverBackgroundColor : 'rgba(242, 142, 14, 1)'
             }]
         },
         options: {
@@ -576,6 +594,12 @@ export class StDistComponent implements OnInit {
             enabled: true,
           },
           scales: {
+            xAxes:[{
+              ticks:{
+                fontSize: 10,
+                autoSkip: false
+              }
+            }],
             yAxes: [{
               gridLines: {
                 drawOnChartArea: true
@@ -591,9 +615,12 @@ export class StDistComponent implements OnInit {
       });
     }
 
-
     }
     )
+  }
+
+  scroll(el: HTMLElement) {
+    el.scrollIntoView({behavior:"smooth"});
   }
 }
 

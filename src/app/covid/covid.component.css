@@ -93,8 +93,9 @@
     }
 
     #titleName{
-        font-size: 1.41rem;
-        margin-left:3px;
+        font-size: 1.21rem;
+        margin-left:4px;
+        padding-top: 20px;
     }
 }
 .cardPercentage{
@@ -140,3 +141,24 @@ table thead tr th {
   .form-control:focus{
       box-shadow: none;
   }
+
+
+  .IndiaMap:hover{
+    fill: brown;
+  }
+
+  .IndiaSVG{
+    display: inline-block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 100%; 
+	vertical-align: middle; 
+	overflow: hidden; 
+  }
+
+  .svg-content { 
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
