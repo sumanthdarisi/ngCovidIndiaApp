@@ -16,3 +16,6 @@ https://indiacovid-2020.web.app/Covid
 ![image](https://user-images.githubusercontent.com/9113723/87787325-11882100-c859-11ea-931a-20fc498da3e5.png)
 
 
+### State last 10 days timeseries data
+![image](https://user-images.githubusercontent.com/9113723/88285690-2eb36880-cd0d-11ea-8118-98bb5d765d99.png)
+
