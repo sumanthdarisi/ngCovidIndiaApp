@@ -30,8 +30,8 @@ export class StDistComponent implements OnInit {
 
   // sort elements
   SortDistricts: Array<Districts> = [];
-  dt_SortBy: any = 'Name';
-  counter = 0; // even - Descending; odd - ascending
+  dt_SortBy: any = 'Confirmed';
+  counter = 1; // even - Descending; odd - ascending
   data: any;
 
   // search
