@@ -7,7 +7,7 @@
     #StateName{
         font-size: 1.21rem;
         margin-left:4px;
-        padding-top: 20px;
+        padding-bottom: 7px;
     }
 }
 
@@ -194,9 +194,6 @@ table thead tr th i{
 
 
 #ScrollDown{
-  width: 96px;
-  height: 39px;
-  border-radius: 10px;
   opacity: 0.8;
   float: right;
   animation: trans 1.5s infinite;

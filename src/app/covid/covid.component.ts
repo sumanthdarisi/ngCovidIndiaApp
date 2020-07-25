@@ -46,9 +46,10 @@ export class CovidComponent implements OnInit {
 
   // sort states
   SortStates: Array<States> = [];
+  RankStates: Array<States> = [];
   SortStatesDup = this.SortStates;
-  st_sortBy: any = 'name';
-  counter = 0; // even - Descending; odd - ascending
+  st_sortBy: any = 'confirmed';
+  counter = 1; // even - Descending; odd - ascending
 
   // search
   SearchWord: any = '';
@@ -116,6 +117,7 @@ export class CovidComponent implements OnInit {
           test_date = (_base['meta']['last_updated']) ? (_base['meta']['last_updated']) : 'NA';
           act = (con == 'NA' || dec == 'NA' || rec == 'NA') ? 'NA' : (con - (rec + dec));
           this.SortStates.push(new States(name, pop, con, dec, tes, rec, act, test_date, d_con, d_rec, d_dec, d_tes, d_act));
+          this.RankStates.push(new States(name, pop, con, dec, tes, rec, act, test_date, d_con, d_rec, d_dec, d_tes, d_act));
         }
       }
 
@@ -483,7 +485,7 @@ export class CovidComponent implements OnInit {
     this._serv.setCovidData(this.data[code]);
 
     //call the functions to get the state ranks for each category
-    let temp_data= this.SortStates;   
+    let temp_data= this.RankStates;   
     const con = this.sortDataRank(Name,temp_data,'confirmed');    
     const rec = this.sortDataRank(Name,temp_data,'recovered');
     const dec = this.sortDataRank(Name,temp_data,'deceased');
