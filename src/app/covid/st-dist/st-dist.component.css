@@ -2,7 +2,7 @@
   font-weight: bold;
 }
 
-@media only screen and (max-width: 600px)
+@media only screen and (max-width: 1000px)
 {
     #StateName{
         font-size: 1.21rem;
@@ -201,6 +201,8 @@ table thead tr th i{
 
 #ScrollDown:hover{
   opacity: 1;
+  background-color: indianred;
+  color: white;
 }
 
 @keyframes trans{
