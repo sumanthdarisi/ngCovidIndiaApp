@@ -419,6 +419,13 @@ export class StDistComponent implements OnInit {
       //confirm X-Y axis data
       const conXlabels = [];
       const conYlabels = [];
+      var conChartColors = {
+        color1: '#A0A1CA', //lightest
+        color2: '#595BA3',
+        color3: '#12157B',
+        color4: '#10136F',
+        color5: '#0B0D4A', //darkest
+      }
 
       this.StateConfirmedTimeSeriesData.reverse().splice(0, 10).forEach(element => {       
         conXlabels.push(element.date);
@@ -434,8 +441,9 @@ export class StDistComponent implements OnInit {
             {
               label: ['Confirmed'],
               data: conYlabels.reverse(),
-              backgroundColor : 'rgba(0, 123, 255, 0.6)',
-              hoverBackgroundColor : 'rgba(0, 123, 255, 1)'
+              backgroundColor : [
+                conChartColors.color1,conChartColors.color1,conChartColors.color1,conChartColors.color1,conChartColors.color1,conChartColors.color1,conChartColors.color1,conChartColors.color1,conChartColors.color1,conChartColors.color1
+              ]
             }]
         },
         options: {
@@ -484,12 +492,36 @@ export class StDistComponent implements OnInit {
           }
         }
       });
+
+      let intialvalue = stConfirmData.data.datasets[0];
+      for(let i=0; i<intialvalue.data.length;i++)
+      {
+        let val = Math.round(((intialvalue.data[i] - intialvalue.data[0])/intialvalue.data[0])*100);
+        if(val<=0)
+          intialvalue.backgroundColor[i]=conChartColors.color1; //console.log(val,'lightest');
+        else if(val > 0 && val <=25)
+          intialvalue.backgroundColor[i]=conChartColors.color2; //console.log(val, 'level 2');
+        else if(val > 26 && val <=50)
+          intialvalue.backgroundColor[i]=conChartColors.color3; //console.log(val, 'level 3');
+        else if(val > 51 && val <=75)
+          intialvalue.backgroundColor[i]=conChartColors.color4; //console.log(val, 'level 4');
+        else
+          intialvalue.backgroundColor[i]=conChartColors.color5; //console.log(val, 'darkest');
+      }
+      stConfirmData.update();
     }
 
 
       //recovered graph
       const recXlabels = [];
       const recYlabels = [];
+      var recChartColors = {
+        color1: '#9FC5A8', //lightest
+        color2: '#589966',
+        color3: '#106D25',
+        color4: '#0E6221',
+        color5: '#0A4116', //darkest
+      }
 
       this.StateRecoveredTimeSeriesData.reverse().splice(0, 10).forEach(element => {
         recXlabels.push(element.date);
@@ -505,8 +537,9 @@ export class StDistComponent implements OnInit {
             {
               label: ['Recovered'],
               data: recYlabels.reverse(),
-              backgroundColor : 'rgba(40, 167, 69, 0.6)',
-              hoverBackgroundColor : 'rgba(40, 167, 69, 1)'
+              backgroundColor : [
+                recChartColors.color1,recChartColors.color1,recChartColors.color1,recChartColors.color1,recChartColors.color1,recChartColors.color1,recChartColors.color1,recChartColors.color1,recChartColors.color1,recChartColors.color1
+              ]
             }]
         },
         options: {
@@ -555,12 +588,36 @@ export class StDistComponent implements OnInit {
           }
         }
       });
+
+      let intialvalue = stRecoveredmData.data.datasets[0];
+      for(let i=0; i<intialvalue.data.length;i++)
+      {
+        let val = Math.round(((intialvalue.data[i] - intialvalue.data[0])/intialvalue.data[0])*100);
+        if(val<=0)
+          intialvalue.backgroundColor[i]=recChartColors.color1; //console.log(val,'lightest');
+        else if(val > 0 && val <=25)
+        intialvalue.backgroundColor[i]=recChartColors.color2; //console.log(val, 'level 2');
+        else if(val > 26 && val <=50)
+        intialvalue.backgroundColor[i]=recChartColors.color3; //console.log(val, 'level 3');
+        else if(val > 51 && val <=75)
+        intialvalue.backgroundColor[i]=recChartColors.color4; //console.log(val, 'level 4');
+        else
+        intialvalue.backgroundColor[i]=recChartColors.color5; //console.log(val, 'darkest');
+      }
+      stRecoveredmData.update();
     }
 
 
       //Deceased X-Y axis data
       const decXlabels = [];
       const decYlabels = [];
+      var decChartColors = {
+        color1: '#F3B8B3', //lightest
+        color2: '#EB837B',
+        color3: '#E24E42',
+        color4: '#CB463B',
+        color5: '#882F28', //darkest
+      }
 
       this.StateDeceasedTimeSeriesData.reverse().splice(0, 10).forEach(element => {
         decXlabels.push(element.date);
@@ -576,8 +633,9 @@ export class StDistComponent implements OnInit {
             {
               label: ['Deceased'],
               data: decYlabels.reverse(),
-              backgroundColor : 'rgba(255, 7, 58, 0.6)',
-              hoverBackgroundColor : 'rgba(255, 7, 58, 1.0)'
+              backgroundColor : [
+                decChartColors.color1,decChartColors.color1,decChartColors.color1,decChartColors.color1,decChartColors.color1,decChartColors.color1,decChartColors.color1,decChartColors.color1,decChartColors.color1,decChartColors.color1
+              ]
             }]
         },
         options: {
@@ -625,11 +683,36 @@ export class StDistComponent implements OnInit {
           }
         }
       });
+
+      let intialvalue = stDeceasedData.data.datasets[0];
+      for(let i=0; i<intialvalue.data.length;i++)
+      {
+        let val = Math.round(((intialvalue.data[i] - intialvalue.data[0])/intialvalue.data[0])*100);
+        if(val<=0)
+          intialvalue.backgroundColor[i]=decChartColors.color1; //console.log(val,'lightest');
+        else if(val > 0 && val <=25)
+        intialvalue.backgroundColor[i]=decChartColors.color2; //console.log(val, 'level 2');
+        else if(val > 26 && val <=50)
+        intialvalue.backgroundColor[i]=decChartColors.color3; //console.log(val, 'level 3');
+        else if(val > 51 && val <=75)
+        intialvalue.backgroundColor[i]=decChartColors.color4; //console.log(val, 'level 4');
+        else
+        intialvalue.backgroundColor[i]=decChartColors.color5; //console.log(val, 'darkest');
+      }
+      stDeceasedData.update();
     }
 
       //Tests X-Y axis data
       const tesXlabels = [];
       const tesYlabels = [];
+      var tesChartColors = {
+        color1: '#e8b260', //lightest
+        color2: '#e4a74a',
+        color3: '#e19c33',
+        color4: '#db9120',
+        color5: '#986516', //darkest
+      }
+
       this.StateTestsTimeSeriesData.reverse().splice(0, 10).forEach(element => {
         tesXlabels.push(element.date);
         tesYlabels.push(element.number);
@@ -644,8 +727,9 @@ export class StDistComponent implements OnInit {
             {
               label: ['Tests'],
               data: tesYlabels.reverse(),
-              backgroundColor : 'rgba(242, 142, 14, 0.6)',
-              hoverBackgroundColor : 'rgba(242, 142, 14, 1)'
+              backgroundColor : [
+                tesChartColors.color1,tesChartColors.color1,tesChartColors.color1,tesChartColors.color1,tesChartColors.color1,tesChartColors.color1,tesChartColors.color1,tesChartColors.color1,tesChartColors.color1,tesChartColors.color1
+              ]
             }]
         },
         options: {
@@ -693,6 +777,22 @@ export class StDistComponent implements OnInit {
           }
         }
       });
+      let intialvalue = stTestsData.data.datasets[0];
+      for(let i=0; i<intialvalue.data.length;i++)
+      {
+        let val = Math.round(((intialvalue.data[i] - intialvalue.data[0])/intialvalue.data[0])*100);
+        if(val<=0)
+          intialvalue.backgroundColor[i]=tesChartColors.color1; //console.log(val,'lightest');
+        else if(val > 0 && val <=25)
+        intialvalue.backgroundColor[i]=tesChartColors.color2; //console.log(val, 'level 2');
+        else if(val > 26 && val <=50)
+        intialvalue.backgroundColor[i]=tesChartColors.color3; //console.log(val, 'level 3');
+        else if(val > 51 && val <=75)
+        intialvalue.backgroundColor[i]=tesChartColors.color4; //console.log(val, 'level 4');
+        else
+        intialvalue.backgroundColor[i]=tesChartColors.color5; //console.log(val, 'darkest');
+      }
+      stTestsData.update();
     }
 
     }
