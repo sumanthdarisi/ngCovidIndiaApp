@@ -420,11 +420,11 @@ export class StDistComponent implements OnInit {
       const conXlabels = [];
       const conYlabels = [];
       var conChartColors = {
-        color1: '#A0A1CA', //lightest
-        color2: '#595BA3',
-        color3: '#12157B',
-        color4: '#10136F',
-        color5: '#0B0D4A', //darkest
+        color1: '#5499c7', //lightest
+        color2: '#2980b9',
+        color3: '#2471a3',
+        color4: '#1f618d',
+        color5: '#1a5276', //darkest
       }
 
       this.StateConfirmedTimeSeriesData.reverse().splice(0, 10).forEach(element => {       
@@ -516,11 +516,11 @@ export class StDistComponent implements OnInit {
       const recXlabels = [];
       const recYlabels = [];
       var recChartColors = {
-        color1: '#9FC5A8', //lightest
-        color2: '#589966',
-        color3: '#106D25',
-        color4: '#0E6221',
-        color5: '#0A4116', //darkest
+        color1: '#52be80', //lightest
+        color2: '#27ae60',
+        color3: '#229954',
+        color4: '#1e8449',
+        color5: '#196f3d', //darkest
       }
 
       this.StateRecoveredTimeSeriesData.reverse().splice(0, 10).forEach(element => {
@@ -612,11 +612,11 @@ export class StDistComponent implements OnInit {
       const decXlabels = [];
       const decYlabels = [];
       var decChartColors = {
-        color1: '#F3B8B3', //lightest
-        color2: '#EB837B',
-        color3: '#E24E42',
-        color4: '#CB463B',
-        color5: '#882F28', //darkest
+        color1: '#d98880', //lightest
+        color2: '#cd6155',
+        color3: '#a93226',
+        color4: '#922b21',
+        color5: '#641e16', //darkest
       }
 
       this.StateDeceasedTimeSeriesData.reverse().splice(0, 10).forEach(element => {
@@ -706,11 +706,11 @@ export class StDistComponent implements OnInit {
       const tesXlabels = [];
       const tesYlabels = [];
       var tesChartColors = {
-        color1: '#e8b260', //lightest
-        color2: '#e4a74a',
-        color3: '#e19c33',
-        color4: '#db9120',
-        color5: '#986516', //darkest
+        color1: '#f8c471', //lightest
+        color2: '#f5b041',
+        color3: '#f39c12',
+        color4: '#d68910',
+        color5: '#b9770e', //darkest
       }
 
       this.StateTestsTimeSeriesData.reverse().splice(0, 10).forEach(element => {

@@ -71,11 +71,9 @@ export class CovidComponent implements OnInit {
   constructor(private _serv: APIService, private _route: Router) { }
 
   ngOnInit(): void {
-
     this._serv.getCovid().subscribe(
       (response) => {
       this.data = response;
-
       // placeholder
       this.placeHolderStateName = this._serv.getPipeStateName(Object.keys(this.data)[0]);
       for (const d in this.data)
@@ -654,26 +652,34 @@ export class CovidComponent implements OnInit {
   // top 10 states graph
   topStates(x, y)
   {
-      // top 5 states bar graph
-        let color, hcolor;
+      // top 10 states bar graph
+        let color, hcolor,colors;
 
         if (this.selectedRadio == 'confirmed'){
           color = 'rgba(0, 123, 255, 0.6)';
           hcolor = 'rgba(0, 123, 255, 1)';
+          colors = ['#3498db','#2e86c1','#2874a6','#21618c','#1b4f72'];
         }
         else if (this.selectedRadio == 'recovered'){
           color = 'rgba(40, 167, 69, 0.6)';
           hcolor = 'rgba(40, 167, 69, 1)';
+          colors = ['#16a085','#138d75','#117a65','#0e6655','#0b5345'];
         }
         else if (this.selectedRadio == 'tested'){
           color = 'rgba(108, 117, 125, 0.6)';
           hcolor = 'rgba(108, 117, 125, 1)';
+          colors = ['#eb984e','#e67e22','#ca6f1e','#af601a','#935116'];
         }
         else{
           color = 'rgba(255, 7, 58, 0.6)';
           hcolor = 'rgba(255, 7, 58, 1)';
+          colors = ['#e74c3c','#cb4335','#b03a2e','#943126','#78281f'];
+
         }
 
+        if (this.TopStates){
+          this.TopStates.destroy();
+        }
 
         const ds = {
           labels: x,
@@ -681,19 +687,16 @@ export class CovidComponent implements OnInit {
               {
                 label: ['Top 10 ' + this.selectedRadio.substring(0, 1).toUpperCase() + this.selectedRadio.substring(1) + ' States'],
                 data: y,
-                backgroundColor: color,
-                hoverBackgroundColor : hcolor
+                backgroundColor: [colors[0],colors[0],colors[0],colors[0],colors[0],colors[0],colors[0],colors[0],colors[0],colors[0]]
             }
         ]
         };
 
-        if (this.TopStates){
-          this.TopStates.destroy();
-        }
 
         Chart.Legend.prototype.afterFit = function() {
           this.height = this.height + 25;
         };
+
         this.TopStates = new Chart('tpStates', {
         type: 'bar',
         data: ds,
@@ -723,6 +726,21 @@ export class CovidComponent implements OnInit {
         }
     });
 
+    let intialvalue = ds.datasets[0];        
+      for(let i=0; i<intialvalue.data.length;i++)
+      {        
+        if(i<2)
+          intialvalue.backgroundColor[i]=colors[4]; //console.log(val,'lightest');
+        else if(i > 1 && i <=3)
+        intialvalue.backgroundColor[i]=colors[3]; //console.log(val, 'level 2');
+        else if(i > 3 && i <=5)
+        intialvalue.backgroundColor[i]=colors[2]; //console.log(val, 'level 3');
+        else if(i > 5 && i <=7)
+        intialvalue.backgroundColor[i]=colors[1]; //console.log(val, 'level 4');
+        else
+        intialvalue.backgroundColor[i]=colors[0]; //console.log(val, 'darkest');
+      }
+      this.TopStates.update();
   }
 
 
