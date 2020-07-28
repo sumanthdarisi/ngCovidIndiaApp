@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CovidStDt } from '../Models/covid-st-dt';
 import { APIService } from '../Services/api.service';
 import { Chart } from 'node_modules/chart.js';
@@ -6,11 +6,23 @@ import { Router } from '@angular/router';
 import { States } from '../Models/states';
 import { StatesDelta } from '../Models/states-delta';
 import { Rank } from '../Models/rank';
+import { trigger, style, transition, animate, query, stagger, animateChild } from '@angular/animations';
+import { NtStCounts } from '../Models/nt-st-counts';
+
 
 @Component({
   selector: 'app-covid',
   templateUrl: './covid.component.html',
-  styleUrls: ['./covid.component.css']
+  styleUrls: ['./covid.component.css'],
+  animations:[
+    trigger('items', [
+      transition(':enter', [
+        style({ transform: 'scale(0.5)', opacity: 0 }),
+        animate('1s cubic-bezier(.8,-0.6,0.2,1.5)', 
+          style({ transform: 'scale(1)', opacity: 1 }))
+      ])
+    ])
+  ]
 })
 
 export class CovidComponent implements OnInit {
@@ -37,9 +49,9 @@ export class CovidComponent implements OnInit {
 
   TopStates ;
 
-
   data: Array<CovidStDt>;
   timeSeriesData: any;
+  timeSeriesLoadedFlag = true;
 
   //API error message handler 
   errorMessage = "NA";
@@ -68,12 +80,13 @@ export class CovidComponent implements OnInit {
   // States Delta Data
   St_Delta: Array<StatesDelta> = [];
 
-  constructor(private _serv: APIService, private _route: Router) { }
+  constructor(private _serv: APIService, private _route: Router) {   }
 
   ngOnInit(): void {
     this._serv.getCovid().subscribe(
       (response) => {
       this.data = response;
+      
       // placeholder
       this.placeHolderStateName = this._serv.getPipeStateName(Object.keys(this.data)[0]);
       for (const d in this.data)
@@ -103,8 +116,8 @@ export class CovidComponent implements OnInit {
           d_act = (!_base || d_rec == 'NA' || d_con == 'NA' || d_dec == 'NA') ? 'NA' : (d_con - (d_rec + d_dec));
         }
 
-        if (this.data[e]['meta'] && this.data[e]['total'] && this._serv.getPipeStateName(e) && e != 'TT' && e != 'UN')
-        {
+        if (this.data[e]['total'] && this._serv.getPipeStateName(e) && e != 'TT' && e != 'UN')
+        {          
           const _base = this.data[e];
           name = this._serv.getPipeStateName(e);
           pop = (_base['meta']['population']) ? _base['meta']['population'] : 'NA';
@@ -200,8 +213,7 @@ export class CovidComponent implements OnInit {
       {Name: 'Recovered Cases', number: this.Nt_TotalRecoverdCases, style: 'rec_cl', del: this.Nt_Del_Recovered, del_style: 'delta_tot', percent: this.nt_recovered_percent, icon: 'fa fa-check-circle', percText: 'of Confirmed' },
       {Name: 'Deceased Cases', number: this.Nt_TotalDeceasedCases, style: 'dec_cl', del: this.Nt_Del_Deceased, del_style: 'delta_tot', percent: this.nt_deceased_percent, icon: 'fa fa-minus-circle', percText: 'of Confirmed' },
       {Name: 'Total Tests', number: this.Nt_TotalTests, style: 'tot_cl', del: this.Nt_Del_Tested, del_style: 'delta_tot', icon: 'fa fa-flask', percent: this.nt_tests_percent, percText: 'of Population'}
-    ];
-
+    ];    
   }
 
 
@@ -476,7 +488,7 @@ export class CovidComponent implements OnInit {
   // send state name and respective data to service before routing to a state page
   stateCode(e)
   {
-    const Name = e.target.innerText;
+    const Name = e.target.parentNode.cells? e.target.parentNode.cells[0].innerHTML.trim():e.target.parentNode.parentNode.cells[0].innerHTML.trim();
     const code = this._serv.getPipeStateCode(Name);
     
     //send the selcted state data to service before routing
@@ -490,7 +502,21 @@ export class CovidComponent implements OnInit {
     const act = this.sortDataRank(Name,temp_data,'active');
     const tes = this.sortDataRank(Name,temp_data,'tested');
     const ranks: Rank = new Rank(con,act,rec,dec,tes);
-    this._serv.setStateRank(ranks);
+    
+    const counts: NtStCounts= new NtStCounts(
+      this.Nt_TotalConfirmedCases,
+      this.Nt_TotalRecoverdCases,
+      this.Nt_TotalDeceasedCases,
+      this.Nt_Active,
+      this.Nt_TotalTests,
+      this.data[code]['total']['confirmed']?this.data[code]['total']['confirmed']:'-NA-',
+      this.data[code]['total']['recovered']?this.data[code]['total']['recovered']:'-NA-',
+      this.data[code]['total']['deceased']?this.data[code]['total']['deceased']:'-NA-',
+      (this.data[code]['total']['confirmed'] && this.data[code]['total']['recovered'] && this.data[code]['total']['deceased'])?
+      (this.data[code]['total']['confirmed'] - (this.data[code]['total']['recovered'] + this.data[code]['total']['deceased'])):'-NA-',
+      this.data[code]['total']['tested']?this.data[code]['total']['tested']:'-NA-',
+      )
+    this._serv.setStateRank(ranks,counts);
     
     //navigate to the state page
     this._route.navigate(['Covid/', code]);
@@ -643,8 +669,7 @@ export class CovidComponent implements OnInit {
             }
         }
     });
-
-
+    this.timeSeriesLoadedFlag = false;
     });
   }
 
@@ -823,6 +848,5 @@ export class CovidComponent implements OnInit {
       }
     }, 1200);
   }
-
 
 }

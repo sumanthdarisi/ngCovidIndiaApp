@@ -163,3 +163,16 @@ table thead tr th {
 	top: 0;
 	left: 0;
 }
+
+
+#statename{
+    position: sticky; 
+    left:0px; 
+    background-color: white; 
+    font-weight: bold;
+    cursor: pointer;
+    overflow: hidden;
+    color: #0d44a5;
+    z-index: 100;
+}
+

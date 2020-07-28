@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { CovidStDt } from '../Models/covid-st-dt';
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, map, filter } from 'rxjs/operators';
 import { Rank } from '../Models/rank';
+import { NtStCounts } from '../Models/nt-st-counts';
 
 
 @Injectable({
@@ -18,22 +19,24 @@ export class APIService {
   stateFullName: any;
   _jsonFile = 'assets/IndiaStates.json';
   stateRank: Rank;
+  counts:NtStCounts;
 
-  constructor(private _http: HttpClient) { }
+
+  constructor(private _http: HttpClient){}
 
 
-  getCovid(): Observable<CovidStDt[]>{
+  getCovid(): Observable<any>{
     const _covidurl = 'https://api.covid19india.org/v3/data.json';
-    this.covidData = this._http.get<CovidStDt[]>(_covidurl).pipe(
-      retry(3),
+    this.covidData = this._http.get(_covidurl).pipe(
       catchError(err=>{
         console.log('error',err);
         return throwError(err);
-      })
+      }) 
     );
+    
     this._http.get(this._jsonFile).subscribe(res => {
       this.statename = res;
-    });
+    });    
     return this.covidData;
   }
 
@@ -74,12 +77,12 @@ export class APIService {
 
   getPipeStateCode(Name: string){
     if (Name)
-    {
+    {      
       this.stateFullName = Name;
       for (const d in this.statename){
-        if (Name == this.statename[d]) {
+        if (Name.trim() == this.statename[d]) {
           this.stateCode  = d;
-        return d;
+          return d;
         }
       }
     }
@@ -103,16 +106,23 @@ export class APIService {
     return this._http.get(_basetimeSeries);
   }
 
-  setStateRank(e: Rank)
+  setStateRank(e: Rank, c: NtStCounts)
   {
     if(e){
       this.stateRank = e;
+    }
+    if(c){
+      this.counts = c;
     }
   }
 
   getStateRank()
   {
     return this.stateRank;
+  }
+
+  getNtStCounts(){
+    return this.counts;
   }
 
 }

@@ -5,6 +5,7 @@ import { Districts } from 'src/app/Models/districts';
 import { StateDailyCounts } from 'src/app/Models/state-daily-counts';
 import { Chart } from 'node_modules/chart.js';
 import { Rank } from 'src/app/Models/rank';
+import { NtStCounts } from 'src/app/Models/nt-st-counts';
 
 @Component({
   selector: 'app-st-dist',
@@ -54,6 +55,14 @@ export class StDistComponent implements OnInit {
 
   //stateRank
   stateRank: Rank;
+  NtStCounts: NtStCounts;
+
+  //% of total
+  total_confirmed;
+  total_recovered;
+  total_active;
+  total_deceased;
+  total_tested;
 
   constructor(private _serv: APIService, private route: Router) { }
 
@@ -63,10 +72,6 @@ export class StDistComponent implements OnInit {
 
     if (!this.data) {
       this.route.navigateByUrl('/Covid');
-    }
-
-    if (this.dt_SortBy) {
-      this.dt_sort(this.dt_SortBy);
     }
 
     this.stateName = this._serv.getStateName();
@@ -84,9 +89,9 @@ export class StDistComponent implements OnInit {
       d_act = (!_base || d_rec == 'NA' || d_con == 'NA' || d_dec == 'NA') ? 'NA' : (d_con - (d_rec + d_dec));
 
       // actual data
-      if (this.data.districts[e].meta) {
+      if (this.data.districts[e]) {
         name = (e) ? e : 'NA';
-        pop = (this.data.districts[e].meta.population) ? this.data.districts[e].meta.population : 'NA';
+        pop = (this.data.districts[e].meta && this.data.districts[e].meta.population) ? this.data.districts[e].meta.population : 'NA';
         con = (this.data.districts[e].total && this.data.districts[e].total.confirmed) ? this.data.districts[e].total.confirmed : 'NA';
         dec = (this.data.districts[e].total && this.data.districts[e].total.deceased) ? this.data.districts[e].total.deceased : 'NA';
         tes = (this.data.districts[e].total && this.data.districts[e].total.tested) ? this.data.districts[e].total.tested : 'NA';
@@ -97,45 +102,23 @@ export class StDistComponent implements OnInit {
       }
     }
 
+    if (this.dt_SortBy) {
+      this.dt_sort(this.dt_SortBy);
+    }
+
     // placeholder
     for (const d in this.data.districts) {
       if (this.data.districts[d].meta && this.data.districts[d].total) {
         this.placeholder.push(d);
       }
     }
-
     this.initialize();
     this.StateTimeSeries();
     this.placaholderFunc(this.placeholder);
   }
+  
 
   initialize() {
-    for (const d in this.data.districts) {
-      if (this.data.districts[d].meta && this.data.districts[d].total) {
-        if (this.data.districts[d].meta.population) {
-          this.st_population += Number(this.data.districts[d].meta.population);
-        }
-
-        if (this.data.districts[d].total.confirmed) {
-          this.st_confirmed += Number(this.data.districts[d].total.confirmed);
-        }
-
-        if (this.data.districts[d].total.recovered) {
-          this.st_recovered += Number(this.data.districts[d].total.recovered);
-        }
-
-        if (this.data.districts[d].total.deceased) {
-          this.st_deceased += Number(this.data.districts[d].total.deceased);
-        }
-
-        if (this.data.districts[d].total.tested) {
-          this.st_tested += Number(this.data.districts[d].total.tested);
-        }
-      }
-    }
-
-    this.st_Active = this.st_confirmed - (this.st_recovered + this.st_deceased);
-
     if (this.data.delta) {
       if (this.data.delta.confirmed) {
         this.delta_confirmed = this.data.delta.confirmed;
@@ -155,14 +138,27 @@ export class StDistComponent implements OnInit {
 
       this.delta_active = +this.delta_confirmed - (+this.delta_recovered + +this.delta_deceased);
     }
+    
     this.stateRank = this._serv.getStateRank();  
+    this.NtStCounts = this._serv.getNtStCounts();
+
+    if(this.NtStCounts.st_confirmed!='-NA-')
+      this.total_confirmed = (((this.NtStCounts.st_confirmed)/this.NtStCounts.nt_confirmed)*100).toFixed(2);
+    if(this.NtStCounts.st_active !='-NA-')
+      this.total_active = (((this.NtStCounts.st_active)/this.NtStCounts.nt_active)*100).toFixed(2);
+    if(this.NtStCounts.st_recovered!='-NA-')
+      this.total_recovered = (((this.NtStCounts.st_recovered)/this.NtStCounts.nt_recovered)*100).toFixed(2);
+    if(this.NtStCounts.st_deceased!='-NA-')
+      this.total_deceased = (((this.NtStCounts.st_deceased)/this.NtStCounts.nt_deceased)*100).toFixed(2);
+    if(this.NtStCounts.st_tested!='-NA-')
+      this.total_tested = (((this.NtStCounts.st_tested)/this.NtStCounts.nt_tested)*100).toFixed(2);
 
     this.districtData = [
-      { Name: 'Confirmed Cases', number: this.st_confirmed, class: 'fill cl_con', del: this.delta_confirmed, del_style: 'delta_tot del_con', icon: 'fa fa-plus-square', rank: this.stateRank.ConfirmedRank},
-      { Name: 'Active Cases', number: this.st_Active, class: 'fill cl_act', del: this.delta_active, del_style: 'delta_tot del_act', icon: 'fa fa-heartbeat', rank: this.stateRank.ActiveRank },
-      { Name: 'Recovered Cases', number: this.st_recovered, class: 'fill cl_rec', del: this.delta_recovered, del_style: 'delta_tot del_rec', icon: 'fa fa-check-circle', rank: this.stateRank.RecoveredRank },
-      { Name: 'Deceased Cases', number: this.st_deceased, class: 'fill cl_dec', del: this.delta_deceased, del_style: 'delta_tot del_dec', icon: 'fa fa-minus-circle', rank: this.stateRank.DeceasedRank },
-      { Name: 'Total Tested', number: this.st_tested, class: 'fill cl_tes', del: this.delta_tested, del_style: 'delta_tot del_tes', icon: 'fa fa-flask', rank: this.stateRank.TestsRank }
+      { Name: 'Confirmed Cases', number: this.NtStCounts.st_confirmed, class: 'fill cl_con', del: this.delta_confirmed, del_style: 'delta_tot del_con', icon: 'fa fa-plus-square', rank: this.stateRank.ConfirmedRank, perc_position: this.total_confirmed ? this.total_confirmed : '-NA-' },
+      { Name: 'Active Cases', number: this.NtStCounts.st_active, class: 'fill cl_act', del: this.delta_active, del_style: 'delta_tot del_act', icon: 'fa fa-heartbeat', rank: this.stateRank.ActiveRank, perc_position: this.total_active ? this.total_active : '-NA-' },
+      { Name: 'Recovered Cases', number: this.NtStCounts.st_recovered, class: 'fill cl_rec', del: this.delta_recovered, del_style: 'delta_tot del_rec', icon: 'fa fa-check-circle', rank: this.stateRank.RecoveredRank, perc_position: this.total_recovered ? this.total_recovered : '-NA-' },
+      { Name: 'Deceased Cases', number: this.NtStCounts.st_deceased, class: 'fill cl_dec', del: this.delta_deceased, del_style: 'delta_tot del_dec', icon: 'fa fa-minus-circle', rank: this.stateRank.DeceasedRank, perc_position: this.total_deceased ? this.total_deceased : '-NA-' },
+      { Name: 'Total Tested', number: this.NtStCounts.st_tested, class: 'fill cl_tes', del: this.delta_tested, del_style: 'delta_tot del_tes', icon: 'fa fa-flask', rank: this.stateRank.TestsRank, perc_position: this.total_tested ? this.total_tested : '-NA-' }
     ];    
   }
 

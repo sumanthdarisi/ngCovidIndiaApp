@@ -19,6 +19,14 @@
     font-weight: bold;
     font-size: 13px;
 }
+.rank_perc{
+  color:#06060670;
+  text-align: center;
+  padding-left: 7px;
+  font-weight: bold;
+  font-size: 13px;
+  padding-top: 9px;
+}
 
 #actualRank{
   font-size: 20px;

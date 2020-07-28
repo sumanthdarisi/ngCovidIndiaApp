@@ -14,7 +14,7 @@
     </div>
 
     <div class="row">
-        <div class="col" style="margin:3px;" *ngFor="let d of Nt_data">
+        <div @items class="col" style="margin:3px;" *ngFor="let d of Nt_data">
             <div class="card {{d.style}}">
                 <div class="card-header">
                     {{d.Name}} <span class={{d.icon}}></span>
@@ -90,7 +90,7 @@
         <table class="table table-responsive" id="homeTable">
             <thead>
                 <tr>
-                    <th #name style="position: sticky; left:0px; background-color: white; z-index: 999;"
+                    <th #name id="statename"
                         (click)="st_sortByClick('name')">State Name<i *ngIf="counter%2!=0 && st_sortBy=='name'"
                             class="fa fa-sort-alpha-asc"></i>
                         <i *ngIf="counter%2==0 && st_sortBy=='name'" class="fa fa-sort-alpha-desc"></i>
@@ -125,9 +125,8 @@
             </thead>
 
             <tbody *ngFor="let d of SortStates" class="thead">
-                <tr>
-                    <td style="position: sticky; left:0px; background-color: white;color:rgb(29, 29, 211,0.7); z-index: 999;font-weight: bold; cursor: pointer;"
-                        (click)="stateCode($event)">{{d.st_name}}
+                <tr (click)="stateCode($event)">
+                    <td id="statename" >{{d.st_name}}
                     </td>
                     <td *ngIf="d.st_lastupdate != 'NA'; else elseBlock">
                         {{d.st_lastupdate| date:'mediumDate'}}</td>

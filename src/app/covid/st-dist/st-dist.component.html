@@ -29,7 +29,7 @@
                                 <div class="inside-circle">
                                     <span class={{d.icon}}></span>
                                     <div class="nameTag">{{d.Name}}</div>
-                                    <div *ngIf="d.number; else elseBlock" [countUp]=d.number options="duration" id="nameTagNumber">{{d.number | number}}</div>
+                                    <div *ngIf="d.number !='-NA-'; else elseBlock" [countUp]=d.number options="duration" id="nameTagNumber">{{d.number | number}}</div>
                                     <div class={{d.del_style}} *ngIf="d.del && d.del_style">
                                         <i class="fa fa-arrow-up" aria-hidden="true" *ngIf="d.del >=0 "></i>
                                         <i class="fa fa-arrow-down" aria-hidden="true"
@@ -37,10 +37,14 @@
                                 </div>
                             </div>
                             <div class="rank" *ngIf="d.rank"><span class="badge badge-info" style="font-size: 120%;">#{{d.rank}}</span> in the Nation</div>
+                            <div class="rank_perc" *ngIf="d.perc_position == '0.00'">Yay! Its Negligible</div>
+                            <div class="rank_perc" *ngIf="d.perc_position!='-NA-' && d.perc_position > 0">{{d.perc_position}}% of total</div>
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-default" style="border: 1px solid #645e5e66;" (click)="scroll(target)" id="ScrollDown"><i class="fa fa-arrow-down" style="font-size: 11px;" aria-hidden="true"></i><span id="scrollText"> view stats</span></button>
+                <div id="ScrollDown">
+                    <button type="button" class="btn btn-default" style="border: 1px solid #645e5e66;" (click)="scroll(target)"><i class="fa fa-arrow-down" style="font-size: 11px;" aria-hidden="true"></i><span id="scrollText"></span></button>
+                </div>
             </div>
             <ng-template #elseBlock>
                 <div>-NA-</div>
