@@ -449,7 +449,6 @@ export class StDistComponent implements OnInit {
               var ctx = chartInstance.ctx;              
               ctx.textAlign = "center";
               ctx.font = "bold 9px 'Helvetica Neue', Helvetica, Arial, sans-serif";
-              
               Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) 
                 {
                     var meta = chartInstance.controller.getDatasetMeta(i);

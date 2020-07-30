@@ -58,7 +58,7 @@
   
 
 
-  .custom-control-label{
+.custom-control-label{
       font-weight: normal;
       font-size: 14px;
   }
@@ -67,25 +67,74 @@
       text-align: center;
   }
 
-  
-
-@media only screen and (max-width: 500px)
-{
-    #tpStates{
-        height: 166px;
+  .wrapper {
+    height: 263px !important;
+    margin: 0px 0px -24px 0px;
     }
-}
 
-@media only screen and (min-width: 501px)
+
+
+@media only screen and (min-width: 767px) and (max-width:991px)    
 {
-    #tpStates{
-        height: 258px;
+    .wrapper{
+        height: 263px !important;
+        margin: 0px 0px 77px 0px;
     }
 }
 
 
 @media only screen and (max-width: 502px)
 {
+    #AllStackedData{
+        height: 204px !important;
+    }
+    
+    #radioGraphCol{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    #tpStates{
+        height: 166px;
+    }
+
+    .wrapper{
+        height: 195px !important;
+        margin: 0px 0px 20px 0px;
+    }
+
+    .custom-control-label{
+        font-weight: normal;
+        font-size: 12px;
+    }
+
+    .custom-control {
+        padding-left: 1em;
+    }
+
+    .custom-control-label::after {
+        position: absolute;
+        top: .12rem;
+        left: -1.64rem;
+        display: block;
+        width: 1rem;
+        height: 1rem;
+        content: "";
+        background: no-repeat 50%/50% 50%;
+    }
+
+    .custom-control-label::before {
+        position: absolute;
+        top: .25rem;
+        left: -1.5rem;
+        display: block;
+        width: 0.7rem;
+        height: 0.7rem;
+        pointer-events: none;
+        content: "";
+        background-color: #fff;
+        border: #adb5bd solid 1px;
+    }
+
     .alert-warning{
         font-size: 13px;
         padding: .75rem 0.5rem;
@@ -98,6 +147,15 @@
         padding-top: 20px;
     }
 }
+
+@media only screen and (min-width: 501px)
+{
+    #tpStates{
+        height: 258px;
+    }
+}
+
+
 .cardPercentage{
     float: right;
     position: absolute;
@@ -105,7 +163,7 @@
     font-size: 55px;
     opacity: 0.1;
     right: 1px;
-    bottom: 1.1px;
+    top: 32px;
     user-select: none;
 }
 
@@ -113,7 +171,7 @@
     font-size: 10px;
     color: black;
     position: absolute;
-    bottom: 2px;
+    top: 65px;
     right: 5px;
     opacity: 0.5;
 }

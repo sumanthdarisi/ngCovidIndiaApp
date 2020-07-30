@@ -6,8 +6,9 @@ import { Router } from '@angular/router';
 import { States } from '../Models/states';
 import { StatesDelta } from '../Models/states-delta';
 import { Rank } from '../Models/rank';
-import { trigger, style, transition, animate, query, stagger, animateChild } from '@angular/animations';
+import { trigger, style, transition, animate } from '@angular/animations';
 import { NtStCounts } from '../Models/nt-st-counts';
+
 
 
 @Component({
@@ -51,7 +52,6 @@ export class CovidComponent implements OnInit {
 
   data: Array<CovidStDt>;
   timeSeriesData: any;
-  timeSeriesLoadedFlag = true;
 
   //API error message handler 
   errorMessage = "NA";
@@ -79,6 +79,23 @@ export class CovidComponent implements OnInit {
 
   // States Delta Data
   St_Delta: Array<StatesDelta> = [];
+
+
+  //timeseries
+  hoverGraphType="All";
+  AllStackedData;
+  dailyXlabels = [];
+  dailyConfirmYlabels = [];
+  dailyRecoveredYlabels = [];
+  dailyDeceasedYlabels = [];
+  dailyActiveYlabels = [];
+  //tooltip data
+
+  toolConfirmed=0;
+  toolRecovered;
+  toolActive;
+  toolDeceased;
+
 
   constructor(private _serv: APIService, private _route: Router) {   }
 
@@ -208,10 +225,10 @@ export class CovidComponent implements OnInit {
     this.nt_tests_percent = (this.Nt_TotalTests / this.IndianPopulation);
 
     this.Nt_data = [
-      {Name: 'Confirmed Cases', number: this.Nt_TotalConfirmedCases, style: 'con_cl', del: this.Nt_Del_Confirmed, del_style: 'delta_tot', icon: 'fa fa-plus-square' },
+      {Name: 'Confirmed Cases', number: this.Nt_TotalConfirmedCases, style: 'con_cl', del: this.Nt_Del_Confirmed, del_style: 'delta_tot', icon: 'fa fa-plus-square'},
       {Name: 'Active Cases', number: this.Nt_Active, style: 'act_cl', del: this.Nt_Del_Active, del_style: 'delta_tot', percent: this.nt_active_percent, icon: 'fa fa-heartbeat',  percText: 'of Confirmed'},
-      {Name: 'Recovered Cases', number: this.Nt_TotalRecoverdCases, style: 'rec_cl', del: this.Nt_Del_Recovered, del_style: 'delta_tot', percent: this.nt_recovered_percent, icon: 'fa fa-check-circle', percText: 'of Confirmed' },
-      {Name: 'Deceased Cases', number: this.Nt_TotalDeceasedCases, style: 'dec_cl', del: this.Nt_Del_Deceased, del_style: 'delta_tot', percent: this.nt_deceased_percent, icon: 'fa fa-minus-circle', percText: 'of Confirmed' },
+      {Name: 'Recovered Cases', number: this.Nt_TotalRecoverdCases, style: 'rec_cl', del: this.Nt_Del_Recovered, del_style: 'delta_tot', percent: this.nt_recovered_percent, icon: 'fa fa-check-circle', percText: 'of Confirmed'},
+      {Name: 'Deceased Cases', number: this.Nt_TotalDeceasedCases, style: 'dec_cl', del: this.Nt_Del_Deceased, del_style: 'delta_tot', percent: this.nt_deceased_percent, icon: 'fa fa-minus-circle', percText: 'of Confirmed'},
       {Name: 'Total Tests', number: this.Nt_TotalTests, style: 'tot_cl', del: this.Nt_Del_Tested, del_style: 'delta_tot', icon: 'fa fa-flask', percent: this.nt_tests_percent, percText: 'of Population'}
     ];    
   }
@@ -526,178 +543,304 @@ export class CovidComponent implements OnInit {
   // main graph
   timeSeries()
   {
-      const Xlabels = [];
-
-      const confirmYlabels = [];
-      const recoverYlabels = [];
-      const deceasedYlabels = [];
-      const activeYlabels = [];
-
+      //*********** OLD graph ************//
+      // const Xlabels = [];
+      // const confirmYlabels = [];
+      // const recoverYlabels = [];
+      // const deceasedYlabels = [];
+      // const activeYlabels = [];
+      
 
       this._serv.getTimeSeries().subscribe(res => {
       this.timeSeriesData = res.cases_time_series;
 
       for (const d in this.timeSeriesData) {
-        Xlabels.push(this.timeSeriesData[d].date);
-        confirmYlabels.push(parseInt(this.timeSeriesData[d].totalconfirmed));
-        recoverYlabels.push(parseInt(this.timeSeriesData[d].totalrecovered));
-        deceasedYlabels.push(parseInt(this.timeSeriesData[d].totaldeceased));
-        activeYlabels.push(parseInt(this.timeSeriesData[d].totalconfirmed) - (parseInt(this.timeSeriesData[d].totalrecovered) + parseInt(this.timeSeriesData[d].totaldeceased)));
+        //*********** OLD graph ************//
+        // Xlabels.push(this.timeSeriesData[d].date);
+        // confirmYlabels.push(parseInt(this.timeSeriesData[d].totalconfirmed));
+        // recoverYlabels.push(parseInt(this.timeSeriesData[d].totalrecovered));
+        // deceasedYlabels.push(parseInt(this.timeSeriesData[d].totaldeceased));
+        // activeYlabels.push(parseInt(this.timeSeriesData[d].totalconfirmed) - (parseInt(this.timeSeriesData[d].totalrecovered) + parseInt(this.timeSeriesData[d].totaldeceased)));
+
+        if(this.timeSeriesData[d].dailyconfirmed && this.timeSeriesData[d].dailydeceased && this.timeSeriesData[d].dailyrecovered){
+          let date_len = new Date(this.timeSeriesData[d].date).toLocaleDateString().length -5;
+          this.dailyXlabels.push(new Date(this.timeSeriesData[d].date).toLocaleDateString().substring(0,date_len));
+          this.dailyConfirmYlabels.push(parseInt(this.timeSeriesData[d].dailyconfirmed));
+          this.dailyRecoveredYlabels.push(parseInt(this.timeSeriesData[d].dailyrecovered));
+          this.dailyDeceasedYlabels.push(parseInt(this.timeSeriesData[d].dailydeceased));
+          this.dailyActiveYlabels.push(parseInt(this.timeSeriesData[d].dailyconfirmed) - (parseInt(this.timeSeriesData[d].dailyrecovered) + parseInt(this.timeSeriesData[d].dailydeceased)));
+        }
       }
+      
+      //*********** OLD graph ************//
+      // const xlablesLen = Xlabels.length / 1.5;
+      // Xlabels.splice(0, xlablesLen);
+      // confirmYlabels.splice(0, xlablesLen);
+      // recoverYlabels.splice(0, xlablesLen);
+      // deceasedYlabels.splice(0, xlablesLen);
+      // activeYlabels.splice(0, xlablesLen);
 
       // X & Y axis data on graph
-      const xlablesLen = Xlabels.length / 1.5;
-      Xlabels.splice(0, xlablesLen);
-      confirmYlabels.splice(0, xlablesLen);
-      recoverYlabels.splice(0, xlablesLen);
-      deceasedYlabels.splice(0, xlablesLen);
-      activeYlabels.splice(0, xlablesLen);
+      this.dailyXlabels.splice(0,this.dailyXlabels.length-10);
+      this.dailyConfirmYlabels.splice(0,this.dailyConfirmYlabels.length-10);
+      this.dailyRecoveredYlabels.splice(0,this.dailyRecoveredYlabels.length-10);
+      this.dailyDeceasedYlabels.splice(0,this.dailyDeceasedYlabels.length-10);
+      this.dailyActiveYlabels.splice(0,this.dailyActiveYlabels.length-10);
+      
 
-      // Main Dashboard - multiple dataset graph
-      Chart.Legend.prototype.afterFit = function() {
-        this.height = this.height + 25;
-      };
+      //*********** OLD graph ************//
+      // Chart.defaults.LineWithLine = Chart.defaults.line;
+      // Chart.controllers.LineWithLine = Chart.controllers.line.extend({
+      //   draw(ease) {
+      //     Chart.controllers.line.prototype.draw.call(this, ease);
 
-      Chart.defaults.LineWithLine = Chart.defaults.line;
-      Chart.controllers.LineWithLine = Chart.controllers.line.extend({
-        draw(ease) {
-          Chart.controllers.line.prototype.draw.call(this, ease);
+      //     if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
+      //       const activePoint = this.chart.tooltip._active[0],
+      //           ctx = this.chart.ctx,
+      //           x = activePoint.tooltipPosition().x,
+      //           topY = this.chart.legend.bottom,
+      //           bottomY = this.chart.chartArea.bottom;
 
-          if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
-            const activePoint = this.chart.tooltip._active[0],
-                ctx = this.chart.ctx,
-                x = activePoint.tooltipPosition().x,
-                topY = this.chart.legend.bottom,
-                bottomY = this.chart.chartArea.bottom;
+      //       // draw line
+      //       ctx.save();
+      //       ctx.beginPath();
+      //       ctx.moveTo(x, topY);
+      //       ctx.lineTo(x, bottomY);
+      //       ctx.lineWidth = 1;
+      //       ctx.strokeStyle = 'rgba(167, 168, 167,0.3)';
+      //       ctx.stroke();
+      //       ctx.restore();
+      //     }
+      //   }
+      // });
 
-            // draw line
-            ctx.save();
-            ctx.beginPath();
-            ctx.moveTo(x, topY);
-            ctx.lineTo(x, bottomY);
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = 'rgba(167, 168, 167,0.3)';
-            ctx.stroke();
-            ctx.restore();
-          }
-        }
-      });
+      
+      //Call Main Dashboard - multiple dataset graph
+      this.HoverMainGraph();
+      
 
+      //****auto select graphs****//
+      // setInterval(()=>{  
+      //   if(ds==All)
+      //     ds=ConfirmedGraph;
+      //   else if(ds==ConfirmedGraph)
+      //     ds=ActiveGraph;
+      //   else if(ds==ActiveGraph)
+      //     ds=RecoveredGraph;
+      //   else if(ds==RecoveredGraph)
+      //     ds=DeceasedGraph;
+      //   else 
+      //     ds=All;
 
-      const NationalData = new Chart('NationalData', {
-        type: 'LineWithLine',
-        data: {
-          labels: Xlabels,
-            datasets: [
-              {
-                label: ['Confirmed'],
-                data: confirmYlabels,
-                fill: false,
-                borderColor: [
-                  'rgba(0, 123, 255, 0.6)'
-                ],
-                radius: 0.7,
-                pointBorderColor: 'black',
-                pointHoverRadius: 10
-            },
-            {
-              label: ['Recovered'],
-              data: recoverYlabels,
-              fill: false,
-              borderColor: [
-                'rgba(40, 167, 69, 0.6)'
-              ],
-              radius: 0.7,
-              pointBorderColor: 'black',
+      //   this.ConStackedData.destroy();
+      //   this.ConStackedData = new Chart('ConStackedData', {
+      //     type: 'line',        
+      //     data: ds,
+      //     options: lineOpitions,
+      //   });
 
-              pointHoverRadius: 10
-          },
-          {
-            label: ['Active'],
-            data: activeYlabels,
-            fill: false,
+      //   this.ConStackedData.update();
+      // },7000)
 
-            borderColor: [
-              'rgba(255, 7, 58, 0.6)'
-            ],
-            radius: 0.7,
-            pointBorderColor: 'black',
-            pointHoverRadius: 10
-          },
-          {
-            label: ['Deceased'],
-            data: deceasedYlabels,
-            fill: false,
+      
 
-            borderColor: [
-              'rgba(197, 155, 18, 0.6)'
-            ],
-            radius: 0.7,
-            pointBorderColor: 'black',
-            pointHoverRadius: 10
-          }
-        ]
-        },
-        options: {
-          responsive: true,
-          events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
-          tooltips: {
-            enabled: true,
-            mode: 'index',
-            intersect: false
-          },
-            scales: {
-                yAxes: [{
-                  position: 'right',
-                  gridLines: {
-                    drawOnChartArea: true
-                  },
-                    ticks: {
-                        autoSkip: true,
-                        maxTicksLimit: 6
-                    }
-                }],
-                xAxes: [{
-                  gridLines: {
-                    drawOnChartArea: false
-                  },
-                  ticks: {
-                      autoSkip: true,
-                      maxTicksLimit: 10
-                  }
-                }]
-            }
-        }
-    });
-    this.timeSeriesLoadedFlag = false;
+    //   const NationalData = new Chart('NationalData', {
+    //     type: 'LineWithLine',
+    //     data: {
+    //       labels: Xlabels,
+    //         datasets: [
+    //           {
+    //             label: ['Confirmed'],
+    //             data: confirmYlabels,
+    //             fill: false,
+    //             borderColor: [
+    //               'rgba(0, 123, 255, 0.6)'
+    //             ],
+    //             radius: 0.7,
+    //             pointBorderColor: 'black',
+    //             pointHoverRadius: 10
+    //         },
+    //         {
+    //           label: ['Recovered'],
+    //           data: recoverYlabels,
+    //           fill: false,
+    //           borderColor: [
+    //             'rgba(40, 167, 69, 0.6)'
+    //           ],
+    //           radius: 0.7,
+    //           pointBorderColor: 'black',
+
+    //           pointHoverRadius: 10
+    //       },
+    //       {
+    //         label: ['Active'],
+    //         data: activeYlabels,
+    //         fill: false,
+
+    //         borderColor: [
+    //           'rgba(255, 7, 58, 0.6)'
+    //         ],
+    //         radius: 0.7,
+    //         pointBorderColor: 'black',
+    //         pointHoverRadius: 10
+    //       },
+    //       {
+    //         label: ['Deceased'],
+    //         data: deceasedYlabels,
+    //         fill: false,
+
+    //         borderColor: [
+    //           'rgba(197, 155, 18, 0.6)'
+    //         ],
+    //         radius: 0.7,
+    //         pointBorderColor: 'black',
+    //         pointHoverRadius: 10
+    //       }
+    //     ]
+    //     },
+    //     options: {
+    //       events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
+    //       tooltips: {
+    //         enabled: true,
+    //         mode: 'index',
+    //         intersect: false
+    //       },
+    //         scales: {
+    //             yAxes: [{
+    //               position: 'right',
+    //               gridLines: {
+    //                 drawOnChartArea: true
+    //               },
+    //                 ticks: {
+    //                     autoSkip: true,
+    //                     maxTicksLimit: 6
+    //                 }
+    //             }],
+    //             xAxes: [{
+    //               gridLines: {
+    //                 drawOnChartArea: false
+    //               },
+    //               ticks: {
+    //                   autoSkip: true,
+    //                   maxTicksLimit: 10
+    //               }
+    //             }]
+    //         }
+    //     }
+    // });
     });
   }
+
+
+  HoverMainGraph()
+  {
+    Chart.Legend.prototype.afterFit = function() {
+      this.height = this.height + 10;
+    };
+
+    const lineOpitions = {
+      title: {
+        display: true,
+        text: 'Daily Counts at Nation Level'
+      },
+      legend: {
+        labels: {
+          usePointStyle: true,
+        },
+      },
+      responsive: true,
+      maintainAspectRation: false,
+      events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
+      tooltips: {
+        mode:'index',
+        enabled: true,
+        intersect: false,
+      },
+      scales: {
+        xAxes: [{
+          stacked: true,
+          ticks: {
+            fontSize: 9,
+            autoSkip: true
+          }
+        }],
+        yAxes: [{
+          stacked: true,
+          ticks: {
+            autoSkip: true,
+            maxTicksLimit: 5
+          }
+        }]
+      }
+    };
+
+    const All = {
+      labels: this.dailyXlabels,
+      datasets:[
+        {
+          label:'Confirm',
+          data:this.dailyConfirmYlabels,
+          backgroundColor:'#1F618D',
+          borderColor: '#1F618D',
+          pointBorderColor: 'white',
+          radius:1
+        },
+        {
+          label:'Active',
+          data:this.dailyActiveYlabels,
+          backgroundColor:'#F39C12',
+          borderColor: '#F39C12',
+          pointBorderColor: 'white',
+          radius:1
+        },
+        {
+          label:'Recover',
+          data:this.dailyRecoveredYlabels,
+          backgroundColor:'#117A65',
+          borderColor: '#117A65',
+          pointBorderColor: 'white',
+          radius:1
+        },
+        {
+          label:'Deceased',
+          data:this.dailyDeceasedYlabels,
+          backgroundColor: '#922B21',
+          borderColor: '#922B21',
+          pointBorderColor: 'white',
+          radius:1
+        }
+      ]
+    }
+    
+    this.AllStackedData = new Chart('AllStackedData', {
+      type: 'line',        
+      data: All,
+      options: lineOpitions,
+    });        
+    
+    
+
+  
+  }
+  
 
 
   // top 10 states graph
   topStates(x, y)
   {
       // top 10 states bar graph
-        let color, hcolor,colors;
+        let colors;
 
         if (this.selectedRadio == 'confirmed'){
-          color = 'rgba(0, 123, 255, 0.6)';
-          hcolor = 'rgba(0, 123, 255, 1)';
           colors = ['#3498db','#2e86c1','#2874a6','#21618c','#1b4f72'];
         }
         else if (this.selectedRadio == 'recovered'){
-          color = 'rgba(40, 167, 69, 0.6)';
-          hcolor = 'rgba(40, 167, 69, 1)';
           colors = ['#16a085','#138d75','#117a65','#0e6655','#0b5345'];
         }
         else if (this.selectedRadio == 'tested'){
-          color = 'rgba(108, 117, 125, 0.6)';
-          hcolor = 'rgba(108, 117, 125, 1)';
           colors = ['#eb984e','#e67e22','#ca6f1e','#af601a','#935116'];
         }
         else{
-          color = 'rgba(255, 7, 58, 0.6)';
-          hcolor = 'rgba(255, 7, 58, 1)';
           colors = ['#e74c3c','#cb4335','#b03a2e','#943126','#78281f'];
 
         }
@@ -726,6 +869,8 @@ export class CovidComponent implements OnInit {
         type: 'bar',
         data: ds,
         options: {
+          responsive: true,
+        maintainAspectRation: false,
           tooltips: {
             enabled: true,
           },
@@ -773,8 +918,9 @@ export class CovidComponent implements OnInit {
   // get radio selected value
   topGraph(e)
   {
-    this.selectedRadio = e;
-    this.topChart(this.data, e);
+    let temp = (e=='All')?'confirmed':e;
+    this.selectedRadio = temp;
+    this.topChart(this.data, temp);
   }
 
 
