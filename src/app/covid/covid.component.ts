@@ -89,12 +89,11 @@ export class CovidComponent implements OnInit {
   dailyRecoveredYlabels = [];
   dailyDeceasedYlabels = [];
   dailyActiveYlabels = [];
-  //tooltip data
 
-  toolConfirmed=0;
-  toolRecovered;
-  toolActive;
-  toolDeceased;
+  //hoverMapLabels
+  hoverFlag=false;
+  hoverStateName; hoverConCount; hoverActCount; hoverRecCount; hoverDesCount; hoverTesCount
+  hoverStateDelConCount;hoverStateDelActCount;hoverStateDelRecCount;hoverStateDelDecCount;hoverStateDelTesCount;
 
 
   constructor(private _serv: APIService, private _route: Router) {   }
@@ -231,6 +230,8 @@ export class CovidComponent implements OnInit {
       {Name: 'Deceased Cases', number: this.Nt_TotalDeceasedCases, style: 'dec_cl', del: this.Nt_Del_Deceased, del_style: 'delta_tot', percent: this.nt_deceased_percent, icon: 'fa fa-minus-circle', percText: 'of Confirmed'},
       {Name: 'Total Tests', number: this.Nt_TotalTests, style: 'tot_cl', del: this.Nt_Del_Tested, del_style: 'delta_tot', icon: 'fa fa-flask', percent: this.nt_tests_percent, percText: 'of Population'}
     ];    
+
+    this.hoverState('AP');
   }
 
 
@@ -586,6 +587,91 @@ export class CovidComponent implements OnInit {
       this.dailyRecoveredYlabels.splice(0,this.dailyRecoveredYlabels.length-10);
       this.dailyDeceasedYlabels.splice(0,this.dailyDeceasedYlabels.length-10);
       this.dailyActiveYlabels.splice(0,this.dailyActiveYlabels.length-10);
+
+      Chart.Legend.prototype.afterFit = function() {
+        this.height = this.height + 10;
+      };
+  
+      const lineOpitions = {
+        title: {
+          display: true,
+          text: 'Daily Counts at Nation Level'
+        },
+        legend: {
+          labels: {
+            usePointStyle: true,
+          },
+        },
+        responsive: true,
+        maintainAspectRation: false,
+        events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
+        tooltips: {
+          mode:'index',
+          enabled: true,
+          intersect: false,
+        },
+        scales: {
+          xAxes: [{
+            stacked: true,
+            ticks: {
+              fontSize: 9,
+              autoSkip: true
+            }
+          }],
+          yAxes: [{
+            stacked: true,
+            ticks: {
+              autoSkip: true,
+              maxTicksLimit: 5
+            }
+          }]
+        }
+      };
+  
+      const All = {
+        labels: this.dailyXlabels,
+        datasets:[
+          {
+            label:'Confirm',
+            data:this.dailyConfirmYlabels,
+            backgroundColor:'#1F618D',
+            borderColor: '#1F618D',
+            pointBorderColor: 'white',
+            radius:1
+          },
+          {
+            label:'Active',
+            data:this.dailyActiveYlabels,
+            backgroundColor:'#F39C12',
+            borderColor: '#F39C12',
+            pointBorderColor: 'white',
+            radius:1
+          },
+          {
+            label:'Recover',
+            data:this.dailyRecoveredYlabels,
+            backgroundColor:'#117A65',
+            borderColor: '#117A65',
+            pointBorderColor: 'white',
+            radius:1
+          },
+          {
+            label:'Deceased',
+            data:this.dailyDeceasedYlabels,
+            backgroundColor: '#922B21',
+            borderColor: '#922B21',
+            pointBorderColor: 'white',
+            radius:1
+          }
+        ]
+      }
+      
+      this.AllStackedData = new Chart('AllStackedData', {
+        type: 'line',        
+        data: All,
+        options: lineOpitions,
+      });        
+      
       
 
       //*********** OLD graph ************//
@@ -612,12 +698,7 @@ export class CovidComponent implements OnInit {
       //       ctx.restore();
       //     }
       //   }
-      // });
-
-      
-      //Call Main Dashboard - multiple dataset graph
-      this.HoverMainGraph();
-      
+      // });         
 
       //****auto select graphs****//
       // setInterval(()=>{  
@@ -731,100 +812,6 @@ export class CovidComponent implements OnInit {
     });
   }
 
-
-  HoverMainGraph()
-  {
-    Chart.Legend.prototype.afterFit = function() {
-      this.height = this.height + 10;
-    };
-
-    const lineOpitions = {
-      title: {
-        display: true,
-        text: 'Daily Counts at Nation Level'
-      },
-      legend: {
-        labels: {
-          usePointStyle: true,
-        },
-      },
-      responsive: true,
-      maintainAspectRation: false,
-      events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
-      tooltips: {
-        mode:'index',
-        enabled: true,
-        intersect: false,
-      },
-      scales: {
-        xAxes: [{
-          stacked: true,
-          ticks: {
-            fontSize: 9,
-            autoSkip: true
-          }
-        }],
-        yAxes: [{
-          stacked: true,
-          ticks: {
-            autoSkip: true,
-            maxTicksLimit: 5
-          }
-        }]
-      }
-    };
-
-    const All = {
-      labels: this.dailyXlabels,
-      datasets:[
-        {
-          label:'Confirm',
-          data:this.dailyConfirmYlabels,
-          backgroundColor:'#1F618D',
-          borderColor: '#1F618D',
-          pointBorderColor: 'white',
-          radius:1
-        },
-        {
-          label:'Active',
-          data:this.dailyActiveYlabels,
-          backgroundColor:'#F39C12',
-          borderColor: '#F39C12',
-          pointBorderColor: 'white',
-          radius:1
-        },
-        {
-          label:'Recover',
-          data:this.dailyRecoveredYlabels,
-          backgroundColor:'#117A65',
-          borderColor: '#117A65',
-          pointBorderColor: 'white',
-          radius:1
-        },
-        {
-          label:'Deceased',
-          data:this.dailyDeceasedYlabels,
-          backgroundColor: '#922B21',
-          borderColor: '#922B21',
-          pointBorderColor: 'white',
-          radius:1
-        }
-      ]
-    }
-    
-    this.AllStackedData = new Chart('AllStackedData', {
-      type: 'line',        
-      data: All,
-      options: lineOpitions,
-    });        
-    
-    
-
-  
-  }
-  
-
-
   // top 10 states graph
   topStates(x, y)
   {
@@ -838,7 +825,7 @@ export class CovidComponent implements OnInit {
           colors = ['#16a085','#138d75','#117a65','#0e6655','#0b5345'];
         }
         else if (this.selectedRadio == 'tested'){
-          colors = ['#eb984e','#e67e22','#ca6f1e','#af601a','#935116'];
+          colors = ['#85929e','#5d6d7e','#34495e','#2e4053','#283747'];
         }
         else{
           colors = ['#e74c3c','#cb4335','#b03a2e','#943126','#78281f'];
@@ -914,13 +901,11 @@ export class CovidComponent implements OnInit {
   }
 
 
-
   // get radio selected value
   topGraph(e)
   {
-    let temp = (e=='All')?'confirmed':e;
-    this.selectedRadio = temp;
-    this.topChart(this.data, temp);
+    this.selectedRadio = e;
+    this.topChart(this.data, e);
   }
 
 
@@ -993,6 +978,71 @@ export class CovidComponent implements OnInit {
         i = 0;
       }
     }, 1200);
+  }
+
+
+  hoverState(code)
+  {
+    this.hoverStateName = this._serv.getPipeStateName(code);
+    this.hoverConCount= (this.data[code]['total'] && this.data[code]['total']['confirmed'])?this.data[code]['total']['confirmed']:'-NA-';
+    this.hoverRecCount= (this.data[code]['total'] && this.data[code]['total']['recovered'])?this.data[code]['total']['recovered']:'-NA-';
+    this.hoverDesCount= (this.data[code]['total'] && this.data[code]['total']['deceased'])? this.data[code]['total']['deceased']:'-NA-';
+    this.hoverTesCount= (this.data[code]['total'] && this.data[code]['total']['tested']) ? this.data[code]['total']['tested'] : '-NA-'
+    this.hoverActCount = (this.hoverConCount!="-NA-" && this.hoverRecCount!="-NA-" && this.hoverDesCount != "-NA-") ? (this.hoverConCount-(this.hoverDesCount+this.hoverRecCount)):'-NA-';
+    this.hoverStateDelConCount = (this.data[code]['delta'] && this.data[code]['delta']['confirmed'])?this.data[code]['delta']['confirmed']:'-NA-';
+    this.hoverStateDelRecCount = (this.data[code]['delta'] && this.data[code]['delta']['recovered'])?this.data[code]['delta']['recovered']:'-NA-';
+    this.hoverStateDelDecCount = (this.data[code]['delta'] && this.data[code]['delta']['deceased'])?this.data[code]['delta']['deceased']:'-NA-';
+    this.hoverStateDelTesCount = (this.data[code]['delta'] && this.data[code]['delta']['tested'])?this.data[code]['delta']['tested']:'-NA-';
+    this.hoverStateDelActCount = (this.hoverStateDelConCount !='-NA-' && this.hoverStateDelRecCount !='-NA-' && this.hoverStateDelDecCount !='-NA-') 
+                                    ? (this.hoverStateDelConCount - (this.hoverStateDelRecCount + this.hoverStateDelDecCount))
+                                    : '-NA-';
+    this.hoverFlag = true;
+  }
+
+
+  getColor(code){
+    let radio = this.selectedRadio;
+    let className;   
+    let total = this.data['TT']['total'][radio];
+    let count = this.data[code]['total'][radio];
+    let percentage = (this.data[code]['total'] && this.data[code]['total'][radio])? (count/total)*1000 : -999;
+    
+    if(radio=="confirmed")
+    {
+      (percentage >=0 && percentage <=20)? className = 'safeZoneCon' :
+        (percentage >20 && percentage <=40)? className = 'greenZoneCon':
+          (percentage>40 && percentage <=60) ? className = 'yellowZoneCon':
+            (percentage>60 && percentage <=80) ? className = 'redZoneCon' :
+              (percentage>80) ? className = 'dangerZoneCon' : className = 'NA_DataZoneCon';
+    }
+
+    if(radio=="recovered")
+    {
+      (percentage >=0 && percentage <=20)? className = 'safeZoneRec' :
+        (percentage >20 && percentage <=40)? className = 'greenZoneRec':
+          (percentage>40 && percentage <=60) ? className = 'yellowZoneRec':
+            (percentage>60 && percentage <=80) ? className = 'redZoneRec' :
+              (percentage>80) ? className = 'dangerZoneRec' : className = 'NA_DataZoneRec';
+    }
+
+    if(radio=="deceased")
+    {
+      (percentage >=0 && percentage <=20)? className = 'safeZoneDec' :
+        (percentage >20 && percentage <=40)? className = 'greenZoneDec':
+          (percentage>40 && percentage <=60) ? className = 'yellowZoneDec':
+            (percentage>60 && percentage <=80) ? className = 'redZoneDec' :
+              (percentage>80) ? className = 'dangerZoneDec' : className = 'NA_DataZoneDec';
+    }
+
+    if(radio=="tested")
+    {
+      (percentage >=0 && percentage <=20)? className = 'safeZoneTes' :
+        (percentage >20 && percentage <=40)? className = 'greenZoneTes':
+          (percentage>40 && percentage <=60) ? className = 'yellowZoneTes':
+            (percentage>60 && percentage <=80) ? className = 'redZoneTes' :
+              (percentage>80) ? className = 'dangerZoneTes' : className = 'NA_DataZoneTes';
+    }    
+    return className;
   }
 
 }

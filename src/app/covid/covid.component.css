@@ -82,6 +82,42 @@
     }
 }
 
+#titleName{
+    color: gray;
+}
+
+#MapCol{
+    filter: drop-shadow(0px 0px 15px #DEE1E5);
+}
+
+.hoverUp{
+    color: brown;
+}
+
+.hoverDown{
+    color: green;
+}
+
+#titleNameMap{
+    font-size: 1.3rem;
+    color: black;
+    opacity: 0.9;
+    font-family: cursive;
+    font: inherit;
+    font-variant-caps: petite-caps;
+    font-weight: 400;
+}
+
+#statename{
+    position: sticky;
+    left: 0;
+    background-color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    overflow: hidden;
+    color: #0d44a5;
+    z-index: 100;
+}
 
 @media only screen and (max-width: 502px)
 {
@@ -202,10 +238,6 @@ table thead tr th {
   }
 
 
-  .IndiaMap:hover{
-    fill: brown;
-  }
-
   .IndiaSVG{
     display: inline-block;
 	position: relative;
@@ -223,14 +255,466 @@ table thead tr th {
 }
 
 
-#statename{
-    position: sticky; 
-    left:0px; 
-    background-color: white; 
-    font-weight: bold;
-    cursor: pointer;
-    overflow: hidden;
-    color: #0d44a5;
-    z-index: 100;
+svg {
+    display: block;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  path {
+      fill:white;
+      stroke: gray;
+      animation-delay: 2s;
+      animation-timing-function: ease-in;
+  }
+  
+  path:nth-child(300) {
+      animation-name: preloaderLeft;
+      animation-duration: 2s;
+      animation-fill-mode: both;
+  }
+  
+  path:nth-child(200) {
+      animation-name: preloaderDown;
+      animation-duration: 2s;
+      animation-fill-mode: both;
+  }
+  
+  path:nth-child(odd) {
+      animation-name: preloaderDown;
+      animation-duration: 2s;
+      animation-fill-mode: both;
+      
+  }
+  
+  path:nth-child(even) {
+      animation-name: preloaderRight;
+      animation-duration: 2s;
+      animation-fill-mode: both;
+      
+  }
+  
+  path:nth-child(900) {
+      animation-name: preloaderUp;
+      animation-duration: 2s;
+      animation-fill-mode: both;
+  }
+  
+  
+  @keyframes preloaderDown {
+      
+      0% {
+          opacity: 0;
+          transform: translateY(-60px);
+          visibility: visible;
+      }
+      
+      100% {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+  
+  
+  @keyframes preloaderLeft {
+      
+      0% {
+          opacity: 0;
+          transform: translateX(-60px);
+          visibility: visible;
+      }
+      
+      100% {
+          opacity: 1;
+          transform: translateX(0);
+      }
+  }
+  
+  
+  @keyframes preloaderRight {
+      
+      0% {
+          opacity: 0;
+          transform: translateX(60px);
+          visibility: visible;
+      }
+      
+      100% {
+          opacity: 1;
+          transform: translateX(0);
+      }
+  }
+  
+  @keyframes preloaderUp {
+      
+      0% {
+          opacity: 0;
+          transform: translateY(60px);
+          visibility: visible;
+      }
+      
+      100% {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+
+  #IndiaMap {
+    animation: cssAnimation 0s 1s forwards;
+    visibility: hidden;
+  }
+  
+  @keyframes cssAnimation {
+    to   { visibility: visible; }
+  }
+  
+svg g path:hover{
+    fill: white;
+    outline: black;
 }
 
+.rsm-geography{
+    margin: 2px
+}
+
+#MapRow{
+    display: flex;
+    padding: 11px 0px;
+}
+
+#MapRow .col{
+    margin: 41px 0px 0px 0px;
+}
+
+#MapRow .col .card {
+    border: 0px;
+}
+
+#MapRow .col .card .card-body h6{
+    font-weight: normal;
+}
+
+#MapRow .col .card .card-body h4{
+    font-size: 20px;
+}
+
+#MapRow hr{
+    margin:1px;
+}
+
+
+/* #MapRow .col .card{
+    display: block;
+} */
+
+@media only screen and (max-width: 767px)
+{
+
+    #MapRow{
+        display: flex;
+        margin: 0px;
+    }
+    #MapRow .col{
+        padding: 0px 6px;
+        text-align: center;
+    }
+
+    #MapRow .col .card{
+        padding: 0px;
+    }
+
+    .whiteboard{
+        margin-bottom: 5px;
+    }
+
+    #MapRow hr{
+        display: none;
+    }
+
+    .hoverUp, .hoverDown, #hoverDelta{
+        font-size: 10px;
+    }
+
+    #MapRow .col .card .card-body h6{
+        margin-bottom: 0px;
+    }
+}
+
+
+@media only screen and (max-width: 532px)
+{
+    #MapRow .col .card .card-body{
+        padding: 1rem;
+    }
+
+    #MapRow .col .card .card-body h4,h6{
+        font-size: 11px;
+    }
+
+    #MapRow .col{
+        margin: 11px 0px 0px 0px;
+    }
+}
+
+
+@media only screen and (min-width: 533px)
+{
+    #MapRow .col .card .card-body{
+        padding: 1rem;
+    }
+}
+
+@media only screen and (min-width: 533px) and (max-width:767px){
+    #MapRow .col .card .card-body h4,h6{
+        font-size: 12px;
+    }
+}
+
+#MapRow .col .card .card-body{
+    display: contents;
+}
+
+
+#MapRow .col .card .card-body #icon{
+    font-size: 13px;
+}
+
+@media only screen and (min-width: 992px)
+{
+    #MapRow .col .card{
+        height: 104px;
+    }
+
+    .whiteboard{
+        padding-top: 45px;
+    }
+
+    #titleNameMap{
+        position: absolute;
+        left: 613px;
+        top: 47px;
+        font-size: 1.3rem;
+    }
+    
+    #MapRow .col .card .card-body h6{
+        font-size: 24px;
+    }
+
+    #MapRow .col .card .card-body #icon{
+        position: absolute;
+        font-size: 20px;
+        top: -14px;
+        right: 11px;
+    }
+
+    #MapRow .col .card .card-body{
+        border-radius: 10px;
+        padding: 1rem;
+        display: initial;
+    }
+
+    #IndiaMap .col .container .row .col-lg-8{
+        flex: 0 0 62.666667%;
+    max-width: 62.666667%;
+    }
+
+}
+
+#TitleBar{
+    margin: 0px;
+}
+
+
+@media only screen and (min-width: 1200px)
+{
+    .whiteboard{
+        padding-top: 60px;
+    }
+
+    #titleNameMap{
+        position: absolute;
+        left: 726px;
+        padding-bottom: 2px;
+        top: 60px;
+        font-size: 1.5rem;
+    }  
+
+}
+
+#MapRow .col .card .card-body h6{
+    opacity: 0.8;
+}
+
+
+@media only screen and (min-width:768px) and (max-width: 991px)
+{
+    
+    #MapRow .col{
+        margin: 22px 0px 0px 0px;
+    }
+    #MapStatsCol{
+        margin-left: 45px;
+    }
+
+    #MapCol{
+        flex: 0 0 60%;
+        max-width: 60%;
+    }
+
+    #MapRow .col .card .card-body h4,h6{
+        font-size: 14px;
+    }
+
+    #MapRow .col .card .card-body #icon{
+        position: absolute;
+        font-size: 17px;
+        top: -12px;
+        right: 6px;
+    }
+
+    
+    #titleNameMap{
+        position: absolute;
+        left: 490px;
+        top: 16px;
+        font-size: 1rem;
+    }
+    .whiteboard{
+        margin-top: 20px;
+    }
+
+    #MapRow .col .card .card-body{
+        border-radius: 10px;
+        padding: 0.5rem;
+        display: initial;
+    }
+
+
+}
+
+@media only screen and (min-width:992px) and (max-width:1199px)
+{
+    #MapRow .col .card {
+        height: 86px;
+    }
+
+    #MapRow .col .card .card-body h4{
+        font-size: 18px;
+    }
+
+    #MapRow .col .card .card-body h6{
+        font-size: 20px;
+    }    
+}
+
+
+
+@media only screen and (min-width: 768px)
+{
+    #MapStatsCol{
+        margin-bottom: 10px;
+    }
+}
+
+@media only screen and (min-width:567px) and (max-width: 767px)
+{
+    #titleNameMap{
+        font-size: 1.3rem;
+        position: absolute;
+        top: 430px;
+        margin-left: 17px;
+    }
+}
+
+#MapCol svg g path{
+    stroke: white;
+    outline: none;
+}
+
+
+/* ConfirmedMap */
+.safeZoneCon, .NA_DataZoneCon{
+    fill: #5499c7;
+}
+
+.greenZoneCon{
+    fill: #2980b9;
+}
+
+.yellowZoneCon{
+    fill: #2471a3;
+}
+
+.redZoneCon{
+    fill: #1f618d;
+}
+
+.dangerZoneCon{
+    fill: #1a5276;
+}
+
+/* RecoveredMap */
+.safeZoneRec, .NA_DataZoneRec{
+    fill: #52be80;
+}
+
+.greenZoneRec{
+    fill: #27ae60;
+}
+
+.yellowZoneRec{
+    fill: #229954;
+}
+
+.redZoneRec{
+    fill: #1e8449;
+}
+
+.dangerZoneRec{
+    fill: #196f3d;
+}
+
+
+
+/*DeceasedMap */
+.safeZoneDec, .NA_DataZoneDec{
+    fill: #d98880;
+}
+
+.greenZoneDec{
+    fill: #cd6155;
+}
+
+.yellowZoneDec{
+    fill: #a93226;
+}
+
+.redZoneDec{
+    fill: #922b21;
+}
+
+.dangerZoneDec{
+    fill: #641e16;
+}
+
+
+/*TestedMap */
+.safeZoneTes,.NA_DataZoneTes{
+    fill: #85929e;
+}
+
+.greenZoneTes{
+    fill: #5d6d7e;
+}
+
+.yellowZoneTes{
+    fill: #34495e;
+}
+
+.redZoneTes{
+    fill: #2e4053;
+}
+
+.dangerZoneTes{
+    fill: #283747;
+}
