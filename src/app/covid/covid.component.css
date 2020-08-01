@@ -74,7 +74,7 @@
 
 
 
-@media only screen and (min-width: 767px) and (max-width:991px)    
+@media only screen and (min-width: 768px) and (max-width:991px)    
 {
     .wrapper{
         height: 263px !important;
@@ -261,116 +261,9 @@ svg {
     position: relative;
   }
 
-  path {
-      fill:white;
-      stroke: gray;
-      animation-delay: 2s;
-      animation-timing-function: ease-in;
-  }
-  
-  path:nth-child(300) {
-      animation-name: preloaderLeft;
-      animation-duration: 2s;
-      animation-fill-mode: both;
-  }
-  
-  path:nth-child(200) {
-      animation-name: preloaderDown;
-      animation-duration: 2s;
-      animation-fill-mode: both;
-  }
-  
-  path:nth-child(odd) {
-      animation-name: preloaderDown;
-      animation-duration: 2s;
-      animation-fill-mode: both;
-      
-  }
-  
-  path:nth-child(even) {
-      animation-name: preloaderRight;
-      animation-duration: 2s;
-      animation-fill-mode: both;
-      
-  }
-  
-  path:nth-child(900) {
-      animation-name: preloaderUp;
-      animation-duration: 2s;
-      animation-fill-mode: both;
-  }
-  
-  
-  @keyframes preloaderDown {
-      
-      0% {
-          opacity: 0;
-          transform: translateY(-60px);
-          visibility: visible;
-      }
-      
-      100% {
-          opacity: 1;
-          transform: translateY(0);
-      }
-  }
-  
-  
-  @keyframes preloaderLeft {
-      
-      0% {
-          opacity: 0;
-          transform: translateX(-60px);
-          visibility: visible;
-      }
-      
-      100% {
-          opacity: 1;
-          transform: translateX(0);
-      }
-  }
-  
-  
-  @keyframes preloaderRight {
-      
-      0% {
-          opacity: 0;
-          transform: translateX(60px);
-          visibility: visible;
-      }
-      
-      100% {
-          opacity: 1;
-          transform: translateX(0);
-      }
-  }
-  
-  @keyframes preloaderUp {
-      
-      0% {
-          opacity: 0;
-          transform: translateY(60px);
-          visibility: visible;
-      }
-      
-      100% {
-          opacity: 1;
-          transform: translateY(0);
-      }
-  }
-
-  #IndiaMap {
-    animation: cssAnimation 0s 1s forwards;
-    visibility: hidden;
-  }
-  
-  @keyframes cssAnimation {
-    to   { visibility: visible; }
-  }
   
 svg g path:hover{
-    fill: white;
-    outline: black;
+    fill: whitesmoke;
 }
 
 .rsm-geography{
@@ -629,9 +522,129 @@ svg g path:hover{
 #MapCol svg g path{
     stroke: white;
     outline: none;
+    cursor: pointer;
 }
 
+#clickState{
+    font-size: 12px;
+    position: absolute;
+    left: 80px;
+    top: 127px;
+    transform: translate(-16px, 3px);
+    z-index: 999;
+    opacity: 0.3;
+    font-weight: bold;
+}
 
+#clickState::before{
+    content: "Hover on state";
+}
+
+  .arrowInstruction{
+    position: absolute;
+    width: 30px;
+    left: 80px;
+    top: 87px;
+    transform: rotate(9deg);
+    z-index: 999;
+    opacity: 0.3;
+  }
+
+  @media only screen and (min-width:768px) and (max-width:991px)
+  {
+    .arrowInstruction{
+        width: 25px;
+        top: 45px;
+        left: 45px;
+      }
+
+      #clickState{
+        top: 80px;
+        left: 50px;
+        font-size: 10px;
+    }
+  }
+
+  @media only screen and (min-width:992px) and (max-width:1199px)
+  {
+    .arrowInstruction{
+        width: 30px;
+        top: 80px;
+        left: 65px;
+      }
+
+    #clickState{
+        top: 117px;
+        left: 60px;
+    }
+  }
+
+  
+  @media only screen and (min-width:576px) and (max-width:767px)
+  {
+    .arrowInstruction{
+        width: 30px;
+        top: 60px;
+        left: 50px;
+      }
+
+      
+      #clickState{
+        top: 98px;
+        left: 50px;
+        font-size: 10px;
+    }
+  }
+
+
+  
+  @media only screen and (max-width:575px)
+  {
+    .arrowInstruction{
+        width: 24px;
+        top: 70px;
+        left: 42px;
+      }
+ 
+      #clickState{
+        top: 104px;
+        left: 45px;
+        font-size: 10px;
+    }
+  }
+
+  #NoteToggle{
+    font-size: 8px; 
+    text-align: center; 
+    color: gray; 
+    padding-top: 3px; 
+    width: 100%;
+    opacity: 0.7;
+    position: absolute;
+  }
+
+  
+  @media only screen and (max-width:499px)
+  {
+    .arrowInstruction{
+        width: 21px;
+        top: 43px;
+        left: 40px;
+      }
+ 
+      #clickState{
+        top: 73px;
+        left: 40px;
+        font-size: 8px;
+    }
+
+    #clickState::before{
+        content: "Click on state";
+    }
+  }
+
+
+  
 /* ConfirmedMap */
 .safeZoneCon, .NA_DataZoneCon{
     fill: #5499c7;
@@ -718,3 +731,4 @@ svg g path:hover{
 .dangerZoneTes{
     fill: #283747;
 }
+

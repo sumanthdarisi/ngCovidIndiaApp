@@ -69,6 +69,7 @@
                                     <label class="custom-control-label" for="tested">Tests</label>
                                 </div>
                             </div>
+                            <span id="NoteToggle">**click on the radio button to toggle the shades on the map</span>
                         </div>
                     </div>
                 </div>
@@ -82,6 +83,10 @@
                 <h4 id="titleNameMap">{{hoverStateName}}</h4>
                 <div class="row">
                     <div class="col-lg-8 col-md-6 col-xs-12 col-sm-12" id="MapCol">
+                        <div class="arrowInstruction">
+                            <img class="img-fluid" alt="instructions" src="../../assets/CurvedArrow.png">
+                        </div>
+                        <span id="clickState"></span>
                         <svg viewBox="0 0 600 520" class="rsm-svg " data-tip="" currentItem="true">
                             <g class="rsm-geographies ">
                                 <path [ngClass]="getColor('AN')" (mouseenter)="hoverState('AN')" id="SVG_Andaman" tabindex="0" class="rsm-geography"
