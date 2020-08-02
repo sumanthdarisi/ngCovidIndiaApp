@@ -261,9 +261,9 @@ svg {
     position: relative;
   }
 
-  
+
 svg g path:hover{
-    fill: whitesmoke;
+    fill: white;
 }
 
 .rsm-geography{
@@ -289,6 +289,7 @@ svg g path:hover{
 
 #MapRow .col .card .card-body h4{
     font-size: 20px;
+    font-weight: normal;
 }
 
 #MapRow hr{
@@ -379,13 +380,13 @@ svg g path:hover{
     }
 
     .whiteboard{
-        padding-top: 45px;
+        padding-top: 20px;
     }
 
     #titleNameMap{
         position: absolute;
         left: 613px;
-        top: 47px;
+        top: 26px;
         font-size: 1.3rem;
     }
     
@@ -395,9 +396,16 @@ svg g path:hover{
 
     #MapRow .col .card .card-body #icon{
         position: absolute;
-        font-size: 20px;
-        top: -14px;
-        right: 11px;
+    font-size: 15px;
+    top: -14px;
+    right: 11px;
+    background-color: white;
+    width: 22px;
+    text-align: center;
+    height: 22px;
+    padding-top: 4px;
+    border-radius: 16px;
+    box-shadow: 0px 0px 10px 0px grey;
     }
 
     #MapRow .col .card .card-body{
@@ -436,6 +444,7 @@ svg g path:hover{
 
 #MapRow .col .card .card-body h6{
     opacity: 0.8;
+    font-weight: 700;
 }
 
 
@@ -460,9 +469,16 @@ svg g path:hover{
 
     #MapRow .col .card .card-body #icon{
         position: absolute;
-        font-size: 17px;
-        top: -12px;
-        right: 6px;
+    font-size: 12px;
+    top: -14px;
+    right: 11px;
+    background-color: white;
+    width: 20px;
+    text-align: center;
+    height: 20px;
+    padding-top: 4.5px;
+    border-radius: 16px;
+    box-shadow: 0px 0px 12px 0px grey;
     }
 
     
@@ -488,7 +504,7 @@ svg g path:hover{
 @media only screen and (min-width:992px) and (max-width:1199px)
 {
     #MapRow .col .card {
-        height: 86px;
+        height: 95px;
     }
 
     #MapRow .col .card .card-body h4{
@@ -520,9 +536,10 @@ svg g path:hover{
 }
 
 #MapCol svg g path{
-    stroke: white;
+    stroke: #15141463;
     outline: none;
     cursor: pointer;
+    transition: fill .5s;
 }
 
 #clickState{
