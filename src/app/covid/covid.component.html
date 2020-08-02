@@ -210,11 +210,11 @@
                                 <div class="card-body" style="background-color: #1290e63d;">
                                     <span class="fa fa-plus-square" id="icon"></span>
                                     <h4>Confirmed</h4>
-                                    <h6>{{hoverConCount}}</h6>
+                                    <h6 [countUp]="hoverConCount">{{hoverConCount | number}}</h6>
                                     <span>
                                         <i class="fa fa-arrow-up hoverUp" aria-hidden="true" *ngIf="hoverStateDelConCount >=0 "></i>
                                         <i class="fa fa-arrow-down hoverDown" aria-hidden="true" *ngIf="hoverStateDelConCount < 0"> </i>
-                                        <span id="hoverDelta" *ngIf="hoverStateDelConCount!='-NA-'; else hoverDelta"> {{hoverStateDelConCount}}</span>
+                                        <span id="hoverDelta" *ngIf="hoverStateDelConCount!='-NA-'; else hoverDelta"> {{hoverStateDelConCount | number}}</span>
                                     </span>
                                 </div>
                             </div>        
@@ -224,11 +224,11 @@
                                 <div class="card-body" style="background-color: #ffc1073d;">
                                     <span class="fa fa-heartbeat" id="icon"></span>
                                     <h4>Active</h4>
-                                    <h6>{{hoverActCount}}</h6>
+                                    <h6 [countUp]="hoverActCount">{{hoverActCount | number}}</h6>
                                     <span>
                                         <i class="fa fa-arrow-up hoverUp" aria-hidden="true" *ngIf="hoverStateDelActCount >=0 "></i>
                                         <i class="fa fa-arrow-down hoverDown" aria-hidden="true" *ngIf="hoverStateDelActCount < 0"> </i>
-                                        <span id="hoverDelta" *ngIf="hoverStateDelActCount!='-NA-'; else hoverDelta"> {{hoverStateDelActCount}}</span>
+                                        <span id="hoverDelta" *ngIf="hoverStateDelActCount!='-NA-'; else hoverDelta"> {{hoverStateDelActCount | number}}</span>
                                     </span>
                                 </div>
                             </div>        
@@ -238,11 +238,11 @@
                                 <div class="card-body" style="background-color: #28a74540;">
                                     <span class="fa fa-check-circle" id="icon"></span>
                                     <h4>Recovered</h4>
-                                    <h6>{{hoverRecCount}}</h6>
+                                    <h6 [countUp]="hoverRecCount">{{hoverRecCount | number}}</h6>
                                     <span>
                                         <i class="fa fa-arrow-up hoverUp" aria-hidden="true" *ngIf="hoverStateDelRecCount >=0 "></i>
                                         <i class="fa fa-arrow-down hoverDown" aria-hidden="true" *ngIf="hoverStateDelRecCount < 0"> </i>
-                                        <span id="hoverDelta" *ngIf="hoverStateDelRecCount!='-NA-'; else hoverDelta"> {{hoverStateDelRecCount}}</span>
+                                        <span id="hoverDelta" *ngIf="hoverStateDelRecCount!='-NA-'; else hoverDelta"> {{hoverStateDelRecCount | number}}</span>
                                     </span>
                                 </div>
                             </div>        
@@ -252,11 +252,11 @@
                                 <div class="card-body" style="background-color: #f5313163;">
                                     <span class="fa fa-minus-circle" id="icon"></span>
                                     <h4>Deceased</h4>
-                                    <h6>{{hoverDesCount}}</h6>
+                                    <h6 [countUp]="hoverDesCount">{{hoverDesCount | number}}</h6>
                                     <span>
                                         <i class="fa fa-arrow-up hoverUp" aria-hidden="true" *ngIf="hoverStateDelDecCount >=0 "></i>
                                         <i class="fa fa-arrow-down hoverDown" aria-hidden="true" *ngIf="hoverStateDelDecCount < 0"> </i>
-                                        <span id="hoverDelta" *ngIf="hoverStateDelDecCount!='-NA-'; else hoverDelta"> {{hoverStateDelDecCount}}</span>
+                                        <span id="hoverDelta" *ngIf="hoverStateDelDecCount!='-NA-'; else hoverDelta"> {{hoverStateDelDecCount | number}}</span>
                                     </span>
                                 </div>
                             </div>        
@@ -266,11 +266,11 @@
                                 <div class="card-body" style="background-color: #898e9363;">
                                     <span class="fa fa-flask" id="icon"></span>
                                     <h4>Tested</h4>
-                                    <h6>{{hoverTesCount}}</h6>
+                                    <h6 [countUp]="hoverTesCount">{{hoverTesCount | number}}</h6>
                                     <span>
                                         <i class="fa fa-arrow-up hoverUp" aria-hidden="true" *ngIf="hoverStateDelTesCount >=0 "></i>
                                         <i class="fa fa-arrow-down hoverDown" aria-hidden="true" *ngIf="hoverStateDelTesCount < 0"> </i>
-                                        <span id="hoverDelta" *ngIf="hoverStateDelTesCount!='-NA-'; else hoverDelta"> {{hoverStateDelTesCount}}</span>
+                                        <span id="hoverDelta" *ngIf="hoverStateDelTesCount!='-NA-'; else hoverDelta" > {{hoverStateDelTesCount | number}}</span>
                                     </span>
                                 </div>
                             </div>        
