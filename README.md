@@ -5,17 +5,20 @@ https://indiacovid-2020.web.app/Covid
 
 
 ### Covid HomePage:
-![image](https://user-images.githubusercontent.com/9113723/87787084-b1917a80-c858-11ea-9ec0-ef5219e4493d.png)
+![image](https://user-images.githubusercontent.com/9113723/89179425-4b715b00-d5ad-11ea-8d20-8dc4e20da24a.png)
+![image](https://user-images.githubusercontent.com/9113723/89179500-70fe6480-d5ad-11ea-889f-f0b819137e2c.png)
 
 
 ### State-wide Data:
-![image](https://user-images.githubusercontent.com/9113723/87787238-ec93ae00-c858-11ea-9754-fc27af175047.png)
+![image](https://user-images.githubusercontent.com/9113723/89179541-8b384280-d5ad-11ea-9dab-644de9858cff.png)
 
 
 ### District-wide Data:
-![image](https://user-images.githubusercontent.com/9113723/87787325-11882100-c859-11ea-931a-20fc498da3e5.png)
+![image](https://user-images.githubusercontent.com/9113723/89179811-1f0a0e80-d5ae-11ea-8c49-8dd6029d37de.png)
+![image](https://user-images.githubusercontent.com/9113723/89179857-38ab5600-d5ae-11ea-81e8-9b586ca64fc5.png)
 
 
 ### State last 10 days timeseries data
-![image](https://user-images.githubusercontent.com/9113723/88285690-2eb36880-cd0d-11ea-8118-98bb5d765d99.png)
+![image](https://user-images.githubusercontent.com/9113723/89179895-4d87e980-d5ae-11ea-9fce-58979ffce58d.png)
+
 
