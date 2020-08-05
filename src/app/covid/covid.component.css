@@ -1,3 +1,23 @@
+
+#modeButton{
+    margin-left: 3px;
+    border: 1px solid slategrey;
+}
+
+@media only screen and (max-width:500px)
+{
+    #modeButton{
+        font-size: 10px;
+    }   
+}
+
+
+#Population{
+    text-align: right; 
+    color: gray; 
+    font-weight: bold;
+}
+
 .con_cl{
     background-color: rgba(0, 123, 255, 0.125);
     min-width: 10rem
@@ -83,7 +103,7 @@
 }
 
 #titleName{
-    color: gray;
+    color:'#4e4b4b';
 }
 
 #MapCol{
@@ -197,10 +217,11 @@
     position: absolute;
     color: gray;
     font-size: 55px;
-    opacity: 0.1;
+    opacity: 0.15;
     right: 1px;
     top: 32px;
     user-select: none;
+    z-index: -1;
 }
 
 .percText{
@@ -209,7 +230,6 @@
     position: absolute;
     top: 65px;
     right: 5px;
-    opacity: 0.5;
 }
 
 .card-header{
@@ -355,6 +375,11 @@ svg g path:hover{
 {
     #MapRow .col .card .card-body{
         padding: 1rem;
+    }
+
+    #titleName{
+        font-size: 1.2rem;
+        padding-top: 22px;
     }
 }
 
@@ -557,24 +582,8 @@ svg g path:hover{
     content: "Hover on state";
 }
 
-  .arrowInstruction{
-    position: absolute;
-    width: 30px;
-    left: 80px;
-    top: 87px;
-    transform: rotate(9deg);
-    z-index: 999;
-    opacity: 0.3;
-  }
-
   @media only screen and (min-width:768px) and (max-width:991px)
   {
-    .arrowInstruction{
-        width: 25px;
-        top: 45px;
-        left: 45px;
-      }
-
       #clickState{
         top: 80px;
         left: 50px;
@@ -584,11 +593,6 @@ svg g path:hover{
 
   @media only screen and (min-width:992px) and (max-width:1199px)
   {
-    .arrowInstruction{
-        width: 30px;
-        top: 80px;
-        left: 65px;
-      }
 
     #clickState{
         top: 117px;
@@ -599,12 +603,6 @@ svg g path:hover{
   
   @media only screen and (min-width:576px) and (max-width:767px)
   {
-    .arrowInstruction{
-        width: 30px;
-        top: 60px;
-        left: 50px;
-      }
-
       
       #clickState{
         top: 98px;
@@ -614,14 +612,8 @@ svg g path:hover{
   }
 
 
-  
   @media only screen and (max-width:575px)
   {
-    .arrowInstruction{
-        width: 24px;
-        top: 70px;
-        left: 42px;
-      }
  
       #clickState{
         top: 104px;
@@ -636,18 +628,13 @@ svg g path:hover{
     color: gray; 
     padding-top: 3px; 
     width: 100%;
-    opacity: 0.7;
+    opacity: 0.9;
     position: absolute;
   }
 
   
   @media only screen and (max-width:499px)
   {
-    .arrowInstruction{
-        width: 21px;
-        top: 43px;
-        left: 40px;
-      }
  
       #clickState{
         top: 73px;

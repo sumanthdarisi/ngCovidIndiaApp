@@ -64,11 +64,54 @@ export class StDistComponent implements OnInit {
   total_deceased;
   total_tested;
 
+  //darkmode
+  darkMode;
+
+  card = {
+    'border':'1px solid rgb(242 239 239 / 13%)'
+  };
+
+  card_header = {
+    'border-bottom':'1px solid rgb(246 211 211 / 25%)',
+    'color':'white'
+  }
+
+  inside_circle = {
+    'background-color':'black',
+    'color':'#ffffffcc',
+  }
+
+  scroll_down={
+    'border': '1px solid #ffffff66',
+  }
+
+  circle_wrap ={
+    'box-shadow': '0px 0px 25px 12px rgb(79 78 75 / 71%)'
+  }
+
+  
+  graph_card ={
+    'background-color':'black',
+    'color': 'white'
+  }
+
+  table_column = {
+    'background-color':'black',
+    'color': '#7099e1'
+  }
+
+  
+  table_data = {
+    'opacity' : '0.9'
+  }
+
+
   constructor(private _serv: APIService, private route: Router) { }
 
   ngOnInit(): void {
     this.data = this._serv.getCovidData();
     this.stateCode = this._serv.getStateCode();
+    this.darkMode = (this._serv.getDarkMode() != undefined)? this._serv.getDarkMode(): false;
 
     if (!this.data) {
       this.route.navigateByUrl('/Covid');
@@ -796,6 +839,10 @@ export class StDistComponent implements OnInit {
 
   scroll(el: HTMLElement) {
     el.scrollIntoView({behavior:"smooth"});
+  }
+
+  dark(){
+      this._serv.setDarkMode(this._serv.getDarkMode());
   }
 }
 

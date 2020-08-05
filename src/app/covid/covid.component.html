@@ -1,13 +1,18 @@
 <div *ngIf="errorMessage =='NA'; else errorBlock">
-    <div class="row">
+    <button class="btn btn-default" (click)="dark(!darkMode)" id="modeButton">
+        <i class="fa fa-sun-o" aria-hidden="true" *ngIf="!darkMode" style="color: orange;"></i>
+        <i class="fa fa-moon-o" aria-hidden="true" *ngIf="darkMode" style="color: white;"></i>
+        <span [ngStyle]="{'color': darkMode? 'white' :''}" style="padding-left: 8px;">{{mode}} Mode</span>
+    </button>
+    <div class="row" >
         <div class="col">
-            <h3 id="titleName">Covid Stats India</h3>
+            <h3  [ngStyle]="{'color': darkMode? 'white' :''}"id="titleName">Covid Stats India</h3>
         </div>
         <div class="col">
-            <div class="float-right" style="text-align: right; color: gray; font-weight: bold;">Indian Population <br>
-                <span class="numbers" [countUp]=IndianPopulation *ngIf="IndianPopulation; else elsePop"> </span>
+            <div [ngStyle]="{'color': darkMode? 'white' :''}" class="float-right" id="Population" #Population>Indian Population <br>
+                <span [ngStyle]="{'color': darkMode? 'white' :''}" class="numbers" [countUp]=IndianPopulation *ngIf="IndianPopulation; else elsePop"> </span>
                 <ng-template #elsePop>
-                    <span class="numbers" [countUp]="1380159707">1,380,159,707</span>
+                    <span [ngStyle]="{'color': darkMode? 'white' :''}" class="numbers" [countUp]="1380159707" #PopulationCount>1,380,159,707</span>
                 </ng-template>
             </div>
         </div>
@@ -15,9 +20,9 @@
 
     <div class="row">
         <div @items class="col" style="margin:3px;" *ngFor="let d of Nt_data">
-            <div class="card {{d.style}}">
-                <div class="card-header">
-                    {{d.Name}} <span class={{d.icon}}></span>
+            <div class="card {{d.style}}" [ngStyle]="darkMode? card : ''">
+                <div class="card-header" [ngStyle]="darkMode? card_header : ''">
+                    {{d.Name}} <span class={{d.icon}} [ngStyle]="(darkMode && d.icon=='fa fa-flask')? card_percentage : ''"></span>
                 </div>
                 <div class="card-body" style="font-weight: bold;">
                     <span [countUp]=d.number></span>
@@ -25,9 +30,9 @@
                         <i class="fa fa-arrow-up" aria-hidden="true" *ngIf="d.del >=0 "></i>
                         <i class="fa fa-arrow-down" aria-hidden="true" *ngIf="d.del < 0"> </i> <span
                             [countUp]=d.del></span></span>
-                    <span class="cardPercentage" *ngIf="d.percent">
+                    <span class="cardPercentage" *ngIf="d.percent" [ngStyle]="darkMode? card_percentage : ''">
                         {{d.percent | percent}} <br>
-                        <span class="percText" *ngIf="d.percText">{{d.percText}}</span>
+                        <span class="percText" *ngIf="d.percText" [ngStyle]="darkMode? card_percentage : ''">{{d.percText}}</span>
                     </span>
                 </div>
             </div>
@@ -37,8 +42,8 @@
     
     <div class="row">
         <div class="col" style="margin: 3px;">
-            <div class="card" style="min-width: 10rem">
-                <div class="card-body" style="font-weight: bold; background-color: rgba(223, 223, 223, 0.2)">
+            <div class="card" style="min-width: 10rem" [ngStyle]="darkMode? graph_card : ''">
+                <div class="card-body" style="font-weight: bold; background-color: rgba(223, 223, 223, 0.2)" >
                     <div class="row">
                         <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" id="radioGraphCol">
                             <div class="wrapper">
@@ -83,10 +88,9 @@
                 <h4 id="titleNameMap">{{hoverStateName}}</h4>
                 <div class="row">
                     <div class="col-lg-8 col-md-6 col-xs-12 col-sm-12" id="MapCol">
-                        <div class="arrowInstruction">
-                            <img class="img-fluid" alt="instructions" src="../../assets/CurvedArrow.png">
-                        </div>
-                        <span id="clickState"></span>
+                        <span id="clickState" [ngStyle]="{'color': darkMode? 'white' :''}">
+                            <i style="padding-left: 6px;" [ngStyle]="{'color': darkMode? 'white' :''}" class="fa fa-long-arrow-right"></i>
+                        </span>
                         <svg viewBox="0 0 600 520" class="rsm-svg " data-tip="" currentItem="true">
                             <g class="rsm-geographies ">
                                 <path [ngClass]="getColor('AN')" (mouseenter)="hoverState('AN')" id="SVG_Andaman" tabindex="0" class="rsm-geography"
@@ -206,9 +210,9 @@
                         <div class="whiteboard" style="font-size: 13px;font-family: cursive; font: inherit; font-variant-caps: petite-caps;">
                         <div class="row" id="MapRow">
                         <div class="col">
-                            <div class="card">
-                                <div class="card-body" style="background-color: #1290e63d;">
-                                    <span class="fa fa-plus-square" id="icon"></span>
+                            <div class="card" [ngStyle]="darkMode? graph_card : ''">
+                                <div class="card-body" style="background-color: #1290e63d;" [ngStyle]="darkMode? maprow_card_body : ''">
+                                    <span class="fa fa-plus-square" id="icon" [ngStyle]="darkMode? bg_col : ''"></span>
                                     <h4>Confirmed</h4>
                                     <h6 [countUp]="hoverConCount" *ngIf="hoverConCount !='-NA-'; else hoverNA">{{hoverConCount | number}}</h6>
                                     <span>
@@ -220,9 +224,9 @@
                             </div>        
                         </div>
                         <div class="col">
-                            <div class="card">
-                                <div class="card-body" style="background-color: #ffc1073d;">
-                                    <span class="fa fa-heartbeat" id="icon"></span>
+                            <div class="card" [ngStyle]="darkMode? graph_card : ''">
+                                <div class="card-body" style="background-color: #ffc1073d;" [ngStyle]="darkMode? maprow_card_body : ''">
+                                    <span class="fa fa-heartbeat" id="icon" [ngStyle]="darkMode? bg_col : ''"></span>
                                     <h4>Active</h4>
                                     <h6 [countUp]="hoverActCount" *ngIf="hoverActCount !='-NA-'; else hoverNA">{{hoverActCount | number}}</h6>
                                     <span>
@@ -234,9 +238,9 @@
                             </div>        
                         </div>
                         <div class="col">
-                            <div class="card">
-                                <div class="card-body" style="background-color: #28a74540;">
-                                    <span class="fa fa-check-circle" id="icon"></span>
+                            <div class="card" [ngStyle]="darkMode? graph_card : ''">
+                                <div class="card-body" style="background-color: #28a74540;" [ngStyle]="darkMode? maprow_card_body : ''">
+                                    <span class="fa fa-check-circle" id="icon" [ngStyle]="darkMode? bg_col : ''"></span>
                                     <h4>Recovered</h4>
                                     <h6 [countUp]="hoverRecCount" *ngIf="hoverRecCount !='-NA-'; else hoverNA">{{hoverRecCount | number}}</h6>
                                     <span>
@@ -248,9 +252,9 @@
                             </div>        
                         </div>
                         <div class="col">
-                            <div class="card">
-                                <div class="card-body" style="background-color: #f5313163;">
-                                    <span class="fa fa-minus-circle" id="icon"></span>
+                            <div class="card" [ngStyle]="darkMode? graph_card : ''">
+                                <div class="card-body" style="background-color: #f5313163;" [ngStyle]="darkMode? maprow_card_body : ''">
+                                    <span class="fa fa-minus-circle" id="icon" [ngStyle]="darkMode? bg_col : ''"></span>
                                     <h4>Deceased</h4>
                                     <h6 [countUp]="hoverDesCount" *ngIf="hoverDesCount !='-NA-'; else hoverNA">{{hoverDesCount | number}}</h6>
                                     <span>
@@ -262,9 +266,9 @@
                             </div>        
                         </div>
                         <div class="col">
-                            <div class="card">
-                                <div class="card-body" style="background-color: #898e9363;">
-                                    <span class="fa fa-flask" id="icon"></span>
+                            <div class="card" [ngStyle]="darkMode? graph_card : ''">
+                                <div class="card-body" style="background-color: #898e9363;" [ngStyle]="darkMode? maprow_card_body : ''">
+                                    <span class="fa fa-flask" id="icon" [ngStyle]="darkMode? card_percentage : ''"></span>
                                     <h4>Tested</h4>
                                     <h6 [countUp]="hoverTesCount" *ngIf="hoverTesCount !='-NA-'; else hoverNA">{{hoverTesCount | number}}</h6>
                                     <span>
@@ -293,7 +297,7 @@
     </div>
 
     
-    <div class="alert alert-info alert-dismissible fade show" role="alert" style="margin-top: 5px;">
+    <div class="alert alert-info alert-dismissible fade show" role="alert" style="margin-top: 5px;" [ngStyle]="darkMode? alert : ''">
         Click on the state below to view the respective districts data
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -303,15 +307,15 @@
     <div class="form-group has-search" style="margin-top:20px">
         <span class="fa fa-search form-control-feedback"></span>
         <input type="text" class="form-control" placeholder={{placeHolderStateName}} #searchValue
-            (input)="searchWord($event.target.value)">
+            (input)="searchWord($event.target.value)" [ngStyle]="darkMode? graph_card : ''">
     </div>
 
     <div class="row">
         <div class="swipe"><span style="float: right;"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>Swipe Left</span></div>
-            <table class="table table-responsive" id="homeTable">
+            <table class="table table-responsive" id="homeTable" [ngStyle]="darkMode? card_percentage : ''">
             <thead>
                 <tr>
-                    <th #name id="statename"
+                    <th [ngStyle]="darkMode? graph_card : ''" #name id="statename"
                         (click)="st_sortByClick('name')">State Name<i *ngIf="counter%2!=0 && st_sortBy=='name'"
                             class="fa fa-sort-alpha-asc"></i>
                         <i *ngIf="counter%2==0 && st_sortBy=='name'" class="fa fa-sort-alpha-desc"></i>
@@ -347,59 +351,59 @@
 
             <tbody *ngFor="let d of SortStates" class="thead">
                 <tr (click)="stateCode($event)">
-                    <td id="statename" >{{d.st_name}}
+                    <td [ngStyle]="darkMode? table_column : ''" id="statename" >{{d.st_name}}
                     </td>
                     <td *ngIf="d.st_lastupdate != 'NA'; else elseBlock">
                         {{d.st_lastupdate| date:'mediumDate'}}</td>
                     <td *ngIf="d.st_population != 'NA' && d.st_population != -1.5; else elseBlock"
-                        style="text-align: center;">
+                        style="text-align: center;" >
                         {{d.st_population | number}}</td>
                     <td *ngIf="d.st_confirmed!= 'NA' && d.st_confirmed != -1.5; else elseBlock"
                         style="text-align: center;">
                         {{d.st_confirmed | number}}
-                        <span id="delta_green" *ngIf="d.delta_con!='NA' && d.delta_con < 0">
-                            <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_con | number}}
+                        <span id="delta_green" *ngIf="d.delta_con!='NA' && d.delta_con < 0" [ngStyle]="darkMode? table_data : ''">
+                            <i class="fa fa-arrow-down" aria-hidden="true" [ngStyle]="darkMode? table_data : ''"></i> {{d.delta_con | number}}
                         </span>
-                        <span id="delta_red" *ngIf="d.delta_con!='NA' && d.delta_con > 0">
-                            <i class="fa fa-arrow-up" aria-hidden="true"></i> {{d.delta_con | number}}
+                        <span id="delta_red" *ngIf="d.delta_con!='NA' && d.delta_con > 0" [ngStyle]="darkMode? table_data : ''">
+                            <i class="fa fa-arrow-up" aria-hidden="true" [ngStyle]="darkMode? table_data : ''"></i> {{d.delta_con | number}}
                         </span>
                     </td>
                     <td *ngIf="d.st_active != 'NA' && d.st_active != -1.5; else elseBlock" style="text-align: center;">
                         {{d.st_active| number}}
-                        <span id="delta_green" *ngIf="d.delta_act!='NA' && d.delta_act < 0">
-                            <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_act | number}}
+                        <span [ngStyle]="darkMode? table_data : ''" id="delta_green" *ngIf="d.delta_act!='NA' && d.delta_act < 0">
+                            <i [ngStyle]="darkMode? table_data : ''" class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_act | number}}
                         </span>
-                        <span id="delta_red" *ngIf="d.delta_act!='NA' && d.delta_act > 0">
-                            <i class="fa fa-arrow-up" aria-hidden="true"></i> {{d.delta_act | number}}
+                        <span [ngStyle]="darkMode? table_data : ''" id="delta_red" *ngIf="d.delta_act!='NA' && d.delta_act > 0">
+                            <i [ngStyle]="darkMode? table_data : ''" class="fa fa-arrow-up" aria-hidden="true"></i> {{d.delta_act | number}}
                         </span>
                     </td>
                     <td *ngIf="d.st_recoverd != 'NA' && d.st_recoverd != -1.5; else elseBlock"
                         style="text-align: center;">
                         {{d.st_recoverd | number}}
-                        <span id="delta_green" *ngIf="d.delta_rec!='NA' && d.delta_rec < 0">
-                            <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_rec | number}}
+                        <span [ngStyle]="darkMode? table_data : ''" id="delta_green" *ngIf="d.delta_rec!='NA' && d.delta_rec < 0">
+                            <i [ngStyle]="darkMode? table_data : ''" class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_rec | number}}
                         </span>
-                        <span id="delta_red" *ngIf="d.delta_rec!='NA' && d.delta_rec > 0">
-                            <i class="fa fa-arrow-up" aria-hidden="true"></i> {{d.delta_rec | number}}
+                        <span [ngStyle]="darkMode? table_data : ''" id="delta_red" *ngIf="d.delta_rec!='NA' && d.delta_rec > 0">
+                            <i [ngStyle]="darkMode? table_data : ''" class="fa fa-arrow-up" aria-hidden="true"></i> {{d.delta_rec | number}}
                         </span>
                     </td>
                     <td *ngIf="d.st_deceased != 'NA' && d.st_deceased != -1.5; else elseBlock"
                         style="text-align: center;">
                         {{d.st_deceased | number}}
-                        <span id="delta_green" *ngIf="d.delta_dec!='NA' && d.delta_dec < 0">
-                            <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_dec | number}}
+                        <span [ngStyle]="darkMode? table_data : ''" id="delta_green" *ngIf="d.delta_dec!='NA' && d.delta_dec < 0">
+                            <i [ngStyle]="darkMode? table_data : ''" class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_dec | number}}
                         </span>
-                        <span id="delta_red" *ngIf="d.delta_dec!='NA' && d.delta_dec > 0">
-                            <i class="fa fa-arrow-up" aria-hidden="true"></i> {{d.delta_dec | number}}
+                        <span [ngStyle]="darkMode? table_data : ''" id="delta_red" *ngIf="d.delta_dec!='NA' && d.delta_dec > 0">
+                            <i [ngStyle]="darkMode? table_data : ''" class="fa fa-arrow-up" aria-hidden="true"></i> {{d.delta_dec | number}}
                         </span>
                     </td>
                     <td *ngIf="d.st_tested != 'NA' && d.st_tested != -1.5; else elseBlock" style="text-align: center;">
                         {{d.st_tested | number}}
-                        <span id="delta_green" *ngIf="d.delta_tes!='NA' && d.delta_tes < 0">
-                            <i class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_tes | number}}
+                        <span [ngStyle]="darkMode? table_data : ''" id="delta_green" *ngIf="d.delta_tes!='NA' && d.delta_tes < 0">
+                            <i [ngStyle]="darkMode? table_data : ''" class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_tes | number}}
                         </span>
-                        <span id="delta_red" *ngIf="d.delta_tes!='NA' && d.delta_tes > 0">
-                            <i class="fa fa-arrow-up" aria-hidden="true"></i> {{d.delta_tes | number}}
+                        <span [ngStyle]="darkMode? table_data : ''" id="delta_red" *ngIf="d.delta_tes!='NA' && d.delta_tes > 0">
+                            <i [ngStyle]="darkMode? table_data : ''" class="fa fa-arrow-up" aria-hidden="true"></i> {{d.delta_tes | number}}
                         </span>
                     </td>
                 </tr>

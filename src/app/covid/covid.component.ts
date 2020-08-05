@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { CovidStDt } from '../Models/covid-st-dt';
 import { APIService } from '../Services/api.service';
 import { Chart } from 'node_modules/chart.js';
@@ -95,14 +95,94 @@ export class CovidComponent implements OnInit {
   hoverStateName; hoverConCount; hoverActCount; hoverRecCount; hoverDesCount; hoverTesCount
   hoverStateDelConCount;hoverStateDelActCount;hoverStateDelRecCount;hoverStateDelDecCount;hoverStateDelTesCount;
 
+  //darkmode
+  darkMode = false;
+  mode = 'Light';
 
-  constructor(private _serv: APIService, private _route: Router) {   }
+  card = {
+    'color': 'white',
+    'border':'1px solid rgb(234 230 230 / 29%)'
+  };
+
+  card_header = {
+    'border-bottom':'1px solid rgb(225 217 217 / 40%)'
+  }
+
+  card_percentage ={
+    'color' : 'white',
+    'background-color':'black',
+  }
+
+  graph_card ={
+    'background-color':'black',
+    'color': 'white'
+  }
+
+  bg_col ={
+    'background-color':'black'
+  }
+
+  alert= {
+    'background-color':'grey',
+    'color':'white',
+    'border':'1px solid rgb(234 230 230 / 29%)'
+  }
+
+  table_column = {
+    'background-color':'black',
+    'color': '#7099e1'
+  }
+
+  table_data = {
+    'opacity' : '0.9'
+  }
+
+  maprow_card_body={
+    'border-radius':'0px',
+    'color':'white',
+  }
+
+
+  constructor(private _serv: APIService, private _route: Router,private elementRef: ElementRef) {   }
+  
+  dark(e)
+  {
+    this.darkMode = e;
+    this._serv.setDarkMode(e);
+    this.bodyChange();
+  }
+
+  bodyChange(){
+    if(this.darkMode){
+      this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'black';    
+      this.elementRef.nativeElement.ownerDocument.querySelector('#footer').style.backgroundColor = 'black';
+      this.elementRef.nativeElement.ownerDocument.querySelector('#footer').style.color = 'white';
+      this.elementRef.nativeElement.ownerDocument.querySelector('#footer').style.border = '0px';
+    }
+    else{
+      this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'white';         
+      this.elementRef.nativeElement.ownerDocument.querySelector('#footer').style.backgroundColor = 'white';
+      this.elementRef.nativeElement.ownerDocument.querySelector('#footer').style.color = 'black';
+      this.elementRef.nativeElement.ownerDocument.querySelector('#footer').style.border = '1px solid transparent;';
+    }
+
+    if(!this.darkMode){
+      this.mode = 'Light';
+    }
+    else{
+      this.mode = 'Dark';
+    }
+  }
+
 
   ngOnInit(): void {
     this._serv.getCovid().subscribe(
       (response) => {
-      this.data = response;
-      
+      this.data = response;      
+    
+      this.darkMode = (this._serv.getDarkMode() != undefined)? this._serv.getDarkMode(): false;
+      this.bodyChange();
+
       // placeholder
       this.placeHolderStateName = this._serv.getPipeStateName(Object.keys(this.data)[0]);
       for (const d in this.data)
@@ -164,7 +244,10 @@ export class CovidComponent implements OnInit {
         this.errorMessage = "Hmmm... it shouldn't happen like this, try refreshing to see the magic";      
       throw error;
     });
+  
   }
+
+
 
   // all the data initialization take place here
   Initialdata(d){
@@ -544,25 +627,11 @@ export class CovidComponent implements OnInit {
   // main graph
   timeSeries()
   {
-      //*********** OLD graph ************//
-      // const Xlabels = [];
-      // const confirmYlabels = [];
-      // const recoverYlabels = [];
-      // const deceasedYlabels = [];
-      // const activeYlabels = [];
-      
-
+   
       this._serv.getTimeSeries().subscribe(res => {
       this.timeSeriesData = res.cases_time_series;
 
       for (const d in this.timeSeriesData) {
-        //*********** OLD graph ************//
-        // Xlabels.push(this.timeSeriesData[d].date);
-        // confirmYlabels.push(parseInt(this.timeSeriesData[d].totalconfirmed));
-        // recoverYlabels.push(parseInt(this.timeSeriesData[d].totalrecovered));
-        // deceasedYlabels.push(parseInt(this.timeSeriesData[d].totaldeceased));
-        // activeYlabels.push(parseInt(this.timeSeriesData[d].totalconfirmed) - (parseInt(this.timeSeriesData[d].totalrecovered) + parseInt(this.timeSeriesData[d].totaldeceased)));
-
         if(this.timeSeriesData[d].dailyconfirmed && this.timeSeriesData[d].dailydeceased && this.timeSeriesData[d].dailyrecovered){
           let date_len = new Date(this.timeSeriesData[d].date).toLocaleDateString().length -5;
           this.dailyXlabels.push(new Date(this.timeSeriesData[d].date).toLocaleDateString().substring(0,date_len));
@@ -572,15 +641,7 @@ export class CovidComponent implements OnInit {
           this.dailyActiveYlabels.push(parseInt(this.timeSeriesData[d].dailyconfirmed) - (parseInt(this.timeSeriesData[d].dailyrecovered) + parseInt(this.timeSeriesData[d].dailydeceased)));
         }
       }
-      
-      //*********** OLD graph ************//
-      // const xlablesLen = Xlabels.length / 1.5;
-      // Xlabels.splice(0, xlablesLen);
-      // confirmYlabels.splice(0, xlablesLen);
-      // recoverYlabels.splice(0, xlablesLen);
-      // deceasedYlabels.splice(0, xlablesLen);
-      // activeYlabels.splice(0, xlablesLen);
-
+   
       // X & Y axis data on graph
       this.dailyXlabels.splice(0,this.dailyXlabels.length-10);
       this.dailyConfirmYlabels.splice(0,this.dailyConfirmYlabels.length-10);
@@ -671,144 +732,6 @@ export class CovidComponent implements OnInit {
         data: All,
         options: lineOpitions,
       });        
-      
-      
-
-      //*********** OLD graph ************//
-      // Chart.defaults.LineWithLine = Chart.defaults.line;
-      // Chart.controllers.LineWithLine = Chart.controllers.line.extend({
-      //   draw(ease) {
-      //     Chart.controllers.line.prototype.draw.call(this, ease);
-
-      //     if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
-      //       const activePoint = this.chart.tooltip._active[0],
-      //           ctx = this.chart.ctx,
-      //           x = activePoint.tooltipPosition().x,
-      //           topY = this.chart.legend.bottom,
-      //           bottomY = this.chart.chartArea.bottom;
-
-      //       // draw line
-      //       ctx.save();
-      //       ctx.beginPath();
-      //       ctx.moveTo(x, topY);
-      //       ctx.lineTo(x, bottomY);
-      //       ctx.lineWidth = 1;
-      //       ctx.strokeStyle = 'rgba(167, 168, 167,0.3)';
-      //       ctx.stroke();
-      //       ctx.restore();
-      //     }
-      //   }
-      // });         
-
-      //****auto select graphs****//
-      // setInterval(()=>{  
-      //   if(ds==All)
-      //     ds=ConfirmedGraph;
-      //   else if(ds==ConfirmedGraph)
-      //     ds=ActiveGraph;
-      //   else if(ds==ActiveGraph)
-      //     ds=RecoveredGraph;
-      //   else if(ds==RecoveredGraph)
-      //     ds=DeceasedGraph;
-      //   else 
-      //     ds=All;
-
-      //   this.ConStackedData.destroy();
-      //   this.ConStackedData = new Chart('ConStackedData', {
-      //     type: 'line',        
-      //     data: ds,
-      //     options: lineOpitions,
-      //   });
-
-      //   this.ConStackedData.update();
-      // },7000)
-
-      
-
-    //   const NationalData = new Chart('NationalData', {
-    //     type: 'LineWithLine',
-    //     data: {
-    //       labels: Xlabels,
-    //         datasets: [
-    //           {
-    //             label: ['Confirmed'],
-    //             data: confirmYlabels,
-    //             fill: false,
-    //             borderColor: [
-    //               'rgba(0, 123, 255, 0.6)'
-    //             ],
-    //             radius: 0.7,
-    //             pointBorderColor: 'black',
-    //             pointHoverRadius: 10
-    //         },
-    //         {
-    //           label: ['Recovered'],
-    //           data: recoverYlabels,
-    //           fill: false,
-    //           borderColor: [
-    //             'rgba(40, 167, 69, 0.6)'
-    //           ],
-    //           radius: 0.7,
-    //           pointBorderColor: 'black',
-
-    //           pointHoverRadius: 10
-    //       },
-    //       {
-    //         label: ['Active'],
-    //         data: activeYlabels,
-    //         fill: false,
-
-    //         borderColor: [
-    //           'rgba(255, 7, 58, 0.6)'
-    //         ],
-    //         radius: 0.7,
-    //         pointBorderColor: 'black',
-    //         pointHoverRadius: 10
-    //       },
-    //       {
-    //         label: ['Deceased'],
-    //         data: deceasedYlabels,
-    //         fill: false,
-
-    //         borderColor: [
-    //           'rgba(197, 155, 18, 0.6)'
-    //         ],
-    //         radius: 0.7,
-    //         pointBorderColor: 'black',
-    //         pointHoverRadius: 10
-    //       }
-    //     ]
-    //     },
-    //     options: {
-    //       events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
-    //       tooltips: {
-    //         enabled: true,
-    //         mode: 'index',
-    //         intersect: false
-    //       },
-    //         scales: {
-    //             yAxes: [{
-    //               position: 'right',
-    //               gridLines: {
-    //                 drawOnChartArea: true
-    //               },
-    //                 ticks: {
-    //                     autoSkip: true,
-    //                     maxTicksLimit: 6
-    //                 }
-    //             }],
-    //             xAxes: [{
-    //               gridLines: {
-    //                 drawOnChartArea: false
-    //               },
-    //               ticks: {
-    //                   autoSkip: true,
-    //                   maxTicksLimit: 10
-    //               }
-    //             }]
-    //         }
-    //     }
-    // });
     });
   }
 

@@ -2,6 +2,13 @@
   font-weight: bold;
 }
 
+.stick_col{
+  position: sticky; 
+  left:0px; 
+  background-color: white; 
+  z-index: 999
+}
+
 @media only screen and (max-width: 1000px)
 {
     #StateName{

@@ -20,6 +20,7 @@ export class APIService {
   _jsonFile = 'assets/IndiaStates.json';
   stateRank: Rank;
   counts:NtStCounts;
+  DarkMode: boolean;
 
 
   constructor(private _http: HttpClient){}
@@ -123,6 +124,15 @@ export class APIService {
 
   getNtStCounts(){
     return this.counts;
+  }
+
+  setDarkMode(e){
+    this.DarkMode = e;
+  }
+
+  getDarkMode()
+  {
+    return this.DarkMode;
   }
 
 }
