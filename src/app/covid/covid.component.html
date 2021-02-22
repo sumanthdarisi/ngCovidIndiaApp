@@ -85,7 +85,7 @@
     <div class="row" *ngIf="hoverFlag" id="IndiaMap">
         <div class="col">         
             <div class="container">
-                <h4 id="titleNameMap">{{hoverStateName}}</h4>
+                <h4 id="titleNameMap" [ngStyle]="{'color': darkMode? 'white' :''}">{{hoverStateName}}</h4>
                 <div class="row">
                     <div class="col-lg-8 col-md-6 col-xs-12 col-sm-12" id="MapCol">
                         <span id="clickState" [ngStyle]="{'color': darkMode? 'white' :''}">

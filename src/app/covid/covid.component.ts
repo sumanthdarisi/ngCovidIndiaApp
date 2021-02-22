@@ -629,7 +629,7 @@ export class CovidComponent implements OnInit {
   {
    
       this._serv.getTimeSeries().subscribe(res => {
-      this.timeSeriesData = res.cases_time_series;
+        this.timeSeriesData = res.cases_time_series;
 
       for (const d in this.timeSeriesData) {
         if(this.timeSeriesData[d].dailyconfirmed && this.timeSeriesData[d].dailydeceased && this.timeSeriesData[d].dailyrecovered){

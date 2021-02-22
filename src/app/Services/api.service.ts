@@ -27,7 +27,7 @@ export class APIService {
 
 
   getCovid(): Observable<any>{
-    const _covidurl = 'https://api.covid19india.org/v3/data.json';
+    const _covidurl = 'https://api.covid19india.org/v4/min/data.min.json';
     this.covidData = this._http.get(_covidurl).pipe(
       catchError(err=>{
         console.log('error',err);
