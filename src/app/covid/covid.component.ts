@@ -8,6 +8,7 @@ import { StatesDelta } from '../Models/states-delta';
 import { Rank } from '../Models/rank';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { NtStCounts } from '../Models/nt-st-counts';
+import { createElementCssSelector } from '@angular/compiler';
 
 
 
@@ -89,6 +90,7 @@ export class CovidComponent implements OnInit {
   dailyRecoveredYlabels = [];
   dailyDeceasedYlabels = [];
   dailyActiveYlabels = [];
+  dailyCountsDuration = 7;  //default 1W
 
   //hoverMapLabels
   hoverFlag=false;
@@ -98,6 +100,8 @@ export class CovidComponent implements OnInit {
   //darkmode
   darkMode = false;
   mode = 'Light';
+
+  dailyCountStyle= 'start-1W'; 
 
   card = {
     'color': 'white',
@@ -142,6 +146,10 @@ export class CovidComponent implements OnInit {
     'color':'white',
   }
 
+  just_color={
+    'color':'white'
+  }
+
 
   constructor(private _serv: APIService, private _route: Router,private elementRef: ElementRef) {   }
   
@@ -150,6 +158,8 @@ export class CovidComponent implements OnInit {
     this.darkMode = e;
     this._serv.setDarkMode(e);
     this.bodyChange();
+    this.chartUpdate();
+    this.TopStatesUpdate();
   }
 
   bodyChange(){
@@ -626,28 +636,39 @@ export class CovidComponent implements OnInit {
 
   // main graph
   timeSeries()
-  {
-   
-      this._serv.getTimeSeries().subscribe(res => {
+  {  
+    this._serv.getTimeSeries().subscribe(res => {
         this.timeSeriesData = res.cases_time_series;
-
+        let xlable, dcYlabel, drYlabel, ddYlabel, daYlabel = null;
+        
+      if(this.dailyXlabels.length ==0 || this.dailyConfirmYlabels.length ==0 || this.dailyRecoveredYlabels.length ==0 || this.dailyDeceasedYlabels.length ==0 || this.dailyActiveYlabels.length == 0)
       for (const d in this.timeSeriesData) {
         if(this.timeSeriesData[d].dailyconfirmed && this.timeSeriesData[d].dailydeceased && this.timeSeriesData[d].dailyrecovered){
           let date_len = new Date(this.timeSeriesData[d].date).toLocaleDateString().length -5;
-          this.dailyXlabels.push(new Date(this.timeSeriesData[d].date).toLocaleDateString().substring(0,date_len));
+          this.dailyXlabels.push(new Date(this.timeSeriesData[d].dateymd).toLocaleDateString().substring(0,date_len));
           this.dailyConfirmYlabels.push(parseInt(this.timeSeriesData[d].dailyconfirmed));
           this.dailyRecoveredYlabels.push(parseInt(this.timeSeriesData[d].dailyrecovered));
           this.dailyDeceasedYlabels.push(parseInt(this.timeSeriesData[d].dailydeceased));
           this.dailyActiveYlabels.push(parseInt(this.timeSeriesData[d].dailyconfirmed) - (parseInt(this.timeSeriesData[d].dailyrecovered) + parseInt(this.timeSeriesData[d].dailydeceased)));
         }
       }
-   
+
       // X & Y axis data on graph
-      this.dailyXlabels.splice(0,this.dailyXlabels.length-10);
-      this.dailyConfirmYlabels.splice(0,this.dailyConfirmYlabels.length-10);
-      this.dailyRecoveredYlabels.splice(0,this.dailyRecoveredYlabels.length-10);
-      this.dailyDeceasedYlabels.splice(0,this.dailyDeceasedYlabels.length-10);
-      this.dailyActiveYlabels.splice(0,this.dailyActiveYlabels.length-10);
+      if(this.dailyCountsDuration > 0)
+      {
+        xlable  = this.dailyXlabels.slice(Math.max(this.dailyXlabels.length - this.dailyCountsDuration,0));
+        dcYlabel = this.dailyConfirmYlabels.slice(Math.max(this.dailyConfirmYlabels.length - this.dailyCountsDuration,0));
+        drYlabel = this.dailyRecoveredYlabels.slice(Math.max(this.dailyRecoveredYlabels.length - this.dailyCountsDuration,0));
+        ddYlabel = this.dailyDeceasedYlabels.slice(Math.max(this.dailyDeceasedYlabels.length - this.dailyCountsDuration,0));
+        daYlabel =this.dailyActiveYlabels.slice(Math.max(this.dailyActiveYlabels.length - this.dailyCountsDuration,0));
+      }
+      else{
+        xlable  = this.dailyXlabels;
+        dcYlabel = this.dailyConfirmYlabels;
+        drYlabel = this.dailyRecoveredYlabels;
+        ddYlabel = this.dailyDeceasedYlabels;
+        daYlabel =this.dailyActiveYlabels;  
+      }
 
       Chart.Legend.prototype.afterFit = function() {
         this.height = this.height + 10;
@@ -660,7 +681,7 @@ export class CovidComponent implements OnInit {
         },
         legend: {
           labels: {
-            usePointStyle: true,
+            usePointStyle: true
           },
         },
         responsive: true,
@@ -676,6 +697,7 @@ export class CovidComponent implements OnInit {
             stacked: true,
             ticks: {
               fontSize: 9,
+              maxTicksLimit: 12,
               autoSkip: true
             }
           }],
@@ -690,48 +712,54 @@ export class CovidComponent implements OnInit {
       };
   
       const All = {
-        labels: this.dailyXlabels,
+        labels: xlable,
         datasets:[
           {
             label:'Confirm',
-            data:this.dailyConfirmYlabels,
+            data:dcYlabel,
             backgroundColor:'#1F618D',
             borderColor: '#1F618D',
             pointBorderColor: 'white',
-            radius:1
+            radius: (this.dailyCountsDuration <50 && this.dailyCountsDuration >0)?1:0
           },
           {
             label:'Active',
-            data:this.dailyActiveYlabels,
+            data:daYlabel,
             backgroundColor:'#F39C12',
             borderColor: '#F39C12',
             pointBorderColor: 'white',
-            radius:1
+            radius: (this.dailyCountsDuration <50 && this.dailyCountsDuration >0)?1:0
           },
           {
             label:'Recover',
-            data:this.dailyRecoveredYlabels,
+            data:drYlabel,
             backgroundColor:'#117A65',
             borderColor: '#117A65',
             pointBorderColor: 'white',
-            radius:1
+            radius: (this.dailyCountsDuration <50 && this.dailyCountsDuration >0)?1:0
           },
           {
             label:'Deceased',
-            data:this.dailyDeceasedYlabels,
+            data:ddYlabel,
             backgroundColor: '#922B21',
             borderColor: '#922B21',
             pointBorderColor: 'white',
-            radius:1
+            radius: (this.dailyCountsDuration <50 && this.dailyCountsDuration >0)?1:0
           }
         ]
       }
       
+      if (this.AllStackedData){
+        this.AllStackedData.destroy();
+      }
+
       this.AllStackedData = new Chart('AllStackedData', {
         type: 'line',        
         data: All,
         options: lineOpitions,
-      });        
+      });    
+      
+      this.chartUpdate();
     });
   }
 
@@ -821,6 +849,7 @@ export class CovidComponent implements OnInit {
         intialvalue.backgroundColor[i]=colors[0]; //console.log(val, 'darkest');
       }
       this.TopStates.update();
+      this.TopStatesUpdate();
   }
 
 
@@ -968,4 +997,87 @@ export class CovidComponent implements OnInit {
     return className;
   }
 
+
+  timeSeriesCounts(code)
+  {
+    switch (code) {
+      case '1W':
+        this.dailyCountsDuration = 7;
+        this.dailyCountStyle = 'start-1W';
+        this.timeSeries();
+        break;
+      case '10D':
+        this.dailyCountsDuration = 10;
+        this.dailyCountStyle = 'start-10D';
+        this.timeSeries();
+        break;
+      case '1M':
+        this.dailyCountsDuration = 30;
+        this.dailyCountStyle = 'start-1M';
+        this.timeSeries();
+        break;
+      case '3M':
+          this.dailyCountsDuration = 90;
+          this.dailyCountStyle = 'start-3M';
+          this.timeSeries();
+          break;
+      case '6M':
+        this.dailyCountsDuration = 180;
+        this.dailyCountStyle = 'start-6M';
+        this.timeSeries();
+        break;
+      case 'ALL':
+        this.dailyCountsDuration = -10;
+        this.dailyCountStyle = 'start-ALL';
+        this.timeSeries();
+        break;
+    
+      default:
+        this.dailyCountsDuration = 7;
+        this.dailyCountStyle = 'start-1W';
+        this.timeSeries();
+        break;
+    }
+  }
+
+  chartUpdate()
+  {
+    if(this.darkMode)
+    {
+      this.AllStackedData.options.title.fontColor = 'white';
+      this.AllStackedData.options.legend.labels.fontColor = 'white';
+      this.AllStackedData.options.scales.xAxes[0].ticks.fontColor = 'white';
+      this.AllStackedData.options.scales.yAxes[0].ticks.fontColor = 'white';
+      // this.AllStackedData.options.scales.xAxes[0].gridLines.color = 'rgba(255, 253, 252)';
+      // this.AllStackedData.options.scales.yAxes[0].gridLines.color = 'rgba(255, 253, 252)';
+    }
+    else
+    {
+      this.AllStackedData.options.title.fontColor = 'black';
+      this.AllStackedData.options.legend.labels.fontColor = 'black';
+      this.AllStackedData.options.scales.xAxes[0].ticks.fontColor = 'black';
+      this.AllStackedData.options.scales.yAxes[0].ticks.fontColor = 'black';
+    }
+      this.AllStackedData.update();
+  }
+
+  TopStatesUpdate()
+  {
+    if(this.darkMode)
+    {
+      this.TopStates.options.title.fontColor = 'white';
+      this.TopStates.options.legend.labels.fontColor = 'white';
+      this.TopStates.options.scales.xAxes[0].ticks.fontColor = 'white';
+      this.TopStates.options.scales.yAxes[0].ticks.fontColor = 'white';
+    }
+    else
+    {
+      this.TopStates.options.title.fontColor = 'black';
+      this.TopStates.options.legend.labels.fontColor = 'black';
+      this.TopStates.options.scales.xAxes[0].ticks.fontColor = 'black';
+      this.TopStates.options.scales.yAxes[0].ticks.fontColor = 'black';
+    }
+
+      this.TopStates.update();
+  }
 }

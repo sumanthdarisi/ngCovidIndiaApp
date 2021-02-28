@@ -49,8 +49,19 @@
                             <div class="wrapper">
                                 <canvas id="AllStackedData" height="299" width="600"></canvas>
                             </div>
+                            <div class="countsRange">
+                                <nav>
+                                    <div [ngStyle]="darkMode? just_color : ''" (click)="timeSeriesCounts('1W')">1W</div>
+                                    <div [ngStyle]="darkMode? just_color : ''" (click)="timeSeriesCounts('10D')">10D</div>
+                                    <div [ngStyle]="darkMode? just_color : ''" (click)="timeSeriesCounts('1M')">1M</div>
+                                    <div [ngStyle]="darkMode? just_color : ''" (click)="timeSeriesCounts('3M')">3M</div>
+                                    <div [ngStyle]="darkMode? just_color : ''" (click)="timeSeriesCounts('6M')">6M</div>
+                                    <div [ngStyle]="darkMode? just_color : ''" (click)="timeSeriesCounts('ALL')">ALL</div>
+                                    <div class="animation {{this.dailyCountStyle}}"></div>
+                                </nav>
+                            </div>
                         </div>
-                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 states">
                             <canvas id="tpStates" style="width:100%;"></canvas>
                             <div id="radios">
                                 <div class="custom-control custom-radio custom-control-inline">

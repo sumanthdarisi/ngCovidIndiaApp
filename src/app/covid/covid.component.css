@@ -211,6 +211,94 @@
     }
 }
 
+@media only screen and (max-width: 993px)
+{
+    .states{
+        margin-top: 20px;
+    }
+}
+
+
+.countsRange nav{
+position: relative;
+margin: 30px auto 0;
+width: 300px;
+height: 30px;
+border-radius: 8px;
+font-size: 0;
+}
+
+.countsRange nav .animation{
+    position: absolute;
+    height: 100%;
+    top: 0;
+    z-index: 0;
+    background: #1abc9c;
+    border-radius: 8px;
+    transition: all .5s ease 0s;
+    box-shadow: rgba(0, 1px, 1px, 0.1);
+}
+
+.countsRange nav div{
+font-size: 10px;
+text-transform: uppercase;
+color: black;
+text-decoration: none;
+line-height: 30px;
+position: relative;
+z-index: 1;
+display: inline-block;
+text-align: center;
+}
+
+.countsRange nav div:nth-child(1){
+    width: 50px;
+}
+
+nav .start-1W, div:nth-child(1):active~.animation{
+    width: 50px;
+    left: 0px;
+}
+
+.countsRange nav div:nth-child(2){
+    width: 50px;
+}
+nav .start-10D, div:nth-child(2):active~.animation{
+    width: 50px;
+    left: 50px;
+}
+
+.countsRange nav div:nth-child(3){
+    width: 50px;
+}
+nav .start-1M, div:nth-child(3):active~.animation{
+    width: 50px;
+    left: 100px;
+}
+
+.countsRange nav div:nth-child(4){
+    width: 50px;
+}
+nav .start-3M, div:nth-child(4):active~.animation{
+    width: 50px;
+    left: 150px;
+}
+
+.countsRange nav div:nth-child(5){
+    width: 50px;
+}
+nav .start-6M, div:nth-child(5):active~.animation{
+    width: 50px;
+    left: 200px;
+}
+
+.countsRange nav div:nth-child(6){
+    width: 50px;
+}
+nav .start-ALL, div:nth-child(6):active~.animation{
+    width: 50px;
+    left: 250px;
+}
 
 .cardPercentage{
     float: right;
