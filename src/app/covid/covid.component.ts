@@ -29,8 +29,9 @@ import { createElementCssSelector } from '@angular/compiler';
 
 export class CovidComponent implements OnInit {
   //page variables
-  dateMessage: any;
+  lastUpdate: any;
   IndianPopulation;
+
   Nt_TotalConfirmedCases = 0;
   Nt_TotalRecoverdCases = 0;
   Nt_TotalDeceasedCases = 0;
@@ -44,11 +45,13 @@ export class CovidComponent implements OnInit {
   Nt_Del_Tested = 0;
   Nt_Del_Active = 0;
 
+  nt_confimed_percent;
   nt_active_percent;
   nt_recovered_percent;
   nt_deceased_percent;
   nt_tests_percent; // percent of tests wrt population
-
+  nt_vaccinated = 0;
+  nt_vaccPercentage =0;
   TopStates ;
 
   data: Array<CovidStDt>;
@@ -205,12 +208,14 @@ export class CovidComponent implements OnInit {
 
       //total population
       this.IndianPopulation = this.data['TT']['meta']['population'];
+      this.nt_vaccPercentage = (this.nt_vaccinated/this.IndianPopulation) * 100;
+      
 
       // actual states data & delta info
       for (const e in this.data)
       {
-        let name, pop, con, dec, tes, rec, test_date, act;
-        let d_con, d_rec, d_act, d_dec, d_tes;
+        let name, pop, con, dec, tes, rec, test_date, act, vacc;
+        let d_con, d_rec, d_act, d_dec, d_tes,d_vac;
         const _base = this.data[e]['delta'];
 
         if (e != 'TT' && e != 'UN')
@@ -220,6 +225,7 @@ export class CovidComponent implements OnInit {
           d_dec = (_base && _base.deceased) ? _base.deceased : 'NA';
           d_tes = (_base && _base.tested) ? _base.tested : 'NA';
           d_act = (!_base || d_rec == 'NA' || d_con == 'NA' || d_dec == 'NA') ? 'NA' : (d_con - (d_rec + d_dec));
+          d_vac = (_base && _base.vaccinated) ? _base.vaccinated : 'NA';
         }
 
         if (this.data[e]['total'] && this._serv.getPipeStateName(e) && e != 'TT' && e != 'UN')
@@ -232,9 +238,10 @@ export class CovidComponent implements OnInit {
           tes = (_base['total']['tested']) ?    _base['total']['tested'] : 'NA';
           rec = (_base['total']['recovered']) ? _base['total']['recovered'] : 'NA';
           test_date = (_base['meta']['last_updated']) ? (_base['meta']['last_updated']) : 'NA';
+          vacc = (_base['total']['vaccinated']) ? _base['total']['vaccinated'] : 'NA';
           act = (con == 'NA' || dec == 'NA' || rec == 'NA') ? 'NA' : (con - (rec + dec));
-          this.SortStates.push(new States(name, pop, con, dec, tes, rec, act, test_date, d_con, d_rec, d_dec, d_tes, d_act));
-          this.RankStates.push(new States(name, pop, con, dec, tes, rec, act, test_date, d_con, d_rec, d_dec, d_tes, d_act));
+          this.SortStates.push(new States(name, pop, con, dec, tes, rec, act, test_date, vacc, d_con, d_rec, d_dec, d_tes, d_act,d_vac));
+          this.RankStates.push(new States(name, pop, con, dec, tes, rec, act, test_date, vacc, d_con, d_rec, d_dec, d_tes, d_act,d_vac));
         }
       }
 
@@ -285,6 +292,10 @@ export class CovidComponent implements OnInit {
         if (d[e].total.tested){
           this.Nt_TotalTests += Number(d[e].total.tested);
         }
+
+        if (d[e].total.vaccinated){
+          this.nt_vaccinated += Number(d[e].total.vaccinated);
+        }
       }
 
       // national delta totals
@@ -311,13 +322,15 @@ export class CovidComponent implements OnInit {
     this.Nt_Active = this.Nt_TotalConfirmedCases - (this.Nt_TotalDeceasedCases + this.Nt_TotalRecoverdCases);
     this.Nt_Del_Active = this.Nt_Del_Confirmed - (this.Nt_Del_Deceased + this.Nt_Del_Recovered);
 
+    this.nt_confimed_percent = this.Nt_TotalConfirmedCases/this.IndianPopulation
     this.nt_recovered_percent = this.Nt_TotalRecoverdCases / this.Nt_TotalConfirmedCases;
     this.nt_active_percent = (this.Nt_Active / this.Nt_TotalConfirmedCases);
     this.nt_deceased_percent = (this.Nt_TotalDeceasedCases / this.Nt_TotalConfirmedCases);
     this.nt_tests_percent = (this.Nt_TotalTests / this.IndianPopulation);
+    this.nt_vaccPercentage = (this.nt_vaccinated / this.IndianPopulation) * 100;
 
     this.Nt_data = [
-      {Name: 'Confirmed Cases', number: this.Nt_TotalConfirmedCases, style: 'con_cl', del: this.Nt_Del_Confirmed, del_style: 'delta_tot', icon: 'fa fa-plus-square'},
+      {Name: 'Confirmed Cases', number: this.Nt_TotalConfirmedCases, style: 'con_cl', del: this.Nt_Del_Confirmed, del_style: 'delta_tot', icon: 'fa fa-plus-square',percent: this.nt_confimed_percent, percText: 'of Population'},
       {Name: 'Active Cases', number: this.Nt_Active, style: 'act_cl', del: this.Nt_Del_Active, del_style: 'delta_tot', percent: this.nt_active_percent, icon: 'fa fa-heartbeat',  percText: 'of Confirmed'},
       {Name: 'Recovered Cases', number: this.Nt_TotalRecoverdCases, style: 'rec_cl', del: this.Nt_Del_Recovered, del_style: 'delta_tot', percent: this.nt_recovered_percent, icon: 'fa fa-check-circle', percText: 'of Confirmed'},
       {Name: 'Deceased Cases', number: this.Nt_TotalDeceasedCases, style: 'dec_cl', del: this.Nt_Del_Deceased, del_style: 'delta_tot', percent: this.nt_deceased_percent, icon: 'fa fa-minus-circle', percText: 'of Confirmed'},
@@ -532,6 +545,30 @@ export class CovidComponent implements OnInit {
       }
     }
 
+    if (sortBy == 'vaccinated') {
+      this.st_sortBy = sortBy;
+      if (this.counter % 2 != 0) {
+        this.SortStates.sort(function(a, b) {
+          a.st_vaccinated = (a.st_vaccinated.toString() == 'NA') ? -1.5 : a.st_vaccinated;
+          b.st_vaccinated = (b.st_vaccinated.toString() == 'NA') ? -1.5 : b.st_vaccinated;
+          if (a.st_vaccinated > b.st_vaccinated) { return -1; }
+          if (a.st_vaccinated < b.st_vaccinated) { return 1; }
+          else { return 0; }
+        });
+        this.counter++;
+      }
+      else {
+        this.SortStates.sort(function(a, b) {
+          a.st_vaccinated = (a.st_vaccinated.toString() == 'NA') ? -1.5 : a.st_vaccinated;
+          b.st_vaccinated = (b.st_vaccinated.toString() == 'NA') ? -1.5 : b.st_vaccinated;
+          if (a.st_vaccinated > b.st_vaccinated) { return -1; }
+          if (a.st_vaccinated < b.st_vaccinated) { return 1; }
+          else { return 0; }
+        }).reverse();
+        this.counter++;
+      } 
+    }
+
   }
 
   //ranks sort funct
@@ -599,7 +636,7 @@ export class CovidComponent implements OnInit {
   // send state name and respective data to service before routing to a state page
   stateCode(e)
   {
-    const Name = e.target.parentNode.cells? e.target.parentNode.cells[0].innerHTML.trim():e.target.parentNode.parentNode.cells[0].innerHTML.trim();
+    const Name = e.target.parentNode.cells? e.target.parentNode.cells[0].innerHTML?.split('<br')[0].trim():e.target.parentNode.parentNode.cells[0].innerHTML?.split('<br')[0].trim();
     const code = this._serv.getPipeStateCode(Name);
     
     //send the selcted state data to service before routing
@@ -640,6 +677,8 @@ export class CovidComponent implements OnInit {
     this._serv.getTimeSeries().subscribe(res => {
         this.timeSeriesData = res.cases_time_series;
         let xlable, dcYlabel, drYlabel, ddYlabel, daYlabel = null;
+        let length = res['cases_time_series']['length']-1;
+        this.lastUpdate = res['cases_time_series'][length]['date'];
         
       if(this.dailyXlabels.length ==0 || this.dailyConfirmYlabels.length ==0 || this.dailyRecoveredYlabels.length ==0 || this.dailyDeceasedYlabels.length ==0 || this.dailyActiveYlabels.length == 0)
       for (const d in this.timeSeriesData) {
@@ -720,7 +759,7 @@ export class CovidComponent implements OnInit {
             backgroundColor:'#1F618D',
             borderColor: '#1F618D',
             pointBorderColor: 'white',
-            radius: (this.dailyCountsDuration <50 && this.dailyCountsDuration >0)?1:0
+            radius: (this.dailyCountsDuration <20 && this.dailyCountsDuration >0)?1:0
           },
           {
             label:'Active',
@@ -728,7 +767,7 @@ export class CovidComponent implements OnInit {
             backgroundColor:'#F39C12',
             borderColor: '#F39C12',
             pointBorderColor: 'white',
-            radius: (this.dailyCountsDuration <50 && this.dailyCountsDuration >0)?1:0
+            radius: (this.dailyCountsDuration <20 && this.dailyCountsDuration >0)?1:0
           },
           {
             label:'Recover',
@@ -736,7 +775,7 @@ export class CovidComponent implements OnInit {
             backgroundColor:'#117A65',
             borderColor: '#117A65',
             pointBorderColor: 'white',
-            radius: (this.dailyCountsDuration <50 && this.dailyCountsDuration >0)?1:0
+            radius: (this.dailyCountsDuration <20 && this.dailyCountsDuration >0)?1:0
           },
           {
             label:'Deceased',
@@ -744,7 +783,7 @@ export class CovidComponent implements OnInit {
             backgroundColor: '#922B21',
             borderColor: '#922B21',
             pointBorderColor: 'white',
-            radius: (this.dailyCountsDuration <50 && this.dailyCountsDuration >0)?1:0
+            radius: (this.dailyCountsDuration <20 && this.dailyCountsDuration >0)?1:0
           }
         ]
       }
@@ -808,9 +847,9 @@ export class CovidComponent implements OnInit {
         data: ds,
         options: {
           responsive: true,
-        maintainAspectRation: false,
+          maintainAspectRation: false,
           tooltips: {
-            enabled: true,
+            enabled: true
           },
             scales: {
                 yAxes: [{

@@ -156,7 +156,7 @@ export class StDistComponent implements OnInit {
       }
     }
     this.initialize();
-    this.StateTimeSeries();
+    this.StateTimeSeries(this.stateCode);
     this.placaholderFunc(this.placeholder);
   }
   
@@ -411,8 +411,9 @@ export class StDistComponent implements OnInit {
   }
 
 
-  StateTimeSeries() {
-    this._serv.getStateTimeSeries().subscribe(d => {      
+  StateTimeSeries(code: any) {
+    //this._serv.getStateTimeSeries().subscribe(d => {      
+      this._serv.getDistrictsTimeSeriesData(code).subscribe(d => {      
       for (let val in d[this.stateCode]['dates']) {
         if (d[this.stateCode]['dates'][val]['delta']) {
           let date_len = new Date(val).toLocaleDateString().length;

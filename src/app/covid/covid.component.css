@@ -16,6 +16,8 @@
     text-align: right; 
     color: gray; 
     font-weight: bold;
+    font-size: 14px;
+    padding-top: 22px;
 }
 
 .con_cl{
@@ -70,12 +72,20 @@
 
 
 .delta_tot{
-    font-size: 11px;
+    font-size: 11.5px;
     text-align: center;
     margin-left: 2px;
-    color: firebrick;
+    font-weight: bold;
+    color: brown;
   }
   
+  
+@media only screen and (max-width: 500px)
+{
+    .delta_tot{
+        font-size: 11px;
+      }
+}
 
 
 .custom-control-label{
@@ -139,6 +149,7 @@
     z-index: 100;
 }
 
+
 @media only screen and (max-width: 502px)
 {
     #AllStackedData{
@@ -199,8 +210,12 @@
 
     #titleName{
         font-size: 1.21rem;
-        margin-left:4px;
+        margin:0px 0px 3px 4px;
         padding-top: 20px;
+    }
+    #subtitleName{
+        margin:0px 0px 5px 5px;
+        opacity: 0.7;
     }
 }
 
@@ -322,6 +337,7 @@ nav .start-ALL, div:nth-child(6):active~.animation{
 
 .card-header{
     padding: .75rem 0.8rem;
+    font-weight: bold;
 }
 
 table thead tr th {
@@ -459,7 +475,7 @@ svg g path:hover{
 }
 
 
-@media only screen and (min-width: 533px)
+@media only screen and (min-width: 502px)
 {
     #MapRow .col .card .card-body{
         padding: 1rem;
@@ -467,7 +483,14 @@ svg g path:hover{
 
     #titleName{
         font-size: 1.2rem;
-        padding-top: 22px;
+        margin:0px 0px 3px 4px;
+        padding-top: 20px;
+    }
+
+    #subtitleName{
+        margin:0px 0px 5px 5px;
+        opacity: 0.7;
+        font-size: 14px;
     }
 }
 
@@ -735,7 +758,13 @@ svg g path:hover{
     }
   }
 
-
+  .dateCol{
+      font-size: 10px;
+      color: black;
+      position: sticky;
+      bottom: 10px;
+      opacity: 0.7;
+  }
   
 /* ConfirmedMap */
 .safeZoneCon, .NA_DataZoneCon{

@@ -102,8 +102,13 @@ export class APIService {
   }
 
 
-  getStateTimeSeries(){
-    const _basetimeSeries = 'https://api.covid19india.org/v4/timeseries.json';
+  // getStateTimeSeries(){
+  //   const _basetimeSeries = 'https://api.covid19india.org/v4/timeseries.json';
+  //   return this._http.get(_basetimeSeries);
+  // }
+
+  getDistrictsTimeSeriesData(code: any){
+    const _basetimeSeries = 'https://api.covid19india.org/v4/min/timeseries-'+code.trim()+'.min.json';
     return this._http.get(_basetimeSeries);
   }
 

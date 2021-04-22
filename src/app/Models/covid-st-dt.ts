@@ -6,5 +6,4 @@ export class CovidStDt {
     st_recovered: number;
     st_code: string;
     st_name: string;
-    lastupdated: Date;
 }

@@ -7,29 +7,32 @@
     <div class="row" >
         <div class="col">
             <h3  [ngStyle]="{'color': darkMode? 'white' :''}"id="titleName">Covid Stats India</h3>
+            <!-- <h6  [ngStyle]="{'color': darkMode? 'white' :''}"id="subtitleName">{{lastUpdate}}</h6> -->
         </div>
         <div class="col">
-            <div [ngStyle]="{'color': darkMode? 'white' :''}" class="float-right" id="Population" #Population>Indian Population <br>
-                <span [ngStyle]="{'color': darkMode? 'white' :''}" class="numbers" [countUp]=IndianPopulation *ngIf="IndianPopulation; else elsePop"> </span>
+            <div [ngStyle]="{'color': !darkMode? 'brown' :'rgb(35, 150, 20)'}" class="float-right" id="Population" #Population>Total Vaccinated<br>
+                <span [ngStyle]="{'color': !darkMode? 'brown' :'rgb(35, 150, 20)'}" class="numbers" [countUp]=nt_vaccinated *ngIf="nt_vaccinated; else elsePop"> </span>
+                <span> ({{nt_vaccPercentage | number}}%)</span>
                 <ng-template #elsePop>
-                    <span [ngStyle]="{'color': darkMode? 'white' :''}" class="numbers" [countUp]="1380159707" #PopulationCount>1,380,159,707</span>
+                    <span [ngStyle]="{'color': !darkMode? 'brown' :'rgb(35, 150, 20)'}" class="numbers" [countUp]="0000000000" #PopulationCount>0000000000</span>
+                    <!-- <span [ngStyle]="{'color': darkMode? 'white' :''}" class="numbers" [countUp]="1380159707" #PopulationCount>1,380,159,707</span> -->
                 </ng-template>
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div @items class="col" style="margin:3px;" *ngFor="let d of Nt_data">
+        <div @items class="col" style="margin:10px -3px;" *ngFor="let d of Nt_data">
             <div class="card {{d.style}}" [ngStyle]="darkMode? card : ''">
                 <div class="card-header" [ngStyle]="darkMode? card_header : ''">
                     {{d.Name}} <span class={{d.icon}} [ngStyle]="(darkMode && d.icon=='fa fa-flask')? card_percentage : ''"></span>
                 </div>
                 <div class="card-body" style="font-weight: bold;">
                     <span [countUp]=d.number></span>
-                    <span class={{d.del_style}} style="margin-left: 6px;" *ngIf="d.del && d.del_style">
-                        <i class="fa fa-arrow-up" aria-hidden="true" *ngIf="d.del >=0 "></i>
-                        <i class="fa fa-arrow-down" aria-hidden="true" *ngIf="d.del < 0"> </i> <span
-                            [countUp]=d.del></span></span>
+                    <span class={{d.del_style}} *ngIf="d.del && d.del_style">
+                        <i class="fa fa-arrow-up" aria-hidden="true" *ngIf="d.del >=0 "><span [countUp]=d.del class={{d.del_style}}></span></i>
+                        <i class="fa fa-arrow-down" aria-hidden="true" *ngIf="d.del < 0"><span [countUp]=d.del class={{d.del_style}}></span></i> 
+                    </span>
                     <span class="cardPercentage" *ngIf="d.percent" [ngStyle]="darkMode? card_percentage : ''">
                         {{d.percent | percent}} <br>
                         <span class="percText" *ngIf="d.percText" [ngStyle]="darkMode? card_percentage : ''">{{d.percText}}</span>
@@ -308,12 +311,12 @@
     </div>
 
     
-    <div class="alert alert-info alert-dismissible fade show" role="alert" style="margin-top: 5px;" [ngStyle]="darkMode? alert : ''">
+    <!-- <div class="alert alert-info alert-dismissible fade show" role="alert" style="margin-top: 5px;" [ngStyle]="darkMode? alert : ''">
         Click on the state below to view the respective districts data
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
-    </div>
+    </div> -->
 
     <div class="form-group has-search" style="margin-top:20px">
         <span class="fa fa-search form-control-feedback"></span>
@@ -330,8 +333,8 @@
                         (click)="st_sortByClick('name')">State Name<i *ngIf="counter%2!=0 && st_sortBy=='name'"
                             class="fa fa-sort-alpha-asc"></i>
                         <i *ngIf="counter%2==0 && st_sortBy=='name'" class="fa fa-sort-alpha-desc"></i>
-                        <i *ngIf="st_sortBy!='name'" class="fa fa-sort"></i></th>
-                    <th (click)="st_sortByClick('updated')" #updated>Last Updated</th>
+                        <i *ngIf="st_sortBy!='name'" class="fa fa-sort"></i>
+                    </th>
                     <th (click)="st_sortByClick('population')" #population style="text-align: center;">Population<i
                             *ngIf="counter%2!=0 && st_sortBy=='population'" class="fa fa-sort-numeric-asc"></i>
                         <i *ngIf="counter%2==0 && st_sortBy=='population'" class="fa fa-sort-numeric-desc"></i>
@@ -357,18 +360,27 @@
                             *ngIf="counter%2!=0 && st_sortBy=='tested'" class="fa fa-sort-numeric-asc"></i>
                         <i *ngIf="counter%2==0 && st_sortBy=='tested'" class="fa fa-sort-numeric-desc"></i>
                         <i *ngIf="st_sortBy!='tested'" class="fa fa-sort"></i></th>
+                    <th (click)="st_sortByClick('vaccinated')" #tested style="text-align: center;">Vaccinated<i
+                        *ngIf="counter%2!=0 && st_sortBy=='vaccinated'" class="fa fa-sort-numeric-asc"></i>
+                    <i *ngIf="counter%2==0 && st_sortBy=='vaccinated'" class="fa fa-sort-numeric-desc"></i>
+                    <i *ngIf="st_sortBy!='vaccinated'" class="fa fa-sort"></i></th>
                 </tr>
             </thead>
 
             <tbody *ngFor="let d of SortStates" class="thead">
                 <tr (click)="stateCode($event)">
                     <td [ngStyle]="darkMode? table_column : ''" id="statename" >{{d.st_name}}
+                        <br>
+                        <span [ngStyle]="{'color': darkMode? 'white' :''}" *ngIf="d.st_lastupdate != 'NA'; else elseBlock" class= "dateCol">{{d.st_lastupdate| date:'mediumDate'}}</span>
                     </td>
-                    <td *ngIf="d.st_lastupdate != 'NA'; else elseBlock">
-                        {{d.st_lastupdate| date:'mediumDate'}}</td>
                     <td *ngIf="d.st_population != 'NA' && d.st_population != -1.5; else elseBlock"
                         style="text-align: center;" >
-                        {{d.st_population | number}}</td>
+                        {{d.st_population | number}}
+                        <span id="delta_red" *ngIf="d.st_population!='NA' && d.st_population > 0 && d.st_confirmed != 'NA' && d.st_confirmed > 0" 
+                            [ngStyle]="darkMode? table_data : ''">
+                            {{((d.st_confirmed/d.st_population) * 100 )| number}}%
+                        </span>
+                    </td>
                     <td *ngIf="d.st_confirmed!= 'NA' && d.st_confirmed != -1.5; else elseBlock"
                         style="text-align: center;">
                         {{d.st_confirmed | number}}
@@ -398,8 +410,7 @@
                             <i [ngStyle]="darkMode? table_data : ''" class="fa fa-arrow-up" aria-hidden="true"></i> {{d.delta_rec | number}}
                         </span>
                     </td>
-                    <td *ngIf="d.st_deceased != 'NA' && d.st_deceased != -1.5; else elseBlock"
-                        style="text-align: center;">
+                    <td *ngIf="d.st_deceased != 'NA' && d.st_deceased != -1.5; else elseBlock" style="text-align: center;">
                         {{d.st_deceased | number}}
                         <span [ngStyle]="darkMode? table_data : ''" id="delta_green" *ngIf="d.delta_dec!='NA' && d.delta_dec < 0">
                             <i [ngStyle]="darkMode? table_data : ''" class="fa fa-arrow-down" aria-hidden="true"></i> {{d.delta_dec | number}}
@@ -415,6 +426,12 @@
                         </span>
                         <span [ngStyle]="darkMode? table_data : ''" id="delta_red" *ngIf="d.delta_tes!='NA' && d.delta_tes > 0">
                             <i [ngStyle]="darkMode? table_data : ''" class="fa fa-arrow-up" aria-hidden="true"></i> {{d.delta_tes | number}}
+                        </span>
+                    </td>
+                    <td *ngIf="d.st_vaccinated != 'NA' && d.st_vaccinated != -1.5; else elseBlock" style="text-align: center;">
+                        {{d.st_vaccinated| number}}
+                        <span [ngStyle]="darkMode? table_data : ''" id="delta_green" *ngIf="d.delta_vac!='NA'">
+                            <i [ngStyle]="darkMode? table_data : ''" class="fa fa-arrow-up" aria-hidden="true"></i> {{d.delta_vac | number}}
                         </span>
                     </td>
                 </tr>

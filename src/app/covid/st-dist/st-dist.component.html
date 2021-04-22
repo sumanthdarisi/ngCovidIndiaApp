@@ -1,9 +1,9 @@
-<div class="row" style="margin: -3px 0px 10px 0px;">
-    <div class="col" style="padding-left:0px;font-size: 27px; top:19px">
+<div class="row" style="margin: -3px 0px 10px 0px;" #dashboard>
+    <!-- <div class="col" style="padding-left:0px;font-size: 27px; top:19px">
         <div class="float-left">
             <div  id="StateName" [ngStyle]="{'color': darkMode? 'white':'black' }">{{stateName}}</div>
         </div>
-    </div>
+    </div> -->
     <div class="col" style="top:15px; padding-right: 0px;">
         <div class="float-right btn btn-primary" style="margin-bottom:10px" routerLink="/Covid" (click)="dark()">Covid | Home</div>
     </div>
@@ -13,7 +13,12 @@
     <div class="col-12">
         <div class="card" [ngStyle]="darkMode? card:'' ">
             <div class="card-header" [ngStyle]="darkMode? card_header:'' ">
-                State Dashboard
+                <div class="float-left">
+                    <div  id="StateName" [ngStyle]="{'color': darkMode? 'white':'black' }">{{stateName}}</div>
+                </div>
+                <div id="ScrollDown" [ngStyle]="darkMode? scroll_down:'' ">
+                    <button type="button" class="btn btn-default" style="border: 1px solid #645e5e66;" (click)="scroll(target)"><i class="fa fa-arrow-down" style="font-size: 11px;" aria-hidden="true" [ngStyle]="{'color': darkMode? 'white':'black' }"></i><span id="scrollText"></span></button>
+                </div>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -41,9 +46,6 @@
                             <div class="rank_perc" *ngIf="d.perc_position!='-NA-' && d.perc_position > 0" [ngStyle]="{'color': darkMode? 'white':'black' }">{{d.perc_position}}% of total</div>
                         </div>
                     </div>
-                </div>
-                <div id="ScrollDown" [ngStyle]="darkMode? scroll_down:'' ">
-                    <button type="button" class="btn btn-default" style="border: 1px solid #645e5e66;" (click)="scroll(target)"><i class="fa fa-arrow-down" style="font-size: 11px;" aria-hidden="true" [ngStyle]="{'color': darkMode? 'white':'black' }"></i><span id="scrollText"></span></button>
                 </div>
             </div>
             <ng-template #elseBlock>
@@ -106,7 +108,12 @@
                 <tr>
                     <td [ngStyle]="darkMode? table_column:'' " class= "stick_col">{{d.dt_name}}</td>
                     <td *ngIf="d.dt_population != 'NA' && d.dt_population != -1.5; else elseBlock" style="text-align: center;">
-                        {{d.dt_population | number}}</td>
+                        {{d.dt_population | number}}
+                        <span id="delta_red" *ngIf="d.dt_population!='NA' && d.dt_population > 0 && d.dt_confirmed != 'NA' && d.dt_confirmed > 0" 
+                            [ngStyle]="darkMode? table_data : ''">
+                            {{((d.dt_confirmed/d.dt_population) * 100 )| number}}%
+                        </span>
+                    </td>
                     <td *ngIf="d.dt_confirmed != 'NA' && d.dt_confirmed != -1.5; else elseBlock" style="text-align: center;">
                         {{d.dt_confirmed | number}}
                         <span [ngStyle]="darkMode? table_data:'' " id="delta_green" *ngIf="d.delta_con!='NA' && d.delta_con < 0">
@@ -162,8 +169,13 @@
 </div>
 
 <div class="card" #target>
-    <div class="card-header" [ngStyle]="{'color': darkMode? 'white':'black' }">
-        Time Series - {{stateName}}
+    <div class="card-header" [ngStyle]="darkMode? card_header:'' ">
+        <div class="float-left">
+            <div  id="StateName" [ngStyle]="{'color': darkMode? 'white':'black' }">Time Series</div>
+        </div>
+        <div id="ScrollDown" [ngStyle]="darkMode? scroll_down:'' ">
+            <button type="button" class="btn btn-default" style="border: 1px solid #645e5e66;" (click)="scroll(dashboard)"><i class="fa fa-arrow-up" style="font-size: 11px;" aria-hidden="true" [ngStyle]="{'color': darkMode? 'white':'black' }"></i><span id="scrollText"></span></button>
+        </div>
     </div>
     <div class="card-body">
         <div class="row">
